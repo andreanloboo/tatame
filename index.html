@@ -326,6 +326,13 @@
   .iconbtn svg { width: 18px; height: 18px; }
   .iconbtn.on { background: var(--accent); color: #fff; }
   .iconbtn.ok { background: var(--ok-soft); color: var(--ok); }
+  .iconbtn.wait { background: var(--warn-soft); color: var(--warn); }
+  .iconbtn.off { background: var(--surface-2); color: var(--ink-3); }
+  .status { display: flex; align-items: center; gap: 8px; border-radius: 12px; padding: 10px 14px; font-weight: 600; font-size: 13px; }
+  .status svg { width: 16px; height: 16px; flex: none; }
+  .status.ok { background: var(--ok-soft); color: var(--ok); }
+  .status.wait { background: var(--warn-soft); color: var(--warn); }
+  .status.muted { background: var(--surface-2); color: var(--ink-2); font-weight: 500; }
 
   /* chat */
   .thread-list { display: grid; gap: 8px; }
@@ -601,17 +608,12 @@
 
   function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* sem storage: segue em memória */ } }
 
-  // Confirmações de aulas que já aconteceram viram presença.
+  // A presença (attendance) é confirmada pelo professor. O aluno só confirma que vai (confirmations).
+  // Confirmações de aulas que já passaram ficam como "aguardando o professor" até a presença ser registrada.
   function settleConfirmations() {
     let changed = false;
     Object.keys(state.confirmations).forEach(k => {
-      const [d, cid] = k.split('|');
-      const cls = byId[cid];
-      if (cls && classStart(d, cls) < now()) {
-        state.attendance[k] = true;
-        delete state.confirmations[k];
-        changed = true;
-      }
+      if (state.attendance[k]) { delete state.confirmations[k]; changed = true; }
     });
     if (changed) save();
   }
@@ -726,9 +728,10 @@
     const mine = myGroups().includes(c.group);
     const people = confirmedList(dk, c);
     let btn;
-    if (att) btn = `<button class="btn ok" data-action="toggle" data-date="${dk}" data-cls="${c.id}">${I.check} Você treinou</button>`;
-    else if (past) btn = `<button class="btn ghost" data-action="toggle" data-date="${dk}" data-cls="${c.id}">Marcar presença</button>`;
-    else if (conf) btn = `<button class="btn ok" data-action="toggle" data-date="${dk}" data-cls="${c.id}">${I.check} Presença confirmada</button>`;
+    if (att) btn = `<div class="status ok">${I.check} Presença confirmada pelo professor</div>`;
+    else if (past && conf) btn = `<div class="status wait">${I.clock} Você confirmou. Aguardando o professor</div>`;
+    else if (past) btn = `<div class="status muted">Aula encerrada. Presença é registrada pelo professor</div>`;
+    else if (conf) btn = `<button class="btn ok" data-action="toggle" data-date="${dk}" data-cls="${c.id}">${I.check} Você vai treinar · toque para desfazer</button>`;
     else btn = `<button class="btn primary" data-action="toggle" data-date="${dk}" data-cls="${c.id}">Confirmar presença</button>`;
     return `
       <article class="card class-card ${mine ? 'mine' : ''} ${past ? 'past' : ''}">
@@ -864,7 +867,9 @@
               </div>
               <div class="actions">
                 <button class="iconbtn" data-action="openchat" data-cls="${c.id}" aria-label="Chat da turma">${I.chat}</button>
-                <button class="iconbtn ${att ? 'ok' : (conf ? 'on' : '')}" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="${att ? 'Presença registrada' : (conf ? 'Presença confirmada' : (past ? 'Marcar presença' : 'Confirmar presença'))}">${att || conf ? I.check : (past ? I.clock : I.plus)}</button>
+                ${att ? `<span class="iconbtn ok" title="Presença confirmada pelo professor" aria-label="Presença confirmada pelo professor">${I.check}</span>`
+                  : past ? `<span class="iconbtn ${conf ? 'wait' : 'off'}" title="${conf ? 'Você confirmou. Aguardando o professor' : 'Aula encerrada'}" aria-label="${conf ? 'Você confirmou. Aguardando o professor' : 'Aula encerrada'}">${conf ? I.clock : I.minus}</span>`
+                  : `<button class="iconbtn ${conf ? 'on' : ''}" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="${conf ? 'Você vai treinar. Toque para desfazer' : 'Confirmar presença'}">${conf ? I.check : I.plus}</button>`}
               </div>
             </div>`;
         }).join('') : `<div class="card empty"><div class="title cond">Sem aulas nesse dia</div><div>Descanso ativo: alongue, revise posições.</div></div>`}
@@ -1083,7 +1088,7 @@
         <div class="stack">
           <button class="btn ghost block" data-action="theme">Alternar tema claro/escuro</button>
           <button class="btn ghost block danger" data-action="logout">Sair e criar outro perfil</button>
-          <div class="small muted" style="text-align:center;padding:0 12px">Os dados ficam salvos neste aparelho. Colegas e mensagens são exemplos até o app ganhar servidor.</div>
+          <div class="small muted" style="text-align:center;padding:0 12px">Os dados ficam salvos neste aparelho. Você confirma que vai treinar; a presença é registrada pelo professor. Colegas, mensagens e presenças são exemplos até o app ganhar servidor.</div>
         </div>
       </section>`;
   }
@@ -1823,14 +1828,9 @@
     else if (a === 'toggle') {
       const k = `${el.dataset.date}|${el.dataset.cls}`;
       const c = byId[el.dataset.cls];
-      const past = classEnd(el.dataset.date, c) < now();
-      if (past) {
-        if (state.attendance[k]) { delete state.attendance[k]; toast('Presença removida'); }
-        else { state.attendance[k] = true; toast('Presença registrada. Oss!'); }
-      } else {
-        if (state.confirmations[k]) { delete state.confirmations[k]; toast('Confirmação cancelada'); }
-        else { state.confirmations[k] = true; toast(`Confirmado para ${c.time}. Bom treino!`); }
-      }
+      if (classEnd(el.dataset.date, c) < now()) { toast('Aula encerrada. A presença é registrada pelo professor.'); return; }
+      if (state.confirmations[k]) { delete state.confirmations[k]; toast('Confirmação desfeita'); }
+      else { state.confirmations[k] = true; toast(`Você confirmou para as ${c.time}. Bom treino!`); }
       save(); render();
     }
     else if (a === 'openchat') { chatOpen = el.dataset.cls; go('chat'); }
