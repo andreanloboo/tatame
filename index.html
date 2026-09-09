@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Tatame</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap">
+<style>
+  :root {
+    --bg: #E9EBF4;
+    --frame: #DADDEA;
+    --surface: #FFFFFF;
+    --surface-2: #F3F4F9;
+    --ink: #15161C;
+    --ink-2: #5B5E70;
+    --ink-3: #9295A8;
+    --line: #E2E4EE;
+    --accent: #E2263C;
+    --accent-ink: #FFFFFF;
+    --accent-soft: #FCE7EA;
+    --accent-glow: rgba(226, 38, 60, .55);
+    --pill: #17181F;
+    --pill-icon: #A4A7B8;
+    --belt: #5B3921;
+    --belt-dark: #3E2615;
+    --ok: #1E9A5A;
+    --ok-soft: #E3F5EB;
+    --warn: #C97C06;
+    --warn-soft: #FBF0DA;
+    --shadow: 0 14px 34px rgba(21, 22, 28, .14);
+    --shadow-sm: 0 2px 10px rgba(21, 22, 28, .06);
+    --bubble-them: #F3F4F9;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0D0E13;
+      --frame: #181922;
+      --surface: #181922;
+      --surface-2: #20212B;
+      --ink: #F1F2F7;
+      --ink-2: #A7AABD;
+      --ink-3: #6F7288;
+      --line: #2A2B37;
+      --accent: #F0364B;
+      --accent-soft: #3A1720;
+      --accent-glow: rgba(240, 54, 75, .5);
+      --pill: #23242F;
+      --pill-icon: #9A9DB0;
+      --belt: #6B4426;
+      --belt-dark: #452A17;
+      --ok: #37C27A;
+      --ok-soft: #12301F;
+      --warn: #E8A33A;
+      --warn-soft: #33270F;
+      --shadow: 0 14px 34px rgba(0, 0, 0, .55);
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, .3);
+      --bubble-them: #20212B;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0D0E13;
+    --frame: #181922;
+    --surface: #181922;
+    --surface-2: #20212B;
+    --ink: #F1F2F7;
+    --ink-2: #A7AABD;
+    --ink-3: #6F7288;
+    --line: #2A2B37;
+    --accent: #F0364B;
+    --accent-soft: #3A1720;
+    --accent-glow: rgba(240, 54, 75, .5);
+    --pill: #23242F;
+    --pill-icon: #9A9DB0;
+    --belt: #6B4426;
+    --belt-dark: #452A17;
+    --ok: #37C27A;
+    --ok-soft: #12301F;
+    --warn: #E8A33A;
+    --warn-soft: #33270F;
+    --shadow: 0 14px 34px rgba(0, 0, 0, .55);
+    --shadow-sm: 0 2px 10px rgba(0, 0, 0, .3);
+    --bubble-them: #20212B;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--frame);
+    color: var(--ink);
+    font-family: "Barlow", "Segoe UI", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    min-height: 100dvh;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  h1, h2, h3 { margin: 0; text-wrap: balance; }
+  .cond { font-family: "Barlow Condensed", "Barlow", system-ui, sans-serif; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ---------- app shell ---------- */
+  .app {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    height: 100dvh;
+    background: var(--bg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  @media (min-width: 640px) {
+    body { align-items: center; padding: 24px 0; }
+    .app {
+      height: min(900px, calc(100dvh - 48px));
+      border-radius: 40px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--line);
+    }
+  }
+  .screen {
+    flex: 1;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 22px 20px 118px;
+    scrollbar-width: none;
+  }
+  .screen::-webkit-scrollbar { display: none; }
+  .screen.chat-thread { padding-bottom: 0; display: flex; flex-direction: column; }
+
+  /* ---------- tab bar (reference: dark pill, red active square) ---------- */
+  .tabbar {
+    position: absolute;
+    left: 22px; right: 22px; bottom: 18px;
+    height: 66px;
+    background: var(--pill);
+    border-radius: 33px;
+    display: flex;
+    align-items: stretch;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .28);
+    z-index: 10;
+    overflow: hidden;
+  }
+  .tabbar .ind {
+    position: absolute;
+    top: 0; left: 0;
+    width: 20%;
+    height: 100%;
+    pointer-events: none;
+    transition: transform .42s cubic-bezier(.22, 1, .36, 1);
+  }
+  .tabbar .ind::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 50%;
+    width: 30px; height: 4px;
+    transform: translateX(-50%);
+    background: var(--accent);
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 6px 16px var(--accent-glow);
+  }
+  .tabbar .ind::after {
+    content: "";
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 46px; height: 46px;
+    transform: translate(-50%, -50%);
+    background: var(--accent);
+    border-radius: 15px;
+    box-shadow: 0 8px 22px var(--accent-glow), 0 0 0 1px rgba(255,255,255,.06) inset;
+  }
+  .tabbar button {
+    position: relative;
+    flex: 1;
+    background: none;
+    border: 0;
+    color: var(--pill-icon);
+    display: grid;
+    place-items: center;
+    z-index: 1;
+    transition: color .25s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tabbar button:focus-visible { outline-offset: -6px; border-radius: 22px; }
+  .tabbar button.on { color: #fff; }
+  .tabbar button svg { width: 22px; height: 22px; transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
+  .tabbar button.on svg { transform: translateY(-1px) scale(1.05); }
+  .tabbar .badge {
+    position: absolute; top: 17px; right: calc(50% - 16px);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); border: 2px solid var(--pill);
+  }
+  .tabbar button.on .badge { display: none; }
+
+  /* ---------- common ---------- */
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  .title { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 30px; line-height: 1.05; letter-spacing: -.01em; }
+  .h2 { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: .01em; }
+  .muted { color: var(--ink-2); }
+  .small { font-size: 13px; }
+  .section { margin-top: 26px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+  .linkbtn { background: none; border: 0; color: var(--accent); font-weight: 600; font-size: 13px; padding: 0; }
+
+  .avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--ink); color: var(--bg);
+    font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .02em;
+    flex: none;
+  }
+  .avatar.sm { width: 26px; height: 26px; font-size: 11px; }
+  .avatar.lg { width: 68px; height: 68px; font-size: 26px; }
+  .avatar[data-belt="Branca"] { background: #E9E9EC; color: #333; }
+  .avatar[data-belt="Azul"] { background: #2456B8; color: #fff; }
+  .avatar[data-belt="Roxa"] { background: #6B3FA0; color: #fff; }
+  .avatar[data-belt="Marrom"] { background: var(--belt); color: #fff; }
+  .avatar[data-belt="Preta"] { background: #111; color: #fff; }
+
+  .card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .stack { display: flex; flex-direction: column; gap: 10px; }
+  .row { display: flex; align-items: center; gap: 10px; }
+  .grow { flex: 1; min-width: 0; }
+
+  .btn {
+    border: 0; border-radius: 12px;
+    padding: 11px 16px;
+    font-weight: 600; font-size: 14px;
+    background: var(--ink); color: var(--bg);
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    transition: transform .15s, background .2s;
+  }
+  .btn:active { transform: scale(.98); }
+  .btn.primary { background: var(--accent); color: var(--accent-ink); }
+  .btn.ghost { background: var(--surface-2); color: var(--ink); }
+  .btn.ok { background: var(--ok-soft); color: var(--ok); }
+  .btn.block { width: 100%; }
+  .btn svg { width: 18px; height: 18px; }
+
+  .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip {
+    border: 1px solid var(--line); background: var(--surface);
+    border-radius: 999px; padding: 7px 13px; font-size: 13px; font-weight: 600; color: var(--ink-2);
+  }
+  .chip.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 3px 9px; font-size: 12px; font-weight: 600; }
+  .pill.ok { background: var(--ok-soft); color: var(--ok); }
+  .pill.warn { background: var(--warn-soft); color: var(--warn); }
+  .pill.soft { background: var(--surface-2); color: var(--ink-2); }
+  .pill.accent { background: var(--accent-soft); color: var(--accent); }
+
+  /* belt */
+  .belt { width: 100%; height: 26px; display: block; }
+
+  /* home class card */
+  .class-card { display: grid; grid-template-columns: 62px 1fr; gap: 14px; align-items: start; }
+  .class-card .time { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 28px; line-height: 1; letter-spacing: -.01em; }
+  .class-card .dur { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+  .class-card .name { font-weight: 600; font-size: 16px; }
+  .class-card .meta { color: var(--ink-2); font-size: 13px; }
+  .class-card .foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+  .stackav { display: flex; }
+  .stackav .avatar.sm { border: 2px solid var(--surface); margin-left: -8px; }
+  .stackav .avatar.sm:first-child { margin-left: 0; }
+  .class-card.mine { box-shadow: 0 0 0 1.5px var(--accent) inset, var(--shadow-sm); }
+  .class-card.past { opacity: .82; }
+
+  .progress { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+  .progress > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .6s cubic-bezier(.22, 1, .36, 1); }
+
+  .weekdots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .weekdots .d { display: grid; gap: 6px; justify-items: center; font-size: 11px; color: var(--ink-3); font-weight: 600; }
+  .weekdots .dot { width: 30px; height: 30px; border-radius: 10px; background: var(--surface-2); display: grid; place-items: center; color: var(--ink-3); }
+  .weekdots .dot.on { background: var(--accent); color: #fff; }
+  .weekdots .dot.today { box-shadow: 0 0 0 2px var(--ink) inset; }
+  .weekdots .dot svg { width: 14px; height: 14px; }
+
+  /* day selector */
+  .days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 18px; }
+  .days button {
+    border: 0; background: var(--surface); border-radius: 14px; padding: 8px 0 7px; display: grid; gap: 2px; justify-items: center;
+    color: var(--ink-2); box-shadow: var(--shadow-sm);
+  }
+  .days button b { font-family: "Barlow Condensed", system-ui, sans-serif; font-size: 20px; color: var(--ink); line-height: 1; }
+  .days button small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+  .days button.on { background: var(--ink); color: var(--bg); }
+  .days button.on b { color: var(--bg); }
+  .days button.today small::after { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); margin-left: 4px; vertical-align: middle; }
+
+  .timeline { display: grid; gap: 10px; }
+  .slot { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; }
+  .slot .t { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 22px; line-height: 1; }
+  .slot .g { font-weight: 600; }
+  .slot .c { font-size: 12px; color: var(--ink-2); }
+  .slot .actions { display: flex; gap: 6px; }
+  .iconbtn { width: 38px; height: 38px; border-radius: 12px; border: 0; background: var(--surface-2); color: var(--ink); display: grid; place-items: center; }
+  .iconbtn svg { width: 18px; height: 18px; }
+  .iconbtn.on { background: var(--accent); color: #fff; }
+  .iconbtn.ok { background: var(--ok-soft); color: var(--ok); }
+
+  /* chat */
+  .thread-list { display: grid; gap: 8px; }
+  .thread { display: grid; grid-template-columns: 46px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; text-align: left; border: 0; width: 100%; }
+  .thread .ico { width: 46px; height: 46px; border-radius: 15px; background: var(--surface-2); display: grid; place-items: center; font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); }
+  .thread .ico.accent { background: var(--accent); color: #fff; }
+  .thread .n { font-weight: 600; }
+  .thread .p { font-size: 13px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .thread .ts { font-size: 11px; color: var(--ink-3); align-self: start; padding-top: 3px; }
+
+  .chat-head { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+  .backbtn { width: 38px; height: 38px; border-radius: 12px; border: 0; background: var(--surface); color: var(--ink); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
+  .backbtn svg { width: 18px; height: 18px; }
+  .msgs { flex: 1; overflow-y: auto; padding: 14px 0; display: flex; flex-direction: column; gap: 10px; scrollbar-width: none; }
+  .msgs::-webkit-scrollbar { display: none; }
+  .daysep { align-self: center; font-size: 11px; color: var(--ink-3); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; margin: 6px 0; }
+  .msg { display: flex; gap: 8px; max-width: 86%; }
+  .msg.me { align-self: flex-end; flex-direction: row-reverse; }
+  .msg .bubble { background: var(--bubble-them); border-radius: 16px 16px 16px 5px; padding: 9px 12px; }
+  .msg.me .bubble { background: var(--accent); color: #fff; border-radius: 16px 16px 5px 16px; }
+  .msg .who { font-size: 11px; font-weight: 700; color: var(--ink-2); margin-bottom: 2px; }
+  .msg .who .r { color: var(--accent); font-weight: 600; }
+  .msg .txt { white-space: pre-wrap; word-break: break-word; }
+  .msg .ts { font-size: 10px; opacity: .65; text-align: right; margin-top: 3px; }
+  .composer { display: flex; gap: 8px; padding: 10px 0 100px; }
+  .composer input { flex: 1; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 11px 16px; min-width: 0; }
+  .composer button { width: 44px; height: 44px; border-radius: 50%; border: 0; background: var(--accent); color: #fff; display: grid; place-items: center; flex: none; }
+  .composer button svg { width: 18px; height: 18px; }
+
+  /* frequência */
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat .v { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 36px; line-height: 1; }
+  .stat .l { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
+  .ring-wrap { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; }
+  .ring { width: 120px; height: 120px; position: relative; }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring .c { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+  .ring .c b { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 800; font-size: 34px; line-height: 1; display: block; }
+  .ring .c small { font-size: 11px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+  .req { display: grid; gap: 8px; }
+  .req .r { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
+  .req .r .ck { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; background: var(--surface-2); color: var(--ink-3); }
+  .req .r .ck.done { background: var(--ok-soft); color: var(--ok); }
+  .req .r .ck svg { width: 13px; height: 13px; }
+  .req .r .n { font-size: 13px; color: var(--ink-2); }
+  .chart { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; align-items: end; height: 110px; padding-top: 10px; position: relative; }
+  .chart .goal { position: absolute; left: 0; right: 0; border-top: 1.5px dashed var(--ink-3); pointer-events: none; }
+  .chart .goal span { position: absolute; right: 0; top: -16px; font-size: 10px; color: var(--ink-3); font-weight: 600; }
+  .chart .bar { position: relative; display: grid; align-items: end; height: 100%; }
+  .chart .bar i { display: block; border-radius: 6px 6px 3px 3px; background: var(--ink-3); opacity: .45; }
+  .chart .bar.hit i { background: var(--accent); opacity: 1; }
+  .chart .bar.cur i { outline: 2px solid var(--ink); outline-offset: -2px; }
+  .chart .bar b { position: absolute; top: -18px; left: 0; right: 0; text-align: center; font-size: 11px; color: var(--ink-2); font-weight: 600; }
+  .chart-labels { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 6px; font-size: 10px; color: var(--ink-3); text-align: center; }
+  .history { display: grid; gap: 6px; }
+  .history .h { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 12px; background: var(--surface); border-radius: 12px; }
+  .history .h .d { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 18px; line-height: 1; }
+  .history .h .d small { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-family: "Barlow", system-ui, sans-serif; font-weight: 600; }
+
+  /* forms */
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 12px; font-weight: 600; color: var(--ink-2); letter-spacing: .04em; text-transform: uppercase; }
+  .field input, .field select {
+    border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 11px 13px; width: 100%;
+  }
+  .field input:focus, .field select:focus { border-color: var(--ink); outline: none; }
+  .stepper { display: grid; grid-template-columns: 44px 1fr 44px; gap: 8px; align-items: center; }
+  .stepper .iconbtn { width: 44px; height: 44px; }
+  .stepper .val { text-align: center; font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 24px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .danger { color: var(--accent); }
+
+  .toast {
+    position: absolute; left: 50%; bottom: 98px; transform: translate(-50%, 16px);
+    background: var(--ink); color: var(--bg); border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 600;
+    opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 20; white-space: nowrap;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  .empty { text-align: center; padding: 28px 16px; color: var(--ink-2); }
+  .empty .title { font-size: 22px; margin-bottom: 4px; color: var(--ink); }
+
+  .fade { animation: fade .35s cubic-bezier(.22, 1, .36, 1) both; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="app" id="app">
+  <main class="screen" id="screen" aria-live="polite"></main>
+  <nav class="tabbar" id="tabbar" aria-label="Navegação principal">
+    <span class="ind" id="ind"></span>
+    <button data-tab="home" aria-label="Início"></button>
+    <button data-tab="aulas" aria-label="Aulas"></button>
+    <button data-tab="chat" aria-label="Chat"></button>
+    <button data-tab="freq" aria-label="Frequência"></button>
+    <button data-tab="perfil" aria-label="Perfil"></button>
+  </nav>
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------------- icons ---------------- */
+  const I = {
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M10 20v-5.5h4V20"/></svg>',
+    cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M13 14h3M8 17.5h3"/></svg>',
+    chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.2-4.2A8.5 8.5 0 1 1 20.5 12Z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>',
+    chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6.5 16.5v-5M12 16.5V7M17.5 16.5v-8"/></svg>',
+    user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.6 3.9-5.5 7.5-5.5s6.7 1.9 7.5 5.5"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+    send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20 4l-4 16-4-7-8-1Z"/><path d="m12 13 8-9"/></svg>',
+    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 6-6 6 6 6"/></svg>',
+    plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+    minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14"/></svg>',
+    clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+    dot: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="3"/></svg>',
+  };
+
+  /* ---------------- static data ---------------- */
+  const BELTS = ['Branca', 'Azul', 'Roxa', 'Marrom', 'Preta'];
+  const GROUPS = ['Fundamentos', 'Avançado', 'No-Gi', 'Competição'];
+  const WD = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  const WD_LONG = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+  const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+  const MON_SHORT = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+
+  const SCHEDULE = [
+    { id: 'c1', days: [1, 3, 5], time: '06:30', dur: 60, group: 'Fundamentos', coach: 'Prof. Rafael' },
+    { id: 'c2', days: [1, 3, 5], time: '12:00', dur: 60, group: 'No-Gi', coach: 'Prof. Rafael' },
+    { id: 'c3', days: [1, 3, 5], time: '19:00', dur: 90, group: 'Avançado', coach: 'Prof. Rafael' },
+    { id: 'c4', days: [1, 3, 5], time: '20:30', dur: 60, group: 'Competição', coach: 'Prof. Marcos' },
+    { id: 'c5', days: [2, 4], time: '07:00', dur: 60, group: 'Avançado', coach: 'Prof. Marcos' },
+    { id: 'c6', days: [2, 4], time: '19:00', dur: 60, group: 'Fundamentos', coach: 'Prof. Marcos' },
+    { id: 'c7', days: [2, 4], time: '20:00', dur: 60, group: 'No-Gi', coach: 'Prof. Rafael' },
+    { id: 'c8', days: [6], time: '10:00', dur: 90, group: 'Todos', coach: 'Todos os professores', name: 'Open Mat' },
+  ];
+  const byId = Object.fromEntries(SCHEDULE.map(c => [c.id, c]));
+
+  // Colegas de exemplo (aparecem nas confirmações e no chat até existir um servidor).
+  const MEMBERS = {
+    m1: { id: 'm1', name: 'Rafael Nunes', belt: 'Preta', stripes: 2, role: 'Professor' },
+    m2: { id: 'm2', name: 'Camila Reis', belt: 'Roxa', stripes: 1 },
+    m3: { id: 'm3', name: 'Diego Alves', belt: 'Azul', stripes: 4 },
+    m4: { id: 'm4', name: 'Bruno Sato', belt: 'Marrom', stripes: 1 },
+    m5: { id: 'm5', name: 'Lívia Costa', belt: 'Roxa', stripes: 3 },
+    m6: { id: 'm6', name: 'Thiago Melo', belt: 'Branca', stripes: 2 },
+  };
+  const MOCK_CONFIRMED = {
+    c1: ['m1', 'm6'], c2: ['m3'], c3: ['m1', 'm2', 'm4', 'm5'], c4: ['m1', 'm4'],
+    c5: ['m1', 'm4'], c6: ['m1', 'm6', 'm3'], c7: ['m2', 'm3'], c8: ['m1', 'm2', 'm3', 'm5', 'm6'],
+  };
+
+  /* ---------------- date helpers ---------------- */
+  const pad = n => String(n).padStart(2, '0');
+  const key = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  const parse = k => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const daysBetween = (a, b) => Math.round((startOfDay(b) - startOfDay(a)) / 86400000);
+  const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const monday = d => { const x = startOfDay(d); const w = (x.getDay() + 6) % 7; return addDays(x, -w); };
+  const classStart = (dateKey, cls) => { const d = parse(dateKey); const [h, m] = cls.time.split(':').map(Number); d.setHours(h, m, 0, 0); return d; };
+  const classEnd = (dateKey, cls) => new Date(classStart(dateKey, cls).getTime() + cls.dur * 60000);
+  const fmtLong = d => `${WD_LONG[d.getDay()]}, ${d.getDate()} de ${MONTHS[d.getMonth()]}`;
+  const fmtShort = d => `${d.getDate()} ${MON_SHORT[d.getMonth()]}`;
+  const fmtTime = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const initials = name => name.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase() || '?';
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  /* ---------------- state ---------------- */
+  const KEY = 'tatame-v1';
+  const now = () => new Date();
+
+  function seedAttendance(lastGrau) {
+    // Histórico de exemplo desde o último grau: Seg/Qua/Sex 19:00 (Avançado), com semanas mais fracas no meio.
+    const out = {};
+    const start = monday(parse(lastGrau));
+    const today = startOfDay(now());
+    for (let w = start; w < today; w = addDays(w, 7)) {
+      const wk = key(w);
+      let pattern = [0, 2, 4]; // seg, qua, sex
+      if (wk === '2026-08-10') pattern = [0, 2];
+      if (wk === '2026-08-24') pattern = [4];
+      pattern.forEach(off => {
+        const d = addDays(w, off);
+        if (d >= parse(lastGrau) && classEnd(key(d), byId.c3) < now()) out[`${key(d)}|c3`] = true;
+      });
+      if (wk === '2026-07-27') { const sat = addDays(w, 5); if (sat < today) out[`${key(sat)}|c8`] = true; }
+    }
+    return out;
+  }
+
+  function seedChats() {
+    const t = now().getTime();
+    const ago = (h) => t - h * 3600000;
+    return {
+      c3: [
+        { id: 'x1', author: 'm1', text: 'Hoje: passagem de guarda e finalizações das costas. Tragam kimono branco ou azul.', ts: ago(5) },
+        { id: 'x2', author: 'm2', text: 'Confirmado! Chego 18:50 pra aquecer.', ts: ago(4.4) },
+        { id: 'x3', author: 'm4', text: 'Alguém pra trocar um rola antes da aula?', ts: ago(3.1) },
+      ],
+      c5: [
+        { id: 'x4', author: 'm1', text: 'Treino de 7h de amanhã mantido. Foco em raspagens.', ts: ago(26) },
+      ],
+      c8: [
+        { id: 'x5', author: 'm5', text: 'Open mat sábado tem?', ts: ago(50) },
+        { id: 'x6', author: 'm1', text: 'Tem sim, 10h. Aberto pra todas as faixas.', ts: ago(49) },
+      ],
+    };
+  }
+
+  function defaultState() {
+    const lastGrau = '2026-07-06';
+    return {
+      profile: { id: 'me', name: 'Andrean Lobo', belt: 'Marrom', stripes: 3, group: 'Avançado', lastGrau },
+      rule: { perWeek: 3, weeks: 13, minDays: 90 },
+      attendance: seedAttendance(lastGrau),
+      confirmations: {},
+      chats: seedChats(),
+      onboarded: true,
+    };
+  }
+
+  let state;
+  try {
+    const raw = localStorage.getItem(KEY);
+    state = raw ? JSON.parse(raw) : defaultState();
+  } catch { state = defaultState(); }
+  if (!state || !state.rule) state = defaultState();
+
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch { /* sem storage: segue em memória */ } }
+
+  // Confirmações de aulas que já aconteceram viram presença.
+  function settleConfirmations() {
+    let changed = false;
+    Object.keys(state.confirmations).forEach(k => {
+      const [d, cid] = k.split('|');
+      const cls = byId[cid];
+      if (cls && classStart(d, cls) < now()) {
+        state.attendance[k] = true;
+        delete state.confirmations[k];
+        changed = true;
+      }
+    });
+    if (changed) save();
+  }
+
+  /* ---------------- domain ---------------- */
+  const myGroups = () => [state.profile.group, 'Todos'];
+  const classesOn = (date, onlyMine) => SCHEDULE
+    .filter(c => c.days.includes(date.getDay()))
+    .filter(c => !onlyMine || myGroups().includes(c.group))
+    .sort((a, b) => a.time.localeCompare(b.time));
+  const clsName = c => c.name || c.group;
+  const isConfirmed = (dk, c) => !!state.confirmations[`${dk}|${c.id}`];
+  const attended = (dk, c) => !!state.attendance[`${dk}|${c.id}`];
+  const attendanceList = () => Object.keys(state.attendance).map(k => { const [d, cid] = k.split('|'); return { date: d, cls: byId[cid] }; })
+    .filter(x => x.cls).sort((a, b) => a.date < b.date ? 1 : -1);
+
+  function nextRank(p) {
+    if (p.belt === 'Preta') return p.stripes < 6 ? `${p.stripes + 1}º grau` : 'Coral';
+    if (p.stripes < 4) return `${p.stripes + 1}º grau`;
+    return `Faixa ${BELTS[BELTS.indexOf(p.belt) + 1]}`;
+  }
+
+  function progress() {
+    const p = state.profile, r = state.rule;
+    const since = p.lastGrau;
+    const done = Object.keys(state.attendance).filter(k => k.split('|')[0] >= since).length;
+    const target = r.perWeek * r.weeks;
+    const days = Math.max(0, daysBetween(parse(since), now()));
+    const daysLeft = Math.max(0, r.minDays - days);
+    const left = Math.max(0, target - done);
+    const weeksElapsed = Math.max(1, days / 7);
+    const pace = done / weeksElapsed;
+    const weeksNeeded = left / Math.max(0.5, Math.min(pace || r.perWeek, r.perWeek));
+    const etaClasses = addDays(now(), Math.ceil(weeksNeeded * 7));
+    const etaDays = addDays(parse(since), r.minDays);
+    const eta = etaClasses > etaDays ? etaClasses : etaDays;
+    return { done, target, left, days, daysLeft, pace, eta, ready: left === 0 && daysLeft === 0 };
+  }
+
+  function weekCount(mon) {
+    const a = key(mon), b = key(addDays(mon, 7));
+    return Object.keys(state.attendance).filter(k => { const d = k.split('|')[0]; return d >= a && d < b; }).length;
+  }
+
+  /* ---------------- ui: nav ---------------- */
+  const TABS = ['home', 'aulas', 'chat', 'freq', 'perfil'];
+  const ICON_BY_TAB = { home: I.home, aulas: I.cal, chat: I.chat, freq: I.chart, perfil: I.user };
+  let tab = 'home';
+  let chatOpen = null;
+  let aulasDay = key(now());
+  let onlyMine = false;
+
+  const $screen = document.getElementById('screen');
+  const $tabbar = document.getElementById('tabbar');
+  const $ind = document.getElementById('ind');
+  const $toast = document.getElementById('toast');
+
+  $tabbar.querySelectorAll('button').forEach(b => {
+    b.innerHTML = ICON_BY_TAB[b.dataset.tab] + (b.dataset.tab === 'chat' ? '<span class="badge" id="chatBadge"></span>' : '');
+    b.addEventListener('click', () => { chatOpen = null; go(b.dataset.tab); });
+  });
+
+  function go(t) {
+    tab = t;
+    $tabbar.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+    $ind.style.transform = `translateX(${TABS.indexOf(t) * 100}%)`;
+    render();
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    $toast.textContent = msg;
+    $toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => $toast.classList.remove('show'), 1900);
+  }
+
+  /* ---------------- ui: pieces ---------------- */
+  function beltSVG(belt, stripes, h = 26) {
+    const colors = { Branca: '#F2F2F2', Azul: '#2456B8', Roxa: '#6B3FA0', Marrom: 'var(--belt)', Preta: '#141414' };
+    const bar = belt === 'Preta' ? '#C8202F' : '#141414';
+    const W = 320, H = h;
+    const barX = 214, barW = 78;
+    let s = `<svg class="belt" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Faixa ${belt}, ${stripes} graus">`;
+    s += `<rect x="0" y="0" width="${W}" height="${H}" rx="3" fill="${colors[belt]}"/>`;
+    s += `<rect x="0" y="${H * .42}" width="${W}" height="1.2" fill="rgba(0,0,0,.18)"/>`;
+    s += `<rect x="${barX}" y="0" width="${barW}" height="${H}" fill="${bar}"/>`;
+    for (let i = 0; i < stripes; i++) {
+      const x = barX + 10 + i * 14;
+      s += `<rect x="${x}" y="0" width="6" height="${H}" fill="#F4F4F4"/>`;
+    }
+    s += '</svg>';
+    return s;
+  }
+  const avatar = (m, cls = '') => `<span class="avatar ${cls}" data-belt="${m.belt}" title="${esc(m.name)}">${initials(m.name)}</span>`;
+  const me = () => state.profile;
+
+  function confirmedList(dk, c) {
+    const others = (MOCK_CONFIRMED[c.id] || []).map(id => MEMBERS[id]);
+    if (isConfirmed(dk, c) || attended(dk, c)) others.unshift(me());
+    return others;
+  }
+
+  function classCard(dk, c, opts = {}) {
+    const start = classStart(dk, c), end = classEnd(dk, c);
+    const past = end < now();
+    const live = start <= now() && now() < end;
+    const conf = isConfirmed(dk, c), att = attended(dk, c);
+    const mine = myGroups().includes(c.group);
+    const people = confirmedList(dk, c);
+    let btn;
+    if (att) btn = `<button class="btn ok" data-action="toggle" data-date="${dk}" data-cls="${c.id}">${I.check} Você treinou</button>`;
+    else if (past) btn = `<button class="btn ghost" data-action="toggle" data-date="${dk}" data-cls="${c.id}">Marcar presença</button>`;
+    else if (conf) btn = `<button class="btn ok" data-action="toggle" data-date="${dk}" data-cls="${c.id}">${I.check} Presença confirmada</button>`;
+    else btn = `<button class="btn primary" data-action="toggle" data-date="${dk}" data-cls="${c.id}">Confirmar presença</button>`;
+    return `
+      <article class="card class-card ${mine ? 'mine' : ''} ${past ? 'past' : ''}">
+        <div>
+          <div class="time num">${c.time}</div>
+          <div class="dur">${c.dur} min</div>
+          ${live ? '<span class="pill accent" style="margin-top:8px">Agora</span>' : ''}
+        </div>
+        <div class="grow">
+          <div class="row" style="justify-content:space-between">
+            <div class="name">${esc(clsName(c))}</div>
+            ${c.group === 'Todos' ? '<span class="pill soft">Todas as faixas</span>' : (mine ? '<span class="pill soft">Seu grupo</span>' : '')}
+          </div>
+          <div class="meta">${esc(c.coach)}${c.name ? ` · ${esc(c.group)}` : ''}</div>
+          <div class="foot">
+            <div class="row" style="gap:8px">
+              <div class="stackav">${people.slice(0, 4).map(m => avatar(m, 'sm')).join('')}</div>
+              <span class="small muted num">${people.length} ${people.length === 1 ? 'confirmado' : 'confirmados'}</span>
+            </div>
+            ${opts.chat ? `<button class="iconbtn" data-action="openchat" data-cls="${c.id}" aria-label="Abrir chat">${I.chat}</button>` : ''}
+          </div>
+          <div style="margin-top:10px">${btn}</div>
+        </div>
+      </article>`;
+  }
+
+  /* ---------------- screens ---------------- */
+  function renderHome() {
+    const p = me(), pr = progress();
+    const today = now(), dk = key(today);
+    const classes = classesOn(today, true);
+    const mon = monday(today);
+    const dots = [...Array(7)].map((_, i) => {
+      const d = addDays(mon, i), k = key(d);
+      const on = Object.keys(state.attendance).some(a => a.startsWith(k + '|'));
+      const planned = Object.keys(state.confirmations).some(a => a.startsWith(k + '|'));
+      return `<div class="d"><span class="dot ${on ? 'on' : ''} ${k === dk ? 'today' : ''}">${on ? I.check : (planned ? I.dot : '')}</span>${WD[d.getDay()]}</div>`;
+    }).join('');
+    const wk = weekCount(mon);
+    const hour = today.getHours();
+    const greet = hour < 12 ? 'Bom treino' : hour < 18 ? 'Boa tarde' : 'Boa noite';
+
+    let next = '';
+    if (!classes.length) {
+      for (let i = 1; i <= 7; i++) {
+        const d = addDays(today, i), cs = classesOn(d, true);
+        if (cs.length) { next = `${WD_LONG[d.getDay()]} às ${cs[0].time} · ${clsName(cs[0])}`; break; }
+      }
+    }
+
+    return `
+      <header class="topbar fade">
+        <div>
+          <div class="eyebrow">${fmtLong(today)}</div>
+          <h1 class="title">${greet}, ${esc(p.name.split(' ')[0])}. Oss!</h1>
+        </div>
+        <button class="avatar" data-action="go" data-tab="perfil" data-belt="${p.belt}" aria-label="Abrir perfil" style="border:0">${initials(p.name)}</button>
+      </header>
+
+      <section class="card fade" style="animation-delay:.05s">
+        <div class="row" style="justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div class="eyebrow">Sua graduação</div>
+            <div class="h2">Faixa ${p.belt.toLowerCase()} · ${p.stripes} ${p.stripes === 1 ? 'grau' : 'graus'}</div>
+          </div>
+          <button class="linkbtn" data-action="go" data-tab="freq">Ver detalhes</button>
+        </div>
+        ${beltSVG(p.belt, p.stripes)}
+        <div class="row" style="justify-content:space-between;margin-top:14px;margin-bottom:6px">
+          <span class="small muted">Rumo ao ${nextRank(p).toLowerCase()}</span>
+          <span class="small num"><b>${pr.done}</b> de ${pr.target} aulas</span>
+        </div>
+        <div class="progress"><i style="width:${Math.min(100, pr.done / pr.target * 100)}%"></i></div>
+        <div class="row" style="justify-content:space-between;margin-top:8px">
+          <span class="small muted num">${pr.left === 0 ? 'Aulas completas' : `Faltam ${pr.left} ${pr.left === 1 ? 'aula' : 'aulas'}`}</span>
+          <span class="small muted num">${pr.daysLeft === 0 ? 'Tempo mínimo cumprido' : `${pr.daysLeft} dias de tapete`}</span>
+        </div>
+      </section>
+
+      <section class="section fade" style="animation-delay:.1s">
+        <div class="section-head">
+          <h2 class="h2">Treinos de hoje</h2>
+          <span class="small muted">${esc(p.group)}</span>
+        </div>
+        <div class="stack">
+          ${classes.length ? classes.map(c => classCard(dk, c, { chat: true })).join('') : `
+            <div class="card empty">
+              <div class="title cond">Hoje o tatame descansa</div>
+              <div>Próximo treino do seu grupo: <b>${esc(next || 'em breve')}</b></div>
+            </div>`}
+        </div>
+      </section>
+
+      <section class="section card fade" style="animation-delay:.15s">
+        <div class="section-head" style="margin-bottom:14px">
+          <h2 class="h2">Esta semana</h2>
+          <span class="pill ${wk >= state.rule.perWeek ? 'ok' : 'soft'} num">${wk} de ${state.rule.perWeek} aulas</span>
+        </div>
+        <div class="weekdots">${dots}</div>
+      </section>`;
+  }
+
+  function renderAulas() {
+    const today = now();
+    const mon = monday(today);
+    const dayBtns = [...Array(6)].map((_, i) => {
+      const d = addDays(mon, i), k = key(d);
+      return `<button data-action="day" data-day="${k}" class="${k === aulasDay ? 'on' : ''} ${k === key(today) ? 'today' : ''}"><small>${WD[d.getDay()]}</small><b>${d.getDate()}</b></button>`;
+    }).join('');
+    const d = parse(aulasDay);
+    const list = classesOn(d, onlyMine);
+    return `
+      <header class="topbar fade">
+        <div>
+          <div class="eyebrow">Grade da semana</div>
+          <h1 class="title">Aulas</h1>
+        </div>
+        <button class="chip ${onlyMine ? 'on' : ''}" data-action="onlymine">Só meu grupo</button>
+      </header>
+      <div class="days fade" style="animation-delay:.05s">${dayBtns}</div>
+      <div class="eyebrow" style="margin-bottom:10px">${fmtLong(d)}</div>
+      <div class="timeline fade" style="animation-delay:.1s">
+        ${list.length ? list.map(c => {
+          const dk = aulasDay, past = classEnd(dk, c) < now();
+          const conf = isConfirmed(dk, c), att = attended(dk, c), mine = myGroups().includes(c.group);
+          const people = confirmedList(dk, c);
+          return `
+            <div class="card slot ${mine ? 'mine' : ''}">
+              <div class="t num">${c.time}</div>
+              <div>
+                <div class="g">${esc(clsName(c))} ${mine ? '<span class="pill accent" style="margin-left:4px">Seu grupo</span>' : ''}</div>
+                <div class="c">${esc(c.coach)} · ${c.dur} min · <span class="num">${people.length} confirmados</span></div>
+              </div>
+              <div class="actions">
+                <button class="iconbtn" data-action="openchat" data-cls="${c.id}" aria-label="Chat da turma">${I.chat}</button>
+                <button class="iconbtn ${att ? 'ok' : (conf ? 'on' : '')}" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="${att ? 'Presença registrada' : (conf ? 'Presença confirmada' : (past ? 'Marcar presença' : 'Confirmar presença'))}">${att || conf ? I.check : (past ? I.clock : I.plus)}</button>
+              </div>
+            </div>`;
+        }).join('') : `<div class="card empty"><div class="title cond">Sem aulas nesse dia</div><div>Descanso ativo: alongue, revise posições.</div></div>`}
+      </div>`;
+  }
+
+  function lastMsg(cid) {
+    const arr = state.chats[cid] || [];
+    return arr[arr.length - 1];
+  }
+  function threadLabel(c) {
+    const days = c.days.map(d => WD[d]).join('/');
+    return `${days} · ${c.time}`;
+  }
+
+  function renderChatList() {
+    const mine = SCHEDULE.filter(c => myGroups().includes(c.group));
+    const others = SCHEDULE.filter(c => !myGroups().includes(c.group));
+    const item = (c, accent) => {
+      const m = lastMsg(c.id);
+      const who = m ? (m.author === 'me' ? 'Você' : MEMBERS[m.author].name.split(' ')[0]) : '';
+      return `
+        <button class="card thread" data-action="openchat" data-cls="${c.id}">
+          <span class="ico ${accent ? 'accent' : ''} num">${c.time}</span>
+          <span class="grow">
+            <div class="n">${esc(clsName(c))} <span class="muted small" style="font-weight:500">· ${threadLabel(c)}</span></div>
+            <div class="p">${m ? `<b>${esc(who)}:</b> ${esc(m.text)}` : 'Nenhuma mensagem ainda. Puxe o papo.'}</div>
+          </span>
+          <span class="ts num">${m ? fmtRel(m.ts) : ''}</span>
+        </button>`;
+    };
+    return `
+      <header class="topbar fade">
+        <div>
+          <div class="eyebrow">Um chat por horário</div>
+          <h1 class="title">Chat das turmas</h1>
+        </div>
+      </header>
+      <div class="eyebrow" style="margin-bottom:10px">Seus horários · ${esc(me().group)}</div>
+      <div class="thread-list fade" style="animation-delay:.05s">${mine.map(c => item(c, true)).join('')}</div>
+      <div class="eyebrow" style="margin:22px 0 10px">Outros horários</div>
+      <div class="thread-list fade" style="animation-delay:.1s">${others.map(c => item(c, false)).join('')}</div>`;
+  }
+
+  function fmtRel(ts) {
+    const d = new Date(ts), t = now();
+    if (key(d) === key(t)) return fmtTime(d);
+    if (key(d) === key(addDays(t, -1))) return 'ontem';
+    return fmtShort(d);
+  }
+
+  function renderChatThread(cid) {
+    const c = byId[cid];
+    const msgs = state.chats[cid] || [];
+    const people = confirmedList(key(now()), c);
+    let lastDay = '';
+    const html = msgs.map(m => {
+      const d = new Date(m.ts), dk = key(d);
+      let sep = '';
+      if (dk !== lastDay) { lastDay = dk; sep = `<div class="daysep">${dk === key(now()) ? 'Hoje' : (dk === key(addDays(now(), -1)) ? 'Ontem' : fmtShort(d))}</div>`; }
+      const mine = m.author === 'me';
+      const a = mine ? me() : MEMBERS[m.author];
+      return sep + `
+        <div class="msg ${mine ? 'me' : ''}">
+          ${mine ? '' : avatar(a, 'sm')}
+          <div class="bubble">
+            ${mine ? '' : `<div class="who">${esc(a.name.split(' ')[0])} ${a.role ? `<span class="r">· ${a.role}</span>` : ''}</div>`}
+            <div class="txt">${esc(m.text)}</div>
+            <div class="ts num">${fmtTime(d)}</div>
+          </div>
+        </div>`;
+    }).join('');
+    return `
+      <div class="chat-head fade">
+        <button class="backbtn" data-action="closechat" aria-label="Voltar">${I.back}</button>
+        <div class="grow">
+          <div class="h2">${esc(clsName(c))} · <span class="num">${c.time}</span></div>
+          <div class="small muted">${threadLabel(c)} · ${esc(c.coach)} · <span class="num">${people.length} confirmados hoje</span></div>
+        </div>
+        <div class="stackav">${people.slice(0, 3).map(m => avatar(m, 'sm')).join('')}</div>
+      </div>
+      <div class="msgs" id="msgs">${html || '<div class="empty"><div class="title cond">Chat vazio</div><div>Seja o primeiro a mandar mensagem para essa turma.</div></div>'}</div>
+      <form class="composer" data-action="send" data-cls="${cid}">
+        <input name="text" placeholder="Mensagem para a turma das ${c.time}" autocomplete="off" maxlength="500" aria-label="Mensagem">
+        <button type="submit" aria-label="Enviar">${I.send}</button>
+      </form>`;
+  }
+
+  function renderFreq() {
+    const p = me(), r = state.rule, pr = progress();
+    const pct = Math.min(1, pr.done / pr.target);
+    const R = 52, C = 2 * Math.PI * R;
+    const weeks = [...Array(10)].map((_, i) => addDays(monday(now()), -7 * (9 - i)));
+    const max = Math.max(r.perWeek + 1, ...weeks.map(weekCount));
+    const goalPct = (r.perWeek / max) * 100;
+    const hist = attendanceList().slice(0, 8);
+    return `
+      <header class="topbar fade">
+        <div>
+          <div class="eyebrow">Desde o último grau · ${fmtShort(parse(p.lastGrau))}</div>
+          <h1 class="title">Frequência</h1>
+        </div>
+      </header>
+
+      <div class="stats fade" style="animation-delay:.05s">
+        <div class="card stat"><div class="v num">${pr.done}</div><div class="l">aulas desde o último grau</div></div>
+        <div class="card stat"><div class="v num">${pr.pace.toFixed(1)}</div><div class="l">aulas por semana, em média</div></div>
+      </div>
+
+      <section class="card section fade" style="animation-delay:.1s">
+        <div class="eyebrow" style="margin-bottom:12px">Próximo: ${nextRank(p)}</div>
+        <div class="ring-wrap">
+          <div class="ring">
+            <svg viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--surface-2)" stroke-width="10"/>
+              <circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"
+                stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/>
+            </svg>
+            <div class="c"><div><b class="num">${pr.left}</b><small>${pr.left === 1 ? 'aula falta' : 'aulas faltam'}</small></div></div>
+          </div>
+          <div class="req">
+            <div class="r">
+              <span class="ck ${pr.left === 0 ? 'done' : ''}">${pr.left === 0 ? I.check : ''}</span>
+              <span>${r.perWeek} aulas/semana por ${r.weeks} semanas<div class="n num">${pr.done} de ${pr.target} aulas</div></span>
+              <span class="small num muted">${Math.round(pct * 100)}%</span>
+            </div>
+            <div class="r">
+              <span class="ck ${pr.daysLeft === 0 ? 'done' : ''}">${pr.daysLeft === 0 ? I.check : ''}</span>
+              <span>Mínimo de ${r.minDays} dias no grau<div class="n num">${Math.min(pr.days, r.minDays)} de ${r.minDays} dias</div></span>
+              <span class="small num muted">${Math.round(Math.min(1, pr.days / r.minDays) * 100)}%</span>
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top:14px;justify-content:space-between">
+          <span class="small muted">${pr.ready ? 'Requisitos cumpridos' : 'Previsão no ritmo atual'}</span>
+          <span class="pill ${pr.ready ? 'ok' : 'accent'} num">${pr.ready ? 'Pronto para graduar' : fmtShort(pr.eta)}</span>
+        </div>
+      </section>
+
+      <section class="card section fade" style="animation-delay:.15s">
+        <div class="section-head" style="margin-bottom:22px">
+          <h2 class="h2">Últimas 10 semanas</h2>
+          <span class="small muted">meta ${r.perWeek}/sem</span>
+        </div>
+        <div class="chart">
+          <div class="goal" style="bottom:${goalPct}%"><span>${r.perWeek}</span></div>
+          ${weeks.map((w, i) => { const n = weekCount(w); return `<div class="bar ${n >= r.perWeek ? 'hit' : ''} ${i === 9 ? 'cur' : ''}"><i style="height:${Math.max(4, n / max * 100)}%"></i>${n ? `<b class="num">${n}</b>` : ''}</div>`; }).join('')}
+        </div>
+        <div class="chart-labels num">${weeks.map(w => `<span>${w.getDate()}/${w.getMonth() + 1}</span>`).join('')}</div>
+      </section>
+
+      <section class="section fade" style="animation-delay:.2s">
+        <div class="section-head"><h2 class="h2">Últimos treinos</h2></div>
+        <div class="history">
+          ${hist.length ? hist.map(h => { const d = parse(h.date); return `
+            <div class="h">
+              <div class="d num"><small>${WD[d.getDay()]}</small>${fmtShort(d)}</div>
+              <div><div style="font-weight:600">${esc(clsName(h.cls))}</div><div class="small muted">${h.cls.time} · ${esc(h.cls.coach)}</div></div>
+              <span class="pill ok">${I.check}</span>
+            </div>`; }).join('') : '<div class="card empty">Nenhuma presença registrada ainda.</div>'}
+        </div>
+      </section>`;
+  }
+
+  function profileForm(p, r, isNew) {
+    return `
+      <form class="stack" data-action="${isNew ? 'create' : 'saveprofile'}" style="gap:14px">
+        <div class="field"><label for="f-name">Nome</label><input id="f-name" name="name" value="${esc(p.name)}" required placeholder="Seu nome completo"></div>
+        <div class="grid2">
+          <div class="field"><label for="f-belt">Faixa</label>
+            <select id="f-belt" name="belt">${BELTS.map(b => `<option ${b === p.belt ? 'selected' : ''}>${b}</option>`).join('')}</select></div>
+          <div class="field"><label>Graus</label>
+            <div class="stepper">
+              <button type="button" class="iconbtn" data-action="step" data-d="-1" aria-label="Menos um grau">${I.minus}</button>
+              <input type="hidden" name="stripes" value="${p.stripes}"><div class="val num" id="f-stripes">${p.stripes}</div>
+              <button type="button" class="iconbtn" data-action="step" data-d="1" aria-label="Mais um grau">${I.plus}</button>
+            </div></div>
+        </div>
+        <div class="field"><label>Grupo de treino</label>
+          <div class="chips" role="radiogroup">${GROUPS.map(g => `<button type="button" class="chip ${g === p.group ? 'on' : ''}" data-action="pickgroup" data-g="${g}" role="radio" aria-checked="${g === p.group}">${g}</button>`).join('')}</div>
+          <input type="hidden" name="group" value="${esc(p.group)}"></div>
+        <div class="field"><label for="f-grau">Data do último grau</label><input id="f-grau" type="date" name="lastGrau" value="${p.lastGrau}" required></div>
+        ${isNew ? '' : `
+        <div class="eyebrow" style="margin-top:8px">Regra de graduação da academia</div>
+        <div class="grid3">
+          <div class="field"><label for="f-pw">Aulas/sem</label><input id="f-pw" type="number" min="1" max="7" name="perWeek" value="${r.perWeek}"></div>
+          <div class="field"><label for="f-wk">Semanas</label><input id="f-wk" type="number" min="1" max="52" name="weeks" value="${r.weeks}"></div>
+          <div class="field"><label for="f-md">Dias mín.</label><input id="f-md" type="number" min="0" max="730" name="minDays" value="${r.minDays}"></div>
+        </div>
+        <div class="small muted">Hoje: <b class="num">${r.perWeek} × ${r.weeks} = ${r.perWeek * r.weeks} aulas</b> e no mínimo <b class="num">${r.minDays} dias</b> no grau. Quem chega primeiro não libera: valem os dois.</div>`}
+        <button class="btn ${isNew ? 'primary' : ''} block" type="submit">${isNew ? 'Entrar no tatame' : 'Salvar perfil'}</button>
+      </form>`;
+  }
+
+  function renderPerfil() {
+    const p = me(), r = state.rule;
+    return `
+      <header class="topbar fade">
+        <div>
+          <div class="eyebrow">Seu perfil</div>
+          <h1 class="title">${esc(p.name)}</h1>
+        </div>
+        ${avatar(p, 'lg')}
+      </header>
+      <section class="card fade" style="animation-delay:.05s">
+        <div class="row" style="justify-content:space-between;margin-bottom:10px">
+          <div class="h2">Faixa ${p.belt.toLowerCase()} · ${p.stripes} ${p.stripes === 1 ? 'grau' : 'graus'}</div>
+          <span class="pill soft">${esc(p.group)}</span>
+        </div>
+        ${beltSVG(p.belt, p.stripes)}
+      </section>
+      <section class="card section fade" style="animation-delay:.1s">
+        ${profileForm(p, r, false)}
+      </section>
+      <section class="section fade" style="animation-delay:.15s">
+        <div class="stack">
+          <button class="btn ghost block" data-action="theme">Alternar tema claro/escuro</button>
+          <button class="btn ghost block danger" data-action="logout">Sair e criar outro perfil</button>
+          <div class="small muted" style="text-align:center;padding:0 12px">Os dados ficam salvos neste aparelho. Colegas e mensagens são exemplos até o app ganhar servidor.</div>
+        </div>
+      </section>`;
+  }
+
+  function renderOnboarding() {
+    const p = { name: '', belt: 'Branca', stripes: 0, group: 'Fundamentos', lastGrau: key(now()) };
+    return `
+      <div style="padding-top:26px" class="fade">
+        <div class="eyebrow">Bem-vindo ao Tatame</div>
+        <h1 class="title" style="font-size:38px;margin:6px 0 10px">Crie seu perfil</h1>
+        <p class="muted" style="margin:0 0 18px;max-width:34ch">Faixa, graus e grupo de treino definem seus horários, seu chat e a contagem até o próximo grau.</p>
+        <section class="card">${profileForm(p, state.rule, true)}</section>
+      </div>`;
+  }
+
+  /* ---------------- render ---------------- */
+  function render() {
+    settleConfirmations();
+    const $tab = document.getElementById('tabbar');
+    if (!state.onboarded) {
+      $tab.hidden = true;
+      $screen.className = 'screen';
+      $screen.innerHTML = renderOnboarding();
+      return;
+    }
+    $tab.hidden = false;
+    $screen.className = 'screen' + (tab === 'chat' && chatOpen ? ' chat-thread' : '');
+    let html = '';
+    if (tab === 'home') html = renderHome();
+    else if (tab === 'aulas') html = renderAulas();
+    else if (tab === 'chat') html = chatOpen ? renderChatThread(chatOpen) : renderChatList();
+    else if (tab === 'freq') html = renderFreq();
+    else html = renderPerfil();
+    $screen.innerHTML = html;
+    if (chatOpen && tab === 'chat') {
+      const $m = document.getElementById('msgs');
+      if ($m) $m.scrollTop = $m.scrollHeight;
+    } else {
+      $screen.scrollTop = 0;
+    }
+    const badge = document.getElementById('chatBadge');
+    if (badge) badge.style.display = tab === 'chat' ? 'none' : '';
+  }
+
+  /* ---------------- actions ---------------- */
+  $screen.addEventListener('click', e => {
+    const el = e.target.closest('[data-action]');
+    if (!el || el.tagName === 'FORM') return;
+    const a = el.dataset.action;
+    if (a === 'go') { chatOpen = null; go(el.dataset.tab); }
+    else if (a === 'toggle') {
+      const k = `${el.dataset.date}|${el.dataset.cls}`;
+      const c = byId[el.dataset.cls];
+      const past = classEnd(el.dataset.date, c) < now();
+      if (past) {
+        if (state.attendance[k]) { delete state.attendance[k]; toast('Presença removida'); }
+        else { state.attendance[k] = true; toast('Presença registrada. Oss!'); }
+      } else {
+        if (state.confirmations[k]) { delete state.confirmations[k]; toast('Confirmação cancelada'); }
+        else { state.confirmations[k] = true; toast(`Confirmado para ${c.time}. Bom treino!`); }
+      }
+      save(); render();
+    }
+    else if (a === 'openchat') { chatOpen = el.dataset.cls; go('chat'); }
+    else if (a === 'closechat') { chatOpen = null; render(); }
+    else if (a === 'day') { aulasDay = el.dataset.day; render(); }
+    else if (a === 'onlymine') { onlyMine = !onlyMine; render(); }
+    else if (a === 'step') {
+      const form = el.closest('form'), inp = form.querySelector('[name=stripes]'), belt = form.querySelector('[name=belt]').value;
+      const max = belt === 'Preta' ? 6 : 4;
+      const v = Math.max(0, Math.min(max, Number(inp.value) + Number(el.dataset.d)));
+      inp.value = v; form.querySelector('#f-stripes').textContent = v;
+    }
+    else if (a === 'pickgroup') {
+      const form = el.closest('form');
+      form.querySelectorAll('[data-action=pickgroup]').forEach(b => { b.classList.toggle('on', b === el); b.setAttribute('aria-checked', b === el); });
+      form.querySelector('[name=group]').value = el.dataset.g;
+    }
+    else if (a === 'theme') {
+      const root = document.documentElement;
+      const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
+      root.dataset.theme = dark ? 'light' : 'dark';
+    }
+    else if (a === 'logout') {
+      if (!confirm('Sair deste perfil? Presenças e mensagens deste aparelho serão apagadas.')) return;
+      state = defaultState();
+      state.onboarded = false;
+      state.attendance = {}; state.chats = {}; state.confirmations = {};
+      save(); render();
+    }
+  });
+
+  $screen.addEventListener('submit', e => {
+    const form = e.target.closest('form[data-action]');
+    if (!form) return;
+    e.preventDefault();
+    const a = form.dataset.action;
+    const fd = new FormData(form);
+    if (a === 'send') {
+      const text = (fd.get('text') || '').toString().trim();
+      if (!text) return;
+      const cid = form.dataset.cls;
+      (state.chats[cid] ||= []).push({ id: 'u' + Date.now().toString(36), author: 'me', text, ts: Date.now() });
+      save(); render();
+      const inp = $screen.querySelector('.composer input'); if (inp) inp.focus();
+    } else if (a === 'saveprofile' || a === 'create') {
+      const p = state.profile;
+      p.name = (fd.get('name') || '').toString().trim() || p.name;
+      p.belt = fd.get('belt'); p.stripes = Number(fd.get('stripes')); p.group = fd.get('group'); p.lastGrau = fd.get('lastGrau') || p.lastGrau;
+      if (a === 'saveprofile') {
+        state.rule.perWeek = Math.max(1, Number(fd.get('perWeek')) || 3);
+        state.rule.weeks = Math.max(1, Number(fd.get('weeks')) || 13);
+        state.rule.minDays = Math.max(0, Number(fd.get('minDays')) || 0);
+        toast('Perfil salvo');
+      } else {
+        state.onboarded = true;
+        state.chats = seedChats();
+        toast(`Oss, ${p.name.split(' ')[0]}! Bem-vindo ao tatame.`);
+        tab = 'home';
+      }
+      save(); render();
+      if (a === 'create') go('home');
+    }
+  });
+
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+
+  go('home');
+})();
+</script>
+
+</html>
