@@ -214,7 +214,7 @@
   .small { font-size: 13px; }
   .section { margin-top: 30px; }
   .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
-  .linkbtn { background: none; border: 0; color: var(--accent); font-weight: 600; font-size: 13px; padding: 0; }
+  .linkbtn { background: none; border: 0; color: var(--accent); font-weight: 600; font-size: 13px; padding: 0; white-space: nowrap; flex: none; }
 
   .avatar {
     width: 40px; height: 40px; border-radius: 50%;
@@ -273,6 +273,7 @@
 
   /* belt */
   .belt { width: 100%; height: 26px; display: block; }
+  .belt-sub { margin-top: 3px; margin-bottom: 10px; line-height: 1.4; }
 
   /* home class card */
   .class-card { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; }
@@ -548,15 +549,15 @@
     -webkit-backdrop-filter: blur(26px) saturate(1.4); backdrop-filter: blur(26px) saturate(1.4);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 24px 60px rgba(0, 0, 0, .45);
   }
-  .login .field label { color: rgba(246, 241, 230, .74); }
-  .login .field input { padding: 13px 14px; color: #F6F1E6; background: rgba(255, 255, 255, .09); border-color: rgba(255, 255, 255, .18); }
-  .login .field input::placeholder { color: rgba(246, 241, 230, .45); }
-  .login .field input:focus { border-color: rgba(255, 255, 255, .6); background: rgba(255, 255, 255, .13); }
-  .login .field input.invalid { border-color: #FF8A73; }
-  .login .field input:-webkit-autofill { -webkit-text-fill-color: #F6F1E6; -webkit-box-shadow: 0 0 0 1000px #3A3430 inset; }
-  .login .pw { position: relative; }
-  .login .pw input { padding-right: 46px; }
-  .login .pw .iconbtn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: transparent; color: rgba(246, 241, 230, .62); }
+  .fl { position: relative; }
+  .fl input { width: 100%; border: 1px solid rgba(255, 255, 255, .18); background: rgba(255, 255, 255, .09); color: #F6F1E6; border-radius: 12px; padding: 22px 14px 8px; height: 56px; }
+  .fl input:focus { border-color: rgba(255, 255, 255, .6); background: rgba(255, 255, 255, .13); outline: none; }
+  .fl input.invalid { border-color: #FF8A73; }
+  .fl input:-webkit-autofill { -webkit-text-fill-color: #F6F1E6; -webkit-box-shadow: 0 0 0 1000px #3A3430 inset; }
+  .fl label { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); font-size: 14.5px; color: rgba(246, 241, 230, .58); pointer-events: none; transition: top .15s, transform .15s, font-size .15s, color .15s; }
+  .fl input:focus ~ label, .fl input:not(:placeholder-shown) ~ label { top: 10px; transform: none; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: rgba(246, 241, 230, .8); }
+  .fl.pw input { padding-right: 48px; }
+  .fl.pw .iconbtn { position: absolute; right: 7px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: transparent; color: rgba(246, 241, 230, .62); }
   .login .err { color: #FF9A86; font-size: 13px; font-weight: 600; min-height: 18px; }
   .login .foot { text-align: center; color: rgba(246, 241, 230, .5); font-size: 12px; margin-top: 16px; }
   .login :focus-visible { outline-color: #F6F1E6; }
@@ -906,6 +907,14 @@
   let heroIdx = 0, heroTimer = null;
 
   const piece = belt => PIECE[belt] || PIECE.Branca;
+  const BELT_SUB = {
+    Branca: 'Peão · Sobreviver, aprender a cair e construir a base',
+    Azul: 'Torre · Defesa sólida e as primeiras armas de ataque',
+    Roxa: 'Cavalo · Movimento próprio: o jogo começa a ter estilo',
+    Marrom: 'Dama · Refinar detalhes e preparar a faixa preta',
+    Preta: 'Rei · Maestria técnica e responsabilidade de ensinar',
+  };
+  const beltSub = belt => BELT_SUB[belt] || '';
   const avatar = (m, cls = '') => `<span class="avatar ${cls}" data-belt="${m.belt}" title="${esc(m.name)} · faixa ${m.belt.toLowerCase()}" aria-label="${esc(m.name)}">${piece(m.belt)}</span>`;
   const me = () => state.profile;
 
@@ -997,6 +1006,7 @@
           <div>
             <div class="eyebrow">Sua graduação</div>
             <div class="h2">Faixa ${p.belt.toLowerCase()} · ${p.stripes} ${p.stripes === 1 ? 'grau' : 'graus'}</div>
+            <div class="small muted belt-sub">${esc(beltSub(p.belt))}</div>
           </div>
           <button class="linkbtn" data-action="go" data-tab="perfil">Ver detalhes</button>
         </div>
@@ -1262,9 +1272,12 @@
         ${avatar(p)}
       </header>
       <section class="card fade" style="animation-delay:.05s">
-        <div class="row" style="justify-content:space-between;margin-bottom:10px">
-          <div class="h2">Faixa ${p.belt.toLowerCase()} · ${p.stripes} ${p.stripes === 1 ? 'grau' : 'graus'}</div>
-          <span class="pill soft">${esc(p.group)}</span>
+        <div class="row" style="justify-content:space-between;align-items:start;margin-bottom:12px">
+          <div>
+            <div class="h2">Faixa ${p.belt.toLowerCase()} · ${p.stripes} ${p.stripes === 1 ? 'grau' : 'graus'}</div>
+            <div class="small muted belt-sub">${esc(beltSub(p.belt))}</div>
+          </div>
+          <span class="pill soft" style="flex:none">${esc(p.group)}</span>
         </div>
         ${beltSVG(p.belt, p.stripes)}
         <div class="small muted" style="margin-top:12px">Nome, faixa, graus e grupo são atualizados pelo professor.</div>
@@ -2145,12 +2158,11 @@
         </section>
         <section class="login-card">
         <form class="stack" data-action="login" style="gap:14px" novalidate>
-          <div class="field"><label for="l-user">Usuário</label><input id="l-user" name="user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="seu usuário" required class="${loginError ? 'invalid' : ''}"></div>
-          <div class="field"><label for="l-pass">Senha</label>
-            <div class="pw">
-              <input id="l-pass" name="pass" type="${showPw ? 'text' : 'password'}" autocomplete="current-password" placeholder="sua senha" required class="${loginError ? 'invalid' : ''}">
-              <button type="button" class="iconbtn" data-action="togglepw" aria-label="${showPw ? 'Ocultar senha' : 'Mostrar senha'}">${showPw ? I.eyeoff : I.eye}</button>
-            </div></div>
+          <div class="fl"><input id="l-user" name="user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder=" " required class="${loginError ? 'invalid' : ''}"><label for="l-user">Usuário</label></div>
+          <div class="fl pw">
+            <input id="l-pass" name="pass" type="${showPw ? 'text' : 'password'}" autocomplete="current-password" placeholder=" " required class="${loginError ? 'invalid' : ''}"><label for="l-pass">Senha</label>
+            <button type="button" class="iconbtn" data-action="togglepw" aria-label="${showPw ? 'Ocultar senha' : 'Mostrar senha'}">${showPw ? I.eyeoff : I.eye}</button>
+          </div>
           <div class="err" role="alert">${esc(loginError)}</div>
           <button class="btn primary block" type="submit" style="height:50px;border-radius:14px;font-size:15px">Entrar</button>
         </form>
