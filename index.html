@@ -318,6 +318,8 @@
   .iconbtn.ok { background: var(--ok-soft); color: var(--ok); }
   .iconbtn.wait { background: var(--warn-soft); color: var(--warn); }
   .iconbtn.off { background: var(--surface-2); color: var(--ink-3); }
+  .iconbtn.cancel { background: var(--surface); color: var(--ink-2); border: 1px solid var(--line); flex: none; }
+  .status.grow { min-width: 0; }
   .status { display: flex; align-items: center; gap: 8px; border-radius: 12px; padding: 10px 14px; font-weight: 600; font-size: 13px; }
   .status svg { width: 16px; height: 16px; flex: none; }
   .status.ok { background: var(--ok-soft); color: var(--ok); }
@@ -458,7 +460,7 @@
   .toast {
     position: absolute; left: 50%; bottom: 98px; transform: translate(-50%, 16px);
     background: var(--ink); color: var(--bg); border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 600;
-    opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 20; white-space: nowrap;
+    opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; z-index: 20; max-width: calc(100% - 48px); text-align: center;
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
@@ -489,6 +491,11 @@
 <script>
 (() => {
   'use strict';
+  /* Versão "lado do aluno". O que depende do módulo admin (a fazer):
+     - registrar presença (attendance) e confirmar/recusar as confirmações enviadas pelos alunos;
+     - grade de aulas, professores e regra de graduação da academia (aqui são dados fixos);
+     - colegas, contagem de confirmados e chat (aqui são exemplos locais).
+     O aluno só envia a confirmação de que vai treinar; ela fica pendente até o professor registrar. */
 
   /* ---------------- icons ---------------- */
   const I = {
@@ -506,6 +513,7 @@
     dot: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="3"/></svg>',
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 16.5v-11Z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h4.5a1.5 1.5 0 0 0 1.5-1.5v-11Z"/><path d="M7 8h2.5M7 11h2.5M14.5 8H17M14.5 11H17"/></svg>',
     search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>',
+    x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
     chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 6 6 6-6 6"/></svg>',
   };
 
@@ -745,9 +753,9 @@
     const people = confirmedList(dk, c);
     let btn;
     if (att) btn = `<div class="status ok">${I.check} Presença confirmada pelo professor</div>`;
-    else if (past && conf) btn = `<div class="status wait">${I.clock} Você confirmou. Aguardando o professor</div>`;
+    else if (past && conf) btn = `<div class="status wait">${I.clock} Confirmação enviada. Aguardando o professor</div>`;
     else if (past) btn = `<div class="status muted">Aula encerrada. Presença é registrada pelo professor</div>`;
-    else if (conf) btn = `<button class="btn ok" data-action="toggle" data-date="${dk}" data-cls="${c.id}">${I.check} Você vai treinar · toque para desfazer</button>`;
+    else if (conf) btn = `<div class="row" style="gap:8px"><div class="status wait grow">${I.clock} Confirmação pendente. Aguardando o professor</div><button class="iconbtn cancel" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="Cancelar confirmação" title="Cancelar confirmação">${I.x}</button></div>`;
     else btn = `<button class="btn primary" data-action="toggle" data-date="${dk}" data-cls="${c.id}">Confirmar presença</button>`;
     return `
       <article class="card class-card ${mine ? 'mine' : ''} ${past ? 'past' : ''}">
@@ -885,7 +893,8 @@
                 <button class="iconbtn" data-action="openchat" data-cls="${c.id}" aria-label="Chat da turma">${I.chat}</button>
                 ${att ? `<span class="iconbtn ok" title="Presença confirmada pelo professor" aria-label="Presença confirmada pelo professor">${I.check}</span>`
                   : past ? `<span class="iconbtn ${conf ? 'wait' : 'off'}" title="${conf ? 'Você confirmou. Aguardando o professor' : 'Aula encerrada'}" aria-label="${conf ? 'Você confirmou. Aguardando o professor' : 'Aula encerrada'}">${conf ? I.clock : I.minus}</span>`
-                  : `<button class="iconbtn ${conf ? 'on' : ''}" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="${conf ? 'Você vai treinar. Toque para desfazer' : 'Confirmar presença'}">${conf ? I.check : I.plus}</button>`}
+                  : conf ? `<button class="iconbtn wait" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="Confirmação pendente. Toque para cancelar" title="Cancelar confirmação">${I.x}</button>`
+                  : `<button class="iconbtn" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="Confirmar presença">${I.plus}</button>`}
               </div>
             </div>`;
         }).join('') : `<div class="card empty"><div class="title cond">Sem aulas nesse dia</div><div>Descanso ativo: alongue, revise posições.</div></div>`}
@@ -1071,11 +1080,11 @@
         ${isNew ? '' : `
         <div class="eyebrow" style="margin-top:8px">Regra de graduação da academia</div>
         <div class="grid3">
-          <div class="field"><label for="f-pw">Aulas/sem</label><input id="f-pw" type="number" min="1" max="7" name="perWeek" value="${r.perWeek}"></div>
-          <div class="field"><label for="f-wk">Semanas</label><input id="f-wk" type="number" min="1" max="52" name="weeks" value="${r.weeks}"></div>
-          <div class="field"><label for="f-md">Dias mín.</label><input id="f-md" type="number" min="0" max="730" name="minDays" value="${r.minDays}"></div>
+          <div class="card" style="padding:10px 12px"><div class="eyebrow">Aulas/sem</div><div class="h2 num">${r.perWeek}</div></div>
+          <div class="card" style="padding:10px 12px"><div class="eyebrow">Semanas</div><div class="h2 num">${r.weeks}</div></div>
+          <div class="card" style="padding:10px 12px"><div class="eyebrow">Dias mín.</div><div class="h2 num">${r.minDays}</div></div>
         </div>
-        <div class="small muted">Hoje: <b class="num">${r.perWeek} × ${r.weeks} = ${r.perWeek * r.weeks} aulas</b> e no mínimo <b class="num">${r.minDays} dias</b> no grau. Quem chega primeiro não libera: valem os dois.</div>`}
+        <div class="small muted"><b class="num">${r.perWeek} × ${r.weeks} = ${r.perWeek * r.weeks} aulas</b> e no mínimo <b class="num">${r.minDays} dias</b> no grau. Valem os dois. A regra é definida pelo professor no módulo da academia.</div>`}
         <button class="btn ${isNew ? 'primary' : ''} block" type="submit">${isNew ? 'Entrar no tatame' : 'Salvar perfil'}</button>
       </form>`;
   }
@@ -1104,7 +1113,7 @@
         <div class="stack">
           <button class="btn ghost block" data-action="theme">Alternar tema claro/escuro</button>
           <button class="btn ghost block danger" data-action="logout">Sair e criar outro perfil</button>
-          <div class="small muted" style="text-align:center;padding:0 12px">Os dados ficam salvos neste aparelho. Você confirma que vai treinar; a presença é registrada pelo professor. Colegas, mensagens e presenças são exemplos até o app ganhar servidor.</div>
+          <div class="small muted" style="text-align:center;padding:0 12px">Versão do aluno. Você envia a confirmação de que vai treinar e ela fica pendente até o professor registrar a presença no módulo da academia. Grade, colegas, mensagens e presenças são exemplos até esse módulo existir.</div>
         </div>
       </section>`;
   }
@@ -1121,8 +1130,7 @@
   }
 
   /* ---------------- biblioteca: dados ---------------- */
-  // Conteúdo baseado em fundamentos clássicos e nos sistemas de John Danaher
-  // (Go Further Faster, Enter the System, New Wave Jiu Jitsu), Gordon Ryan e afins.
+  // Conteúdo de referência baseado em fundamentos clássicos do jiu-jitsu moderno.
   const LIB_CATS = [
     { id: 'guarda', name: 'Guardas', icon: 'shield', tone: 'info' },
     { id: 'raspagem', name: 'Raspagens', icon: 'sweep', tone: 'violet' },
@@ -1141,7 +1149,7 @@
       steps: ['Cruze os tornozelos nas costas do oponente, quadril colado nele e joelhos apertando as costelas.', 'Controle uma manga (ou punho) e a gola (ou nuca) com as mãos.', 'Puxe com as pernas e com os braços ao mesmo tempo para quebrar a postura: a testa dele deve ir em direção ao seu peito.', 'Saia da linha central: gire o quadril para um lado, abrindo ângulo para atacar braço ou pescoço.', 'Se ele reconquistar a postura e ficar em pé, solte a guarda e entre em raspagem ou guarda aberta antes que ele passe.'],
       details: ['Quadril ativo: quem fica deitado reto, com o quadril parado, perde a guarda.', 'Controle da cabeça vale mais que força nos braços.', 'Ângulo antes de atacar: quase toda finalização da guarda fechada precisa de você fora da linha frontal.'],
       mistakes: ['Ficar segurando a guarda sem atacar, esperando o oponente errar.', 'Cruzar as pernas alto demais e perder a conexão do quadril.', 'Puxar só com os braços e cansar em vez de usar as pernas.'],
-      concept: { text: 'Danaher resume: a guarda fechada é um jogo de controle de postura. Quem controla a cabeça e a linha dos braços controla o que acontece em seguida. Quebrar a postura é o primeiro ato, não o último.', source: 'Go Further Faster: Closed Guard' },
+      concept: { text: 'A guarda fechada é um jogo de controle de postura. Quem controla a cabeça e a linha dos braços controla o que acontece em seguida. Quebrar a postura é o primeiro ato, não o último.', source: 'Fundamentos de guarda fechada' },
       related: ['triangulo', 'armlock', 'omoplata', 'tesoura', 'hip-bump', 'pendulo'] },
 
     { id: 'meia-guarda', cat: 'guarda', name: 'Meia guarda', alt: 'Half guard', level: 'Branca', style: 'Gi e No-Gi',
@@ -1150,7 +1158,7 @@
       steps: ['Trave a perna dele entre as suas, com o joelho de cima fazendo escudo na altura do quadril dele.', 'Fique de lado, nunca de costas no chão. Ombro e quadril na mesma linha.', 'Brigue pelo underhook do lado da perna presa; use o outro braço para manter a cabeça dele afastada.', 'Com o underhook, saia por baixo em direção às costas ou levante o quadril para raspar.', 'Se perder o underhook, faça frames no pescoço e no quadril e recupere a guarda fechada ou a borboleta.'],
       details: ['A batalha do underhook decide quem ataca.', 'Joelho escudo alto impede que ele deite o peso no seu peito.', 'Cabeça dele para fora do seu espaço: se a testa dele encosta no tatame ao lado da sua orelha, você está sendo esmagado.'],
       mistakes: ['Deitar de costas e aceitar o crossface.', 'Segurar a perna com os pés cruzados sem fazer nada com os braços.', 'Esperar o oponente estabilizar antes de reagir.'],
-      concept: { text: 'Para Danaher, a meia guarda é um problema de desequilíbrio: você não levanta um adulto com força, você tira o apoio dele. Underhook, cabeça fora e um bom ângulo criam esse desequilíbrio.', source: 'Go Further Faster: Half Guard' },
+      concept: { text: 'A meia guarda é um problema de desequilíbrio: você não levanta um adulto com força, você tira o apoio dele. Underhook, cabeça fora e um bom ângulo criam esse desequilíbrio.', source: 'Fundamentos de meia guarda' },
       related: ['raspagem-meia-guarda', 'meia-guarda-profunda', 'knee-cut', 'smash-pass'] },
 
     { id: 'meia-guarda-profunda', cat: 'guarda', name: 'Meia guarda profunda', alt: 'Deep half', level: 'Azul', style: 'Gi e No-Gi',
@@ -1168,7 +1176,7 @@
       steps: ['Sente-se com as pernas dobradas e coloque as duas plantas dos pés por dentro das coxas do oponente.', 'Peito perto do peito dele, coluna reta. Não deite.', 'Consiga um underhook de um lado e controle o braço dele do outro (punho, manga ou cotovelo).', 'Puxe-o para cima de você para tirar o peso das pernas dele.', 'Eleve com o gancho do lado do underhook e caia para o lado do braço controlado.'],
       details: ['A distância manda: se ele ficar longe e em pé, seus ganchos não funcionam.', 'Tronco elevado, quadril embaixo dele.', 'Ganchos ativos: o pé puxa a coxa dele, não descansa nela.'],
       mistakes: ['Deitar de costas, deixando os ganchos sem força.', 'Raspar sem controlar o braço, ele apoia a mão e defende.', 'Ficar com os cotovelos abertos e ceder underhook.'],
-      concept: { text: 'Na guarda sentada do Danaher, a regra é dupla: controle o tronco superior antes de usar os ganchos, e ataque quando ele estiver em movimento, nunca parado e estável.', source: 'Go Further Faster: Open Guard' },
+      concept: { text: 'Na guarda sentada, a regra é dupla: controle o tronco superior antes de usar os ganchos, e ataque quando ele estiver em movimento, nunca parado e estável.', source: 'Fundamentos de guarda aberta' },
       related: ['raspagem-borboleta', 'guarda-x', 'single-leg-x', 'guilhotina'] },
 
     { id: 'de-la-riva', cat: 'guarda', name: 'Guarda De La Riva', alt: 'DLR', level: 'Azul', style: 'Gi e No-Gi',
@@ -1177,7 +1185,7 @@
       steps: ['Com o oponente em pé, enrole o pé de fora ao redor da perna da frente dele, gancho por dentro da coxa.', 'Controle o calcanhar da mesma perna com a mão de fora.', 'Com o outro pé, empurre o quadril dele ou o bíceps para manter distância.', 'Controle uma manga ou a gola para quebrar a postura e girar o joelho dele para dentro.', 'Se ele der o joelho para dentro, raspe ou entre nas costas; se ele afastar a perna, passe para single leg X ou guarda X.'],
       details: ['O joelho dele virado para dentro é a chave: sem isso, a guarda é só uma perna enrolada.', 'O pé no quadril mantém a distância que a guarda precisa.', 'Quadril sempre em movimento, saindo da linha.'],
       mistakes: ['Perder o controle do calcanhar e ele pisar para fora.', 'Deitar reto e esperar; De La Riva morre parada.', 'Enrolar a perna e esquecer de controlar o tronco (manga, gola ou nuca).'],
-      concept: { text: 'Para o passador, Danaher ensina a matar a De La Riva tirando o joelho da linha; para quem joga, o inverso: mantenha o joelho dele virado para dentro e o peso dele desequilibrado.', source: 'Go Further Faster: Open Guard / Passing the Guard' },
+      concept: { text: 'O passador mata a De La Riva tirando o joelho da linha; para quem joga, o inverso: mantenha o joelho dele virado para dentro e o peso dele desequilibrado.', source: 'Fundamentos de guarda aberta e passagem' },
       related: ['guarda-x', 'single-leg-x', 'raspagem-tripe', 'berimbolo', 'de-la-riva-reversa'] },
 
     { id: 'de-la-riva-reversa', cat: 'guarda', name: 'De La Riva reversa', alt: 'RDLR', level: 'Roxa', style: 'Gi e No-Gi',
@@ -1186,25 +1194,25 @@
       steps: ['Quando ele posicionar o joelho para o knee cut, coloque o pé do lado de dentro da coxa dele e enrole com o outro por fora.', 'Controle o calcanhar da perna presa e o tronco (gola ou nuca).', 'Vire de lado para a perna dele, elevando o quadril.', 'Raspe puxando o calcanhar e empurrando o joelho, ou gire por baixo para as costas.', 'Se ele recuar, volte para De La Riva normal ou borboleta.'],
       details: ['Quadril alto e de lado, nunca deitado plano.', 'O gancho tem de ser profundo, atrás do joelho dele.', 'Controle do tronco impede que ele estabilize o peso.'],
       mistakes: ['Deixar ele estabilizar o joelho no chão antes de você enrolar.', 'Perder o calcanhar e virar meia guarda esmagada.', 'Entrar em giro invertido sem controlar o tronco dele.'],
-      concept: { text: 'Guardas modernas seguem uma regra de retenção: recupere a distância e a conexão antes de tentar raspar. RDLR é uma forma de transformar a defesa em ataque.', source: 'Go Further Faster: Guard Retention' },
+      concept: { text: 'Guardas modernas seguem uma regra de retenção: recupere a distância e a conexão antes de tentar raspar. RDLR é uma forma de transformar a defesa em ataque.', source: 'Fundamentos de retenção de guarda' },
       related: ['de-la-riva', 'knee-cut', 'berimbolo', 'guarda-x'] },
 
     { id: 'guarda-x', cat: 'guarda', name: 'Guarda X', alt: 'X-guard', level: 'Azul', style: 'Gi e No-Gi',
       summary: 'Você fica embaixo dele com as pernas em X em uma perna, e a outra perna dele no seu ombro.',
-      idea: 'Popularizada por Marcelo Garcia, a guarda X divide a base do oponente. Ele fica em pé sobre um apoio só, e você decide para onde ele cai. É uma das guardas mais eficientes para raspar gente grande.',
+      idea: 'A guarda X divide a base do oponente. Ele fica em pé sobre um apoio só, e você decide para onde ele cai. É uma das guardas mais eficientes para raspar gente grande.',
       steps: ['Da borboleta ou da De La Riva, mergulhe por baixo dele e passe uma perna dele para cima do seu ombro.', 'Coloque os dois pés na outra perna dele: um gancho por trás do joelho e o outro pé no quadril ou na virilha, formando o X.', 'Abrace a perna que está no ombro com o braço de dentro.', 'Estenda as pernas para afastar a base dele: os pés dele vão se separar.', 'Raspe para trás (empurre o X e puxe o pé) ou para frente (technical stand-up).'],
       details: ['O X afasta as pernas dele, você só decide o sentido.', 'Cabeça na coxa dele, nunca solta.', 'Termine em cima ou em single leg X, nunca de costas no chão.'],
       mistakes: ['Deixar a perna do ombro escapar por falta de abraço.', 'Fazer o X com os pés fracos e ele agachar por cima.', 'Raspar e não levantar rápido para a posição por cima.'],
-      concept: { text: 'Dividir a base: quando as pernas dele estão afastadas, ele não pode gerar força. Danaher chama isso de tirar o oponente da postura de força.', source: 'Go Further Faster: Open Guard' },
+      concept: { text: 'Dividir a base: quando as pernas dele estão afastadas, ele não pode gerar força. Isso é tirar o oponente da postura de força.', source: 'Fundamentos de guarda aberta' },
       related: ['single-leg-x', 'borboleta', 'de-la-riva', 'raspagem-x'] },
 
     { id: 'single-leg-x', cat: 'guarda', name: 'Single leg X', alt: 'Ashi garami', level: 'Azul', style: 'Gi e No-Gi',
       summary: 'Uma perna dele presa entre suas pernas, com o pé no quadril e o gancho atrás do joelho. Porta de entrada dos leg locks.',
-      idea: 'O ashi garami é ao mesmo tempo guarda e posição de ataque: dele saem raspagens simples e a chave de pé reta. No sistema do Danaher, é a primeira posição da hierarquia de leg locks.',
+      idea: 'O ashi garami é ao mesmo tempo guarda e posição de ataque: dele saem raspagens simples e a chave de pé reta. É a primeira posição da hierarquia de leg locks.',
       steps: ['Da guarda X ou da borboleta, isole uma perna dele entre suas pernas.', 'Um pé fica no quadril dele, do lado de fora; a outra perna faz gancho atrás do joelho, com o joelho seu por dentro.', 'Controle o pé dele debaixo da axila (o calcanhar dele fica na sua costela).', 'Empurre o quadril e puxe o pé para derrubá-lo para trás.', 'Levante para passar ou entre na chave de pé reta se ele defender sentado.'],
       details: ['O joelho de dentro tem de estar por dentro da perna dele; do contrário, ele liberta a perna com facilidade.', 'Mantenha o quadril dele longe e o pé dele perto.', 'Não deixe a perna dele cruzar a sua linha central.'],
       mistakes: ['Prender a perna sem controlar o pé: ele puxa e sai.', 'Ficar com os dois pés no quadril e virar uma posição fraca.', 'Deitar reto e permitir que ele agache por cima.'],
-      concept: { text: 'Danaher define o ashi garami como controle da perna acima e abaixo do joelho. Primeiro controle, depois finalização.', source: 'Enter the System: Leg Locks' },
+      concept: { text: 'O ashi garami é controle da perna acima e abaixo do joelho. Primeiro controle, depois finalização.', source: 'Sistema de ataques às pernas' },
       related: ['chave-de-pe', 'guarda-x', 'heel-hook', 'saddle'] },
 
     { id: 'aranha', cat: 'guarda', name: 'Guarda aranha', alt: 'Spider guard', level: 'Azul', style: 'Gi',
@@ -1213,7 +1221,7 @@
       steps: ['Controle as duas mangas na altura do punho.', 'Coloque os pés nos bíceps dele, joelhos flexionados, quadril fora do chão.', 'Estenda uma perna e flexione a outra para virar o tronco dele.', 'Quando ele reagir para ganhar postura, transforme uma perna em lasso ou ataque triângulo e omoplata.', 'Se ele puxar os braços, raspe pela lateral com a perna dobrada.'],
       details: ['O pé no bíceps fica ativo, empurrando e puxando, nunca só apoiado.', 'Quadril nunca plano: gire para o lado da perna dobrada.', 'Manga é o controle principal; solte a manga e a guarda acaba.'],
       mistakes: ['Braços e pernas esticados simultaneamente, sem tensão.', 'Deixar o oponente encaixar o joelho no seu quadril.', 'Cansar as mãos segurando manga sem atacar.'],
-      concept: { text: 'Toda guarda aberta depende de quatro conexões: dois pés e duas mãos. Perdeu duas, recupere antes de atacar.', source: 'Princípio de retenção de guarda (Danaher)' },
+      concept: { text: 'Toda guarda aberta depende de quatro conexões: dois pés e duas mãos. Perdeu duas, recupere antes de atacar.', source: 'Princípio de retenção de guarda' },
       related: ['lasso', 'triangulo', 'omoplata', 'raspagem-lasso'] },
 
     { id: 'lasso', cat: 'guarda', name: 'Guarda lasso', alt: 'Laço', level: 'Roxa', style: 'Gi',
@@ -1231,7 +1239,7 @@
       steps: ['Sua perna de dentro passa por cima da coxa dele e trava com o pé no seu quadril oposto ou enganchado no seu joelho.', 'Sente e controle o pé ou o joelho dele para ficar em cima.', 'Mantenha o joelho dele controlado e o seu livre para se mover.', 'Para raspar, empurre o joelho dele para o chão e levante no ritmo.', 'No sem kimono, ataque o calcanhar exposto ou a chave de pé reta.'],
       details: ['Quem senta primeiro geralmente domina.', 'Esconda o seu calcanhar: quadril virado para fora protege.', 'Controle a perna dele na altura do joelho para impedir que ele gire.'],
       mistakes: ['Deitar plano e entregar o calcanhar.', 'Ficar parado esperando decisão dos árbitros.', 'Soltar a trava do pé no quadril.'],
-      concept: { text: 'Danaher trata o 50/50 como parte da hierarquia de ashi garami: uma posição de controle a partir da qual a finalização acontece quando o outro erra. Sem posição, não há finalização.', source: 'Enter the System: Leg Locks' },
+      concept: { text: 'O 50/50 faz parte da hierarquia de ashi garami: uma posição de controle a partir da qual a finalização acontece quando o outro erra. Sem posição, não há finalização.', source: 'Sistema de ataques às pernas' },
       related: ['heel-hook', 'chave-de-pe', 'single-leg-x', 'saddle'] },
 
     { id: 'retencao', cat: 'guarda', name: 'Retenção de guarda', alt: 'Guard retention', level: 'Branca', style: 'Gi e No-Gi',
@@ -1240,7 +1248,7 @@
       steps: ['Quando ele passar as suas pernas, coloque frames: mão no ombro/pescoço e joelho por dentro.', 'Vire de lado, saia do plano do chão e leve o quadril para longe dele.', 'Recupere primeiro o joelho por dentro, depois o pé no quadril ou o gancho.', 'Reconecte: manga, gola, punho ou nuca.', 'Só depois, volte para uma guarda de ataque (fechada, borboleta, De La Riva).'],
       details: ['Joelho e cotovelo juntos formam a barreira mais forte do corpo.', 'A cabeça dele longe da sua garante espaço.', 'Movimento: recupere enquanto ele ainda se move, antes de fixar o peso.'],
       mistakes: ['Empurrar o oponente com os braços esticados e cansar.', 'Fazer frame e não mover o quadril.', 'Aceitar a meia guarda esmagada quando ainda dava tempo de recuperar.'],
-      concept: { text: 'Danaher divide a retenção em três zonas de perigo e três respostas: frames, movimento do quadril e reconexão. Aprender isso reduz drasticamente quantas vezes você é passado.', source: 'Go Further Faster: Guard Retention' },
+      concept: { text: 'A retenção se divide em três zonas de perigo e três respostas: frames, movimento do quadril e reconexão. Aprender isso reduz drasticamente quantas vezes você é passado.', source: 'Fundamentos de retenção de guarda' },
       related: ['guarda-fechada', 'borboleta', 'meia-guarda', 'escape-cem-quilos'] },
 
     /* ===== RASPAGENS ===== */
@@ -1250,7 +1258,7 @@
       steps: ['Da guarda fechada, controle manga e gola cruzada.', 'Abra a guarda e vire de lado, apoiando a canela de cima na barriga dele, joelho apontando para o ombro.', 'A perna de baixo estica encostada no tatame, na altura do joelho dele.', 'Puxe manga e gola em direção ao seu peito para tirar o peso dele das pernas.', 'Faça a tesoura: perna de baixo varre o joelho dele, perna de cima gira o tronco. Suba na montada.'],
       details: ['Vire de lado antes de raspar; de costas planas não há tesoura.', 'Puxe primeiro, raspe depois: ele precisa estar leve.', 'Cotovelo da manga dele controlado para ele não apoiar a mão.'],
       mistakes: ['Raspar com o oponente com o peso apoiado nos joelhos.', 'Pé de baixo alto demais, sem varrer a base.', 'Soltar a manga na hora da queda.'],
-      concept: { text: 'Toda raspagem tem três passos: tirar o apoio das mãos, tirar o apoio das pernas e mover o quadril na direção certa. A tesoura ensina os três.', source: 'Princípio de raspagem (Danaher, Closed Guard)' },
+      concept: { text: 'Toda raspagem tem três passos: tirar o apoio das mãos, tirar o apoio das pernas e mover o quadril na direção certa. A tesoura ensina os três.', source: 'Princípio de raspagem da guarda fechada' },
       related: ['guarda-fechada', 'hip-bump', 'pendulo', 'estrangulamento-cruzado'] },
 
     { id: 'hip-bump', cat: 'raspagem', name: 'Raspagem hip bump (opa)', alt: 'Hip bump sweep', level: 'Branca', style: 'Gi e No-Gi',
@@ -1268,7 +1276,7 @@
       steps: ['Da guarda fechada, controle a manga de um lado e, com a outra mão, agarre a calça (ou pegue por baixo da perna) do mesmo lado.', 'Abra a guarda, coloque a perna do lado da manga em cima do ombro dele.', 'Balance a outra perna para fora e para baixo, ganhando momento (o pêndulo).', 'Traga a perna de volta batendo na axila dele enquanto puxa manga e perna.', 'Role por cima e caia na montada.'],
       details: ['Coloque o joelho da perna de cima atrás da axila dele.', 'O pêndulo é uma perna só: a outra empurra o ombro.', 'Mantenha o braço dele preso durante toda a rolagem.'],
       mistakes: ['Raspar sem balanço, só com força.', 'Soltar o braço e ele apoia.', 'Tentar do lado errado (a perna presa é do lado do braço controlado).'],
-      concept: { text: 'Danaher ensina armlock e pêndulo como uma dupla: o oponente que defende o braço apoiando dá a raspagem; o que defende a raspagem estica o braço.', source: 'Go Further Faster: Closed Guard' },
+      concept: { text: 'Armlock e pêndulo são uma dupla: o oponente que defende o braço apoiando dá a raspagem; o que defende a raspagem estica o braço.', source: 'Fundamentos de guarda fechada' },
       related: ['armlock', 'guarda-fechada', 'tesoura', 'omoplata'] },
 
     { id: 'raspagem-borboleta', cat: 'raspagem', name: 'Raspagem borboleta', alt: 'Butterfly sweep', level: 'Branca', style: 'Gi e No-Gi',
@@ -1277,7 +1285,7 @@
       steps: ['Da borboleta, garanta o underhook de um lado e controle o braço do outro.', 'Puxe o tronco dele para cima do seu, colando o peito no dele.', 'Deite para o lado do braço controlado (o lado oposto ao underhook).', 'Ao cair, eleve com o gancho do lado do underhook, joelho para fora.', 'Siga o movimento e suba na montada ou na meia guarda por cima.'],
       details: ['A queda é diagonal, na direção do seu ombro, nunca de lado plano.', 'O braço controlado não pode apoiar no chão.', 'Gancho levanta e joga a perna dele para longe ao mesmo tempo.'],
       mistakes: ['Deitar de costas primeiro e depois tentar levantar.', 'Raspar sem underhook.', 'Perna de gancho sem força por falta de rotação do quadril.'],
-      concept: { text: 'Peso e apoio: você não levanta o oponente, você tira o apoio dele e deixa a gravidade fazer o resto. Isso só funciona com o tronco dele sobre você.', source: 'Marcelo Garcia / Danaher, Open Guard' },
+      concept: { text: 'Peso e apoio: você não levanta o oponente, você tira o apoio dele e deixa a gravidade fazer o resto. Isso só funciona com o tronco dele sobre você.', source: 'Fundamentos de guarda aberta' },
       related: ['borboleta', 'guarda-x', 'guilhotina', 'single-leg-x'] },
 
     { id: 'raspagem-meia-guarda', cat: 'raspagem', name: 'Raspagem da meia guarda (old school)', alt: 'Underhook sweep', level: 'Branca', style: 'Gi e No-Gi',
@@ -1286,7 +1294,7 @@
       steps: ['Da meia guarda, ganhe o underhook e vire de lado, cabeça fora do lado da perna presa.', 'Suba com o joelho de cima e vá por baixo dele, como se fosse pegar as costas.', 'Com a mão livre, agarre o tornozelo ou o pé de fora dele.', 'Puxe o pé para você enquanto empurra o quadril dele com o ombro.', 'Passe por cima, saia da perna e caia em cem quilos ou meia guarda por cima.'],
       details: ['A cabeça fica embaixo do braço dele: nunca deixe o braço dele passar em volta do seu pescoço.', 'Puxe o pé dele para dentro, para debaixo de você.', 'Sequência: underhook, joelho, pé.'],
       mistakes: ['Tentar sem underhook.', 'Deixar o oponente pegar o whizzer forte e virar por cima.', 'Soltar a perna e deixar ele voltar para a base.'],
-      concept: { text: 'Se ele usa o whizzer para defender, mude para as costas ou para o rolamento; a meia guarda é uma árvore de decisões, não uma raspagem só.', source: 'Go Further Faster: Half Guard' },
+      concept: { text: 'Se ele usa o whizzer para defender, mude para as costas ou para o rolamento; a meia guarda é uma árvore de decisões, não uma raspagem só.', source: 'Fundamentos de meia guarda' },
       related: ['meia-guarda', 'meia-guarda-profunda', 'controle-costas'] },
 
     { id: 'raspagem-x', cat: 'raspagem', name: 'Raspagem da guarda X', alt: 'X-guard sweep', level: 'Azul', style: 'Gi e No-Gi',
@@ -1295,7 +1303,7 @@
       steps: ['Na guarda X, abrace a perna que está no ombro e mantenha a cabeça colada nela.', 'Estenda as pernas do X para afastar as pernas dele.', 'Para raspar para trás: puxe o pé da perna do ombro para o tatame, empurre com o X e ele senta.', 'Para levantar: gire para o lado, solte o gancho de cima e suba com a perna dele presa (single leg).', 'Finalize por cima, controlando a perna dele até estabilizar.'],
       details: ['Cabeça sempre colada: sem isso ele pressiona o seu queixo e agacha.', 'O pé no quadril mantém a distância.', 'Suba rápido: pontos são para quem estabiliza.'],
       mistakes: ['Raspar e ficar deitado.', 'Não controlar o pé da perna do ombro.', 'Deixar ele agachar e transformar em meia guarda esmagada.'],
-      concept: { text: 'Quebrar a base é tudo: um adulto em pé com as pernas afastadas não consegue resistir a uma raspagem simples.', source: 'Go Further Faster: Open Guard' },
+      concept: { text: 'Quebrar a base é tudo: um adulto em pé com as pernas afastadas não consegue resistir a uma raspagem simples.', source: 'Fundamentos de guarda aberta' },
       related: ['guarda-x', 'single-leg-x', 'borboleta'] },
 
     { id: 'raspagem-tripe', cat: 'raspagem', name: 'Raspagem tripé', alt: 'Tripod sweep', level: 'Branca', style: 'Gi e No-Gi',
@@ -1313,7 +1321,7 @@
       steps: ['Da De La Riva, controle o calcanhar e a manga cruzada (ou a gola).', 'Coloque o pé livre no quadril ou no joelho da perna de trás dele.', 'Puxe a manga em direção ao seu peito para quebrar a postura.', 'Estenda o gancho De La Riva para fora e para cima enquanto puxa o calcanhar para dentro.', 'Ele cai para o lado; suba na guarda dele ou pegue as costas.'],
       details: ['Joelho dele virado para dentro antes de raspar.', 'O pé livre controla a distância ou tira a outra base.', 'Suba com a perna dele ainda controlada.'],
       mistakes: ['Raspar com o oponente em postura firme.', 'Soltar o calcanhar durante a queda.', 'Não usar o pé livre.'],
-      concept: { text: 'Cada guarda aberta tem um par de raspagens opostas: se ele resiste a cair para um lado, o outro se abre. Treine as duas juntas.', source: 'Go Further Faster: Open Guard' },
+      concept: { text: 'Cada guarda aberta tem um par de raspagens opostas: se ele resiste a cair para um lado, o outro se abre. Treine as duas juntas.', source: 'Fundamentos de guarda aberta' },
       related: ['de-la-riva', 'berimbolo', 'raspagem-tripe', 'guarda-x'] },
 
     { id: 'raspagem-lasso', cat: 'raspagem', name: 'Raspagem do lasso', alt: 'Lasso sweep', level: 'Roxa', style: 'Gi',
@@ -1327,11 +1335,11 @@
 
     { id: 'berimbolo', cat: 'raspagem', name: 'Berimbolo', alt: 'Giro invertido para as costas', level: 'Roxa', style: 'Gi e No-Gi',
       summary: 'Da De La Riva, você gira invertido por baixo e chega nas costas do oponente.',
-      idea: 'O berimbolo transforma a De La Riva em tomada de costas. Você derruba o oponente sentado, gira invertido mantendo o gancho e o cinto (ou o quadril) e sai atrás dele. Popularizado pelos irmãos Mendes e pela família Miyao.',
+      idea: 'O berimbolo transforma a De La Riva em tomada de costas. Você derruba o oponente sentado, gira invertido mantendo o gancho e o cinto (ou o quadril) e sai atrás dele. ',
       steps: ['Da De La Riva, controle o cinto ou a calça na altura do quadril e o calcanhar.', 'Puxe para derrubar o oponente sentado, joelho dele para dentro.', 'Gire invertido, passando a cabeça por baixo, mantendo o gancho De La Riva.', 'Ao sair do giro, coloque o gancho de dentro nas costas dele e puxe o cinto.', 'Estabeleça o segundo gancho e o cinto de segurança.'],
       details: ['Não solte o controle do quadril durante o giro.', 'O gancho De La Riva puxa a perna dele para você enquanto você gira.', 'Termine com os dois ganchos antes de atacar.'],
       mistakes: ['Girar sem derrubar o oponente primeiro.', 'Perder o controle do cinto no meio do giro e virar leg drag.', 'Inverter com o pescoço sem preparo físico (proteja a coluna).'],
-      concept: { text: 'Costas são a melhor posição do jiu-jitsu. Qualquer raspagem que termine nas costas vale mais que a que termina em cima da guarda.', source: 'Danaher, Back Attacks: Enter the System' },
+      concept: { text: 'Costas são a melhor posição do jiu-jitsu. Qualquer raspagem que termine nas costas vale mais que a que termina em cima da guarda.', source: 'Sistema de ataques às costas' },
       related: ['de-la-riva', 'controle-costas', 'mata-leao', 'raspagem-gancho'] },
 
     /* ===== PASSAGENS ===== */
@@ -1341,7 +1349,7 @@
       steps: ['Postura: fique em posição de força, joelhos flexionados, cotovelos dentro, sem inclinar o tronco.', 'Anule os pés dele: tire os ganchos, o pé do quadril, o pé do bíceps.', 'Controle o quadril: pin da perna de baixo ou pressão com o corpo.', 'Controle a cabeça: crossface ou underhook depois que o quadril estiver preso.', 'Estabilize: cem quilos, joelho na barriga ou montada. Só conta passagem quando ele para de se mover.'],
       details: ['Quadril antes da cabeça, sempre.', 'Movimento vence força: use ângulos e mudanças de direção.', 'Quem se apressa para a cabeça é raspado ou entra em triângulo.'],
       mistakes: ['Ir direto na cabeça com as pernas dele ainda ativas.', 'Passar e não estabilizar.', 'Ficar parado na frente da guarda.'],
-      concept: { text: 'Método NAC do Danaher: Negar (os pés e as conexões), Avançar (sobre as pernas e o quadril) e Completar (cabeça e estabilização). Hips first, head second.', source: 'Go Further Faster: Passing the Guard' },
+      concept: { text: 'Método NAC: Negar (os pés e as conexões), Avançar (sobre as pernas e o quadril) e Completar (cabeça e estabilização). Hips first, head second.', source: 'Fundamentos de passagem de guarda' },
       related: ['knee-cut', 'toreando', 'leg-drag', 'over-under', 'body-lock'] },
 
     { id: 'knee-cut', cat: 'passagem', name: 'Passagem de joelho (knee cut)', alt: 'Knee slice', level: 'Branca', style: 'Gi e No-Gi',
@@ -1350,7 +1358,7 @@
       steps: ['Da meia guarda ou da guarda aberta, encaixe o joelho por cima da coxa dele, pé no chão do lado de fora.', 'Underhook do mesmo lado do joelho que corta (ou controle a gola/nuca).', 'Com a outra mão, controle o braço ou a manga dele para impedir o underhook dele.', 'Deslize o joelho para o tatame em diagonal, cabeça baixa e pressão no ombro.', 'Libere a perna e caia em cem quilos, mantendo o crossface.'],
       details: ['A cabeça dele controlada impede que ele vire para você.', 'O pé de fora fica firme no chão: é ele quem dá a pressão.', 'Cuidado com o underhook dele: sem o seu underhook ou o controle do braço, você é raspado.'],
       mistakes: ['Cortar sem controlar o braço e tomar underhook e as costas.', 'Corpo alto e leve: ele recupera a meia guarda.', 'Joelho apontando reto em vez de cortar em diagonal.'],
-      concept: { text: 'O knee cut é uma batalha de underhooks: o passador precisa vencer essa batalha antes de deslizar o joelho.', source: 'Go Further Faster: Passing the Guard' },
+      concept: { text: 'O knee cut é uma batalha de underhooks: o passador precisa vencer essa batalha antes de deslizar o joelho.', source: 'Fundamentos de passagem de guarda' },
       related: ['conceito-passagem', 'smash-pass', 'de-la-riva-reversa', 'cem-quilos'] },
 
     { id: 'toreando', cat: 'passagem', name: 'Passagem toreando', alt: 'Toreada / bullfighter pass', level: 'Branca', style: 'Gi e No-Gi',
@@ -1359,7 +1367,7 @@
       steps: ['Em pé, controle as duas pernas dele pelos joelhos ou pelas calças, braços esticados.', 'Puxe os joelhos dele para um lado e para baixo, empurrando as pernas para o tatame.', 'Dê o passo para o lado oposto, em direção à cabeça dele.', 'Coloque o joelho ou o quadril na barriga dele e a mão no ombro para prendê-lo.', 'Estabilize em joelho na barriga ou cem quilos.'],
       details: ['Braços esticados mantêm distância dos ganchos.', 'Passe pela linha do quadril dele, não em círculo largo.', 'Troque de lado se ele acompanhar: a segunda direção é a que passa.'],
       mistakes: ['Ficar perto demais e levar gancho borboleta.', 'Passar e não pinçar o tronco com a mão no ombro.', 'Jogar as pernas mas não mover os pés.'],
-      concept: { text: 'Toreando é uma passagem de negação: você nega as pernas e avança quando ele está fora do timing. Funciona muito com variações de leg drag e long step.', source: 'New Wave Jiu Jitsu: Guard Passing' },
+      concept: { text: 'Toreando é uma passagem de negação: você nega as pernas e avança quando ele está fora do timing. Funciona muito com variações de leg drag e long step.', source: 'Fundamentos de passagem de guarda' },
       related: ['conceito-passagem', 'leg-drag', 'long-step', 'joelho-na-barriga'] },
 
     { id: 'leg-drag', cat: 'passagem', name: 'Leg drag', alt: 'Arrasto de perna', level: 'Azul', style: 'Gi e No-Gi',
@@ -1368,7 +1376,7 @@
       steps: ['Controle o tornozelo e o joelho de uma perna dele.', 'Puxe a perna cruzando sobre o seu quadril (a perna dele fica presa entre o seu quadril e o seu braço).', 'Encoste o quadril na coxa dele e controle o ombro oposto com a mão.', 'Pressione para baixo: o quadril dele fica virado para o lado, sem guarda.', 'Passe para cem quilos, ou se ele virar, pegue as costas.'],
       details: ['A perna dele é presa pela sua coxa e pelo seu cotovelo, não só pela mão.', 'Ombro oposto controlado impede que ele vire para você.', 'Se ele der as costas, siga.'],
       mistakes: ['Arrastar e não colar o quadril.', 'Soltar a perna antes de controlar o tronco.', 'Deixar o joelho dele voltar para dentro.'],
-      concept: { text: 'A posição de leg drag é um "quase-passou" que vale ouro: o oponente está de lado, com o quadril morto, e você escolhe para onde ir.', source: 'Gordon Ryan / Danaher, Guard Passing' },
+      concept: { text: 'A posição de leg drag é um "quase-passou" que vale ouro: o oponente está de lado, com o quadril morto, e você escolhe para onde ir.', source: 'Fundamentos de passagem de guarda' },
       related: ['toreando', 'conceito-passagem', 'controle-costas', 'cem-quilos'] },
 
     { id: 'over-under', cat: 'passagem', name: 'Passagem over-under', alt: 'Passagem de pressão', level: 'Azul', style: 'Gi e No-Gi',
@@ -1377,7 +1385,7 @@
       steps: ['Da guarda aberta, abrace uma perna dele por baixo, mão pegando a calça ou o cinto.', 'Com o outro braço, passe por cima da outra coxa e controle a calça ou o quadril.', 'Coloque o ombro no quadril ou na barriga dele, cabeça baixa do lado da perna abraçada.', 'Caminhe com os pés para o lado da perna abraçada, com o peso à frente.', 'Quando a perna liberar, deslize para cem quilos.'],
       details: ['Quadris baixos e pés fora do alcance dos ganchos.', 'A cabeça fica do lado da perna abraçada para evitar o triângulo.', 'Pressão para frente constante.'],
       mistakes: ['Subir o quadril e dar espaço para ele recuperar.', 'Deixar a cabeça do lado errado e levar triângulo.', 'Parar de caminhar.'],
-      concept: { text: 'Passagens de pressão dependem de uma regra: o peso do seu corpo deve ficar sempre sobre o quadril dele, nunca sobre as pernas.', source: 'Go Further Faster: Passing the Guard' },
+      concept: { text: 'Passagens de pressão dependem de uma regra: o peso do seu corpo deve ficar sempre sobre o quadril dele, nunca sobre as pernas.', source: 'Fundamentos de passagem de guarda' },
       related: ['double-under', 'smash-pass', 'conceito-passagem', 'cem-quilos'] },
 
     { id: 'double-under', cat: 'passagem', name: 'Passagem de empilhada (double under)', alt: 'Stack pass', level: 'Branca', style: 'Gi e No-Gi',
@@ -1395,7 +1403,7 @@
       steps: ['De uma posição de meia guarda ou toreando, controle o ombro dele do lado oposto ao gancho.', 'Dê um passo longo para trás com a perna do lado do gancho, esticando a perna para longe.', 'Deixe o quadril cair no tatame ao lado dele, peito virado para ele.', 'Estabilize com o braço na cabeça ou no quadril dele.', 'Ajuste para cem quilos ou joelho na barriga.'],
       details: ['O passo é longo e baixo: quadril quase no chão.', 'O braço de cima controla o ombro para ele não te seguir.', 'Ótimo quando ele acompanha o toreando com a perna.'],
       mistakes: ['Passo curto que não sai do gancho.', 'Cair de costas em vez de com o peito voltado para ele.', 'Soltar o controle do tronco.'],
-      concept: { text: 'Movimento vence resistência: se ele empurra você com a perna, não resista, use o empurrão para mudar de direção.', source: 'Go Further Faster: Passing the Guard' },
+      concept: { text: 'Movimento vence resistência: se ele empurra você com a perna, não resista, use o empurrão para mudar de direção.', source: 'Fundamentos de passagem de guarda' },
       related: ['toreando', 'leg-drag', 'conceito-passagem'] },
 
     { id: 'smash-pass', cat: 'passagem', name: 'Passagem de meia guarda (smash)', alt: 'Half guard smash pass', level: 'Branca', style: 'Gi e No-Gi',
@@ -1404,16 +1412,16 @@
       steps: ['Da meia guarda por cima, garanta o crossface: ombro no queixo dele, virando a cabeça para longe.', 'Consiga o underhook do outro lado, mão apoiada no tatame ou pegando o ombro dele.', 'Deite o oponente reto, quadril pesado sobre o dele.', 'Empurre o joelho dele para baixo com a sua perna livre ou com a mão, e puxe a perna presa.', 'Libere a perna e caia em cem quilos ou monte.'],
       details: ['Crossface primeiro. Sem ele, ele vira para você e recupera.', 'Quadril baixo, peso no quadril dele.', 'Paciência: a perna sai com o tempo, não com força.'],
       mistakes: ['Puxar a perna antes de controlar o tronco.', 'Deixar o underhook dele e ser raspado.', 'Quadril alto e leve.'],
-      concept: { text: 'A regra dos pins dinâmicos: controle a cabeça e o quadril, e a perna presa vira detalhe. Danaher chama o crossface de "o rei da meia guarda por cima".', source: 'Go Further Faster: Half Guard Passing' },
+      concept: { text: 'A regra dos pins dinâmicos: controle a cabeça e o quadril, e a perna presa vira detalhe. O crossface é o rei da meia guarda por cima.', source: 'Fundamentos de passagem de meia guarda' },
       related: ['meia-guarda', 'knee-cut', 'cem-quilos', 'montada'] },
 
     { id: 'body-lock', cat: 'passagem', name: 'Passagem body lock', alt: 'Bodylock pass', level: 'Azul', style: 'No-Gi',
       summary: 'Abrace o tronco dele por cima da guarda, cole o peito e caminhe até o quadril passar.',
-      idea: 'Passagem que dominou o sem kimono moderno: você abraça o tronco do oponente com as mãos travadas nas costas dele, cola o peito e usa o corpo todo para deitá-lo e desligar as pernas. Muito usada por Gordon Ryan.',
+      idea: 'Passagem que dominou o sem kimono moderno: você abraça o tronco do oponente com as mãos travadas nas costas dele, cola o peito e usa o corpo todo para deitá-lo e desligar as pernas.',
       steps: ['Da guarda sentada ou meia guarda, entre com os braços em volta do tronco dele, mãos travadas na lombar.', 'Cole o peito no peito dele e leve o peso para frente até ele deitar.', 'Coloque a cabeça de um lado e caminhe o quadril para o outro lado da guarda dele.', 'Passe o joelho de dentro por cima da coxa dele ou desligue a perna com o quadril.', 'Solte o abraço só quando estiver em cem quilos.'],
       details: ['Mãos travadas baixo, na lombar, não nas costelas.', 'Quadril baixo e pesado.', 'A cabeça sempre do lado oposto ao que você está passando.'],
       mistakes: ['Body lock alto, ele senta e escapa.', 'Soltar as mãos cedo.', 'Empurrar com os braços em vez de com o corpo.'],
-      concept: { text: 'Danaher: um passador precisa cobrir dois modos, movimento e pressão. O body lock é a versão máxima da pressão.', source: 'New Wave Jiu Jitsu: No Gi Guard Passing' },
+      concept: { text: 'Um passador precisa cobrir dois modos, movimento e pressão. O body lock é a versão máxima da pressão.', source: 'Fundamentos de passagem sem kimono' },
       related: ['over-under', 'smash-pass', 'conceito-passagem'] },
 
     /* ===== FINALIZAÇÕES ===== */
@@ -1423,7 +1431,7 @@
       steps: ['Da guarda fechada, controle o punho e o cotovelo de um braço dele.', 'Coloque o pé do lado oposto no quadril dele e gire, abrindo ângulo de 90 graus.', 'Puxe o cotovelo dele além da linha do seu quadril e suba a perna sobre o ombro dele.', 'Passe a outra perna sobre a cabeça dele, joelhos apertados.', 'Polegar dele para cima, levante o quadril e estenda. Ele bate ou o braço vai.'],
       details: ['Joelhos juntos travam o braço.', 'Quadril colado na axila dele.', 'O ângulo é tudo: sem sair da linha frontal, não há armlock.'],
       mistakes: ['Tentar do centro, sem girar.', 'Joelhos abertos: ele puxa o braço.', 'Soltar o punho quando ele estica o braço para defender.'],
-      concept: { text: 'Para Danaher, o armlock é sobre controle antes da finalização: quadril colado, joelhos juntos e a cabeça dele presa. Depois a finalização é só levantar.', source: 'Enter the System: Arm Bars' },
+      concept: { text: 'O armlock é sobre controle antes da finalização: quadril colado, joelhos juntos e a cabeça dele presa. Depois a finalização é só levantar.', source: 'Sistema de armlock' },
       related: ['guarda-fechada', 'pendulo', 'triangulo', 'omoplata'] },
 
     { id: 'triangulo', cat: 'finalizacao', name: 'Triângulo', alt: 'Sankaku jime', level: 'Branca', style: 'Gi e No-Gi',
@@ -1432,7 +1440,7 @@
       steps: ['Da guarda fechada, controle um punho e empurre-o para dentro, afastando o outro braço.', 'Leve uma perna sobre o ombro do braço de fora e a canela na nuca dele.', 'Controle a cabeça puxando a nuca para baixo.', 'Gire para o lado do braço preso para abrir ângulo (o seu corpo fica perpendicular).', 'Trave o pé atrás do joelho da outra perna, aperte os joelhos e puxe a cabeça.'],
       details: ['Só a cabeça e um braço dentro: se o ombro entrar demais, não aperta.', 'Ângulo primeiro, trava depois.', 'O braço de dentro dele cruzado no peito acelera o estrangulamento.'],
       mistakes: ['Travar o triângulo de frente, sem ângulo.', 'Puxar a cabeça antes de controlar o braço dele.', 'Tentar apertar só com as coxas, sem elevar o quadril.'],
-      concept: { text: 'Danaher: todos os problemas do triângulo se curam com ângulo. Controle a cabeça, gire perpendicular, depois trave.', source: 'Enter the System: Triangles' },
+      concept: { text: 'Todos os problemas do triângulo se curam com ângulo. Controle a cabeça, gire perpendicular, depois trave.', source: 'Sistema de triângulos' },
       related: ['guarda-fechada', 'armlock', 'omoplata', 'aranha'] },
 
     { id: 'omoplata', cat: 'finalizacao', name: 'Omoplata', alt: 'Chave de ombro com a perna', level: 'Azul', style: 'Gi e No-Gi',
@@ -1450,7 +1458,7 @@
       steps: ['Da guarda fechada (com ele apoiando a mão) ou do cem quilos, segure o punho dele com a mão do mesmo lado.', 'Passe o outro braço por cima do braço dele e segure o próprio punho: figura quatro.', 'Puxe o cotovelo dele para o seu peito e o punho dele para as costas.', 'Da guarda: vire de lado e trave a perna por cima das costas dele para impedir rolagem.', 'Leve a mão dele em direção à nuca, devagar.'],
       details: ['Cotovelo dele colado no seu corpo.', 'A finalização vem do ângulo do ombro, não da força dos braços.', 'Punho dele longe do corpo dele: se ele segura o cinto ou a perna, você muda de ataque.'],
       mistakes: ['Deixar o cotovelo dele longe do corpo.', 'Forçar rápido demais: o ombro machuca sem aviso.', 'Não travar a perna nas costas dele da guarda, e ele rola.'],
-      concept: { text: 'Danaher fala da "trindade de poder" da kimura: quanto as pernas participam, quanto a cabeça dele está controlada e quanto o ombro dele está controlado. Sem os três, a kimura é fraca.', source: 'Enter the System: Kimura' },
+      concept: { text: 'A "trindade de poder" da kimura: quanto as pernas participam, quanto a cabeça dele está controlada e quanto o ombro dele está controlado. Sem os três, a kimura é fraca.', source: 'Sistema de kimura' },
       related: ['hip-bump', 'americana', 'cem-quilos', 'guilhotina'] },
 
     { id: 'americana', cat: 'finalizacao', name: 'Americana', alt: 'Ude garami / keylock', level: 'Branca', style: 'Gi e No-Gi',
@@ -1486,7 +1494,7 @@
       steps: ['Do controle das costas, com o cinto de segurança, vença a briga de mãos: prenda um braço dele e libere o seu braço estrangulador.', 'Passe o braço por baixo do queixo dele, cotovelo alinhado com o queixo.', 'Coloque a mão estranguladora no seu próprio bíceps e a outra mão atrás da cabeça dele.', 'Expanda o peito, retraia os cotovelos e leve a cabeça dele para frente com o antebraço.', 'Segure sem apertar a traqueia: o estrangulamento é nas laterais.'],
       details: ['Cotovelo abaixo do queixo, centralizado.', 'A segunda mão fica escondida atrás da cabeça dele, fora do alcance.', 'Peito colado nas costas dele, sem espaço.'],
       mistakes: ['Braço por cima do queixo: vira esmagamento de rosto, não estrangula.', 'Cruzar as pernas em cima do oponente e levar chave de pé.', 'Tentar antes de vencer a briga de mãos.'],
-      concept: { text: 'No sistema straitjacket do Danaher, você prende um braço dele com a sua perna (ou com a mão) e faz "dois contra um" no braço livre. Sem defesa, o mata-leão é inevitável.', source: 'Enter the System: Back Attacks' },
+      concept: { text: 'No sistema straitjacket, você prende um braço dele com a sua perna (ou com a mão) e faz "dois contra um" no braço livre. Sem defesa, o mata-leão é inevitável.', source: 'Sistema de ataques às costas' },
       related: ['controle-costas', 'katagatame', 'escape-costas', 'berimbolo'] },
 
     { id: 'guilhotina', cat: 'finalizacao', name: 'Guilhotina', alt: 'Guillotine', level: 'Branca', style: 'Gi e No-Gi',
@@ -1495,7 +1503,7 @@
       steps: ['Do front headlock (ele de quatro ou na sua guarda), passe o braço em volta do pescoço, lâmina do antebraço sob o queixo.', 'Segure o punho estrangulador com a outra mão (guilhotina simples) ou passe o outro braço sobre o ombro dele (high elbow).', 'Cole o quadril na cabeça dele: sem espaço entre o seu tronco e o pescoço dele.', 'Da guarda: feche a guarda ou meia guarda para impedir que ele passe para o lado do braço.', 'Puxe o punho para cima e para o seu peito, estendendo o quadril para frente.'],
       details: ['Lâmina do antebraço, não o cotovelo, na garganta.', 'Cabeça dele presa embaixo da axila, com o seu peito sobre ela.', 'Ele vai tentar passar para o lado do braço estrangulador: sua perna impede.'],
       mistakes: ['Braço em volta da cabeça em vez do pescoço.', 'Deixar espaço entre o quadril e a cabeça dele.', 'Deitar reto e ele passa para o lado.'],
-      concept: { text: 'Guilhotina, anaconda e darce são um sistema só: a defesa de uma abre a outra. Danaher parte do front headlock e escolhe pela reação do oponente.', source: 'Enter the System: Front Headlock' },
+      concept: { text: 'Guilhotina, anaconda e darce são um sistema só: a defesa de uma abre a outra. Parta do front headlock e escolha pela reação do oponente.', source: 'Sistema de front headlock' },
       related: ['front-headlock', 'darce', 'anaconda', 'hip-bump'] },
 
     { id: 'darce', cat: 'finalizacao', name: "D'Arce", alt: 'Brabo choke', level: 'Roxa', style: 'Gi e No-Gi',
@@ -1504,7 +1512,7 @@
       steps: ['Do front headlock ou de quando ele dá o underhook errado, entre com o braço por baixo da axila dele até a nuca.', 'Passe a mão pelo lado do pescoço e agarre o seu próprio bíceps do outro braço.', 'A mão do outro braço vai atrás da cabeça dele: figura quatro.', 'Feche o cotovelo do braço que passa e aperte o braço dele contra o pescoço dele.', 'Deite para o lado da cabeça dele (sprawl) e comprima com o peito.'],
       details: ["A mão precisa passar fundo: até a nuca dele.", 'O ombro dele é quem fecha um lado do estrangulamento.', 'Peito pesado na cabeça dele.'],
       mistakes: ['Braço raso: ele tira a cabeça.', 'Tentar do lado errado (a darce vai pelo braço mais próximo).', 'Apertar com os braços e não com o corpo.'],
-      concept: { text: 'Reação do oponente decide: se ele defende a guilhotina levando a cabeça para fora, a darce aparece do outro lado.', source: 'Enter the System: Front Headlock' },
+      concept: { text: 'Reação do oponente decide: se ele defende a guilhotina levando a cabeça para fora, a darce aparece do outro lado.', source: 'Sistema de front headlock' },
       related: ['front-headlock', 'guilhotina', 'anaconda', 'katagatame'] },
 
     { id: 'anaconda', cat: 'finalizacao', name: 'Anaconda', alt: 'Estrangulamento anaconda', level: 'Roxa', style: 'Gi e No-Gi',
@@ -1513,7 +1521,7 @@
       steps: ['Do front headlock, com ele de quatro, controle o queixo e a axila.', 'Entre com o braço pelo pescoço e saia por baixo da axila do braço mais próximo.', 'Agarre o seu próprio bíceps e coloque a mão do outro braço atrás do braço dele.', 'Role em direção ao braço preso, levando-o por cima de você.', 'Ao terminar o rolamento, feche os cotovelos e caminhe com as pernas em direção à cabeça dele.'],
       details: ['A mão que entra precisa chegar fundo, além da axila.', 'Rolar para o lado certo: o do braço preso.', 'Depois de rolar, cotovelos juntos e pressão do peito.'],
       mistakes: ['Braço raso.', 'Rolar para o lado errado.', 'Não caminhar as pernas depois do rolamento.'],
-      concept: { text: 'Anaconda de um lado, darce do outro e guilhotina no meio: essa é a árvore de decisões do front headlock.', source: 'Enter the System: Front Headlock' },
+      concept: { text: 'Anaconda de um lado, darce do outro e guilhotina no meio: essa é a árvore de decisões do front headlock.', source: 'Sistema de front headlock' },
       related: ['front-headlock', 'darce', 'guilhotina'] },
 
     { id: 'katagatame', cat: 'finalizacao', name: 'Katagatame (arm triangle)', alt: 'Triângulo de braço', level: 'Azul', style: 'Gi e No-Gi',
@@ -1522,7 +1530,7 @@
       steps: ['Da montada, leve um braço dele para cima e por cima da cabeça dele.', 'Passe o seu braço por baixo do pescoço dele, do lado onde está o braço dele.', 'Encoste a sua cabeça no tatame do outro lado, prendendo o braço dele contra o pescoço dele.', 'Saia da montada para o lado do estrangulamento, pernas esticadas, e trave as mãos (palma sobre bíceps).', 'Aperte os cotovelos e leve o quadril para frente, compressão gradual.'],
       details: ['O braço dele precisa cruzar a linha central do pescoço dele.', 'Você sai da montada para o mesmo lado do braço preso.', 'Cabeça baixa e pesada, não elevada.'],
       mistakes: ['Ficar na montada e tentar apertar: sem ângulo não fecha.', 'Braço dele com o cotovelo fora da linha do pescoço.', 'Apertar antes de estabilizar o corpo.'],
-      concept: { text: 'Sistema 4x4 da montada: underhook, linha do cotovelo, grips de controle e um dos quatro finais (arm triangle, armlock, triângulo ou costas). O katagatame é o primeiro deles.', source: 'New Wave Jiu Jitsu: Mounted Pin Attacks' },
+      concept: { text: 'Sistema 4x4 da montada: underhook, linha do cotovelo, grips de controle e um dos quatro finais (arm triangle, armlock, triângulo ou costas). O katagatame é o primeiro deles.', source: 'Sistema de ataques da montada' },
       related: ['montada', 'darce', 'mata-leao', 'armlock-montada'] },
 
     { id: 'armlock-montada', cat: 'finalizacao', name: 'Armlock da montada', alt: 'Armbar from mount', level: 'Branca', style: 'Gi e No-Gi',
@@ -1531,7 +1539,7 @@
       steps: ['Da montada, suba os joelhos para as axilas dele (montada alta).', 'Isole um braço: controle o cotovelo e o punho contra o seu peito.', 'Coloque a mão do outro lado no tatame, levante o quadril e gire o joelho para a cabeça dele.', 'Passe a perna por cima da cabeça, sente perto do ombro dele e caia para trás.', 'Joelhos apertados, polegar para cima, quadril levanta.'],
       details: ['Quadril colado no ombro dele: espaço é fuga.', 'Perna sobre a cabeça pesada, impedindo que ele sente.', 'Não caia longe: caia perto do ombro.'],
       mistakes: ['Cair para trás antes de prender o braço.', 'Espaço entre o seu quadril e o ombro dele.', 'Soltar o punho na queda.'],
-      concept: { text: 'Na montada, o braço que empurra você é o braço que vai ser finalizado. Danaher chama de "linha do cotovelo": levou o cotovelo dele para cima, o ataque está pronto.', source: 'New Wave Jiu Jitsu: Mounted Pin Attacks' },
+      concept: { text: 'Na montada, o braço que empurra você é o braço que vai ser finalizado. É a "linha do cotovelo": levou o cotovelo dele para cima, o ataque está pronto.', source: 'Sistema de ataques da montada' },
       related: ['montada', 'katagatame', 'armlock', 'escape-montada'] },
 
     { id: 'relogio', cat: 'finalizacao', name: 'Relógio', alt: 'Clock choke', level: 'Azul', style: 'Gi',
@@ -1549,7 +1557,7 @@
       steps: ['Do single leg X, prenda o pé dele debaixo da axila, calcanhar na sua costela.', 'Coloque a lâmina do antebraço (osso) contra o tendão de Aquiles.', 'Trave a mão no seu próprio antebraço ou peito.', 'Pé de fora no quadril dele para mantê-lo longe, joelho de dentro por dentro.', 'Deite de lado (em direção ao dedão dele), leve o quadril para frente e o peito para trás.'],
       details: ['O calcanhar dele fica preso na sua axila; se o pé escapa para o lado, a chave acaba.', 'Deite de lado, na direção do dedinho dele, não reto.', 'Quadril para frente, não puxão de braço.'],
       mistakes: ['Puxar com os braços e cansar.', 'Deixar o joelho dele passar da sua linha (ele senta e escapa).', 'Pé dele solto embaixo do braço.'],
-      concept: { text: 'Danaher ensina que o ashi garami controla a perna acima e abaixo do joelho. A finalização só vem quando a posição está fechada.', source: 'Enter the System: Leg Locks / Master the Move: Ankle Lock' },
+      concept: { text: 'O ashi garami controla a perna acima e abaixo do joelho. A finalização só vem quando a posição está fechada.', source: 'Sistema de ataques às pernas' },
       related: ['single-leg-x', 'heel-hook', '50-50', 'guarda-x'] },
 
     { id: 'heel-hook', cat: 'finalizacao', name: 'Heel hook (chave de calcanhar)', alt: 'Inside heel hook', level: 'Marrom', style: 'No-Gi',
@@ -1558,7 +1566,7 @@
       steps: ['Do saddle (honey hole) ou do inside ashi, prenda a perna dele acima do joelho com as suas pernas.', 'Exponha o calcanhar: leve o pé dele para fora da linha do quadril dele.', 'Encaixe o calcanhar na dobra do seu punho ou do antebraço, mão travada no outro pulso ou bíceps.', 'Aperte os joelhos para impedir que o joelho dele gire junto.', 'Gire o tronco lentamente puxando o calcanhar para o seu peito e o pé dele para fora. Solte ao primeiro sinal de batida.'],
       details: ['Controle do joelho é tudo: sem prender a coxa acima do joelho, o oponente gira e escapa.', 'O calcanhar precisa estar exposto antes de girar.', 'Aplique devagar. Lesões de heel hook não avisam.'],
       mistakes: ['Aplicar rápido em treino.', 'Deixar o joelho dele girar junto com o calcanhar.', 'Tentar sem controle da posição.'],
-      concept: { text: 'Danaher: a hierarquia é posição, exposição do calcanhar, e só então quebra. E o princípio do "double trouble": a defesa vem da outra perna dele, controle-a também.', source: 'Enter the System: Leg Locks' },
+      concept: { text: 'A hierarquia é posição, exposição do calcanhar, e só então quebra. E o princípio do "double trouble": a defesa vem da outra perna dele, controle-a também.', source: 'Sistema de ataques às pernas' },
       related: ['saddle', 'single-leg-x', '50-50', 'chave-de-pe'] },
 
     { id: 'toe-hold', cat: 'finalizacao', name: 'Chave de pé torcida (toe hold)', alt: 'Toe hold', level: 'Marrom', style: 'Gi e No-Gi',
@@ -1567,7 +1575,7 @@
       steps: ['Com a perna dele controlada (do 50/50, do ashi ou da meia guarda por cima), segure o pé dele pela parte de fora, dedos para baixo.', 'Passe a outra mão por baixo do tornozelo e agarre o seu próprio punho: figura quatro.', 'Controle o joelho dele com o corpo para ele não girar.', 'Leve o pé em direção ao glúteo dele, girando o tornozelo.', 'Aplique devagar: o joelho também sofre.'],
       details: ['A mão pega o pé no meio, não na ponta dos dedos.', 'O cotovelo da mão de baixo fecha o joelho dele.', 'Direção: o pé vai para o glúteo, não para o lado.'],
       mistakes: ['Aplicar rápido.', 'Não controlar o joelho dele e ele gira.', 'Pegar só os dedos.'],
-      concept: { text: 'Chaves de perna são chaves de controle: sem prender o joelho, a finalização vira uma disputa de força, e o oponente escapa.', source: 'Enter the System: Leg Locks' },
+      concept: { text: 'Chaves de perna são chaves de controle: sem prender o joelho, a finalização vira uma disputa de força, e o oponente escapa.', source: 'Sistema de ataques às pernas' },
       related: ['heel-hook', 'chave-de-pe', '50-50', 'saddle'] },
 
     /* ===== CONTROLES ===== */
@@ -1577,7 +1585,7 @@
       steps: ['Joelhos no chão, pés enganchados por dentro das coxas dele ou pés abertos para base.', 'Mantenha o peso à frente quando ele tenta o upa, e o quadril baixo quando ele tenta a elbow escape.', 'Suba os joelhos para as axilas dele (montada alta) sempre que ele empurrar.', 'Ganhe o underhook de um lado e leve o cotovelo dele para cima da linha do ombro.', 'Ataque katagatame, armlock, triângulo montado ou costas conforme a reação.'],
       details: ['Montada alta reduz a força das pernas e dos braços dele.', 'Mãos livres: apoie no tatame quando ele tentar o upa.', 'Não persiga um só ataque; troque conforme a defesa.'],
       mistakes: ['Ficar baixo com os pés cruzados na montada baixa, sem atacar.', 'Apoiar as duas mãos e deixar ele fazer a elbow escape.', 'Forçar um estrangulamento de frente sem controle dos braços dele.'],
-      concept: { text: 'Sistema 4x4 (Danaher): quatro passos (underhook, linha do cotovelo, grips, finalização) e quatro finais (arm triangle, armlock, triângulo, costas).', source: 'New Wave Jiu Jitsu: Mounted Pin Attacks' },
+      concept: { text: 'Sistema 4x4: quatro passos (underhook, linha do cotovelo, grips, finalização) e quatro finais (arm triangle, armlock, triângulo, costas).', source: 'Sistema de ataques da montada' },
       related: ['katagatame', 'armlock-montada', 'ezequiel', 'escape-montada'] },
 
     { id: 'controle-costas', cat: 'controle', name: 'Controle das costas', alt: 'Back mount / cinto de segurança', level: 'Branca', style: 'Gi e No-Gi',
@@ -1586,7 +1594,7 @@
       steps: ['Cinto de segurança: um braço por cima do ombro, o outro por baixo da axila, mãos travadas no peito dele.', 'Dois ganchos por dentro das coxas dele, ou body triangle (pernas em triângulo em volta do tronco).', 'Fique do lado do braço que passa por baixo (lado do underhook), com a cabeça colada na dele.', 'Hand fight: prenda um braço dele com a perna ou com a mão, isole o outro.', 'Ataque o mata-leão quando o pescoço estiver descoberto.'],
       details: ['A cabeça do lado do underhook, não do lado do estrangulamento.', 'Ele vai tentar escorregar para o lado do braço de cima: seu gancho e o cinto impedem.', 'Sem pressa: controle e briga de mãos antes do pescoço.'],
       mistakes: ['Cruzar os pés na frente da barriga dele: chave de pé.', 'Perder o cinto de segurança para ir direto ao pescoço.', 'Deixar ele colocar os ombros no tatame.'],
-      concept: { text: 'Straitjacket: prenda um braço dele com a perna (ou prenda o punho na coxa) e faça dois contra um no braço livre. Um oponente sem braços não defende o pescoço.', source: 'Enter the System: Back Attacks' },
+      concept: { text: 'Straitjacket: prenda um braço dele com a perna (ou prenda o punho na coxa) e faça dois contra um no braço livre. Um oponente sem braços não defende o pescoço.', source: 'Sistema de ataques às costas' },
       related: ['mata-leao', 'escape-costas', 'berimbolo', 'katagatame'] },
 
     { id: 'cem-quilos', cat: 'controle', name: 'Cem quilos', alt: 'Side control', level: 'Branca', style: 'Gi e No-Gi',
@@ -1595,7 +1603,7 @@
       steps: ['Peito colado no peito dele, quadril baixo, pernas em base (uma esticada, outra flexionada, ou joelhos apoiados).', 'Crossface: braço por baixo da cabeça dele, ombro no queixo, virando a cabeça para longe.', 'Outro braço por baixo do braço dele ou controlando o quadril.', 'Troque de base conforme ele se move: joelho no quadril, joelho na axila, joelho na barriga.', 'Quando ele dá espaço, monte ou ataque americana, kimura ou katagatame.'],
       details: ['Cabeça dele virada para longe: onde a cabeça vai, o corpo vai.', 'Quadril baixo e pesado, cotovelos fechados.', 'Não deixe ele pegar o underhook.'],
       mistakes: ['Quadril alto, ele coloca o joelho e recupera.', 'Deixar o braço dele por baixo (underhook).', 'Ficar parado sem transitar.'],
-      concept: { text: 'Pins dinâmicos: você controla cabeça e quadril, e muda de posição conforme ele reage, em vez de tentar segurar tudo parado.', source: 'Go Further Faster: Dynamic Pins' },
+      concept: { text: 'Pins dinâmicos: você controla cabeça e quadril, e muda de posição conforme ele reage, em vez de tentar segurar tudo parado.', source: 'Fundamentos de controle por cima' },
       related: ['americana', 'kimura', 'joelho-na-barriga', 'escape-cem-quilos'] },
 
     { id: 'joelho-na-barriga', cat: 'controle', name: 'Joelho na barriga', alt: 'Knee on belly', level: 'Branca', style: 'Gi e No-Gi',
@@ -1613,26 +1621,26 @@
       steps: ['Com ele de quatro à sua frente, coloque o peito sobre os ombros dele, quadril baixo.', 'Uma mão controla o queixo (chin strap), a outra prende o braço dele pela axila ou pelo cotovelo.', 'Puxe o queixo dele para fora, arrancando a cabeça da linha das mãos dele.', 'Circule em volta para as costas se ele levantar; se ele der o braço, entre na darce ou anaconda; se ele tirar o braço, a guilhotina.', 'Mantenha os pés fora do alcance das mãos dele.'],
       details: ['Chin strap com o cotovelo fechado.', 'Quadril baixo e pesado sobre os ombros dele.', 'Nunca deixe ele pegar a sua perna.'],
       mistakes: ['Ficar em pé e alto: ele entra em single leg.', 'Segurar a cabeça sem controlar o braço.', 'Forçar um estrangulamento sem controle.'],
-      concept: { text: 'Danaher: guilhotina, darce e anaconda não são três golpes, são um sistema. O oponente escolhe qual você vai fazer.', source: 'Enter the System: Front Headlock' },
+      concept: { text: 'Guilhotina, darce e anaconda não são três golpes, são um sistema. O oponente escolhe qual você vai fazer.', source: 'Sistema de front headlock' },
       related: ['guilhotina', 'darce', 'anaconda', 'controle-costas'] },
 
     { id: 'saddle', cat: 'controle', name: 'Saddle (honey hole / 411)', alt: 'Inside sankaku', level: 'Marrom', style: 'No-Gi',
       summary: 'Perna dele presa entre suas pernas em triângulo, com o joelho dele atravessando o seu corpo.',
-      idea: 'A posição de controle mais forte do sistema de leg locks. Você fecha um triângulo de pernas em volta da coxa dele, o joelho dele fica preso e o calcanhar de dentro exposto. Danaher a considera o coração do sistema de pernas.',
+      idea: 'A posição de controle mais forte do sistema de leg locks. Você fecha um triângulo de pernas em volta da coxa dele, o joelho dele fica preso e o calcanhar de dentro exposto. É o coração do sistema de pernas.',
       steps: ['Da guarda X, do single leg X ou de uma passagem que falhou, gire por baixo da perna dele para o lado de dentro.', 'Trave um triângulo com as pernas na coxa dele, acima do joelho.', 'Fique de lado, com o joelho dele atravessando a sua linha central e o pé dele saindo pelo seu quadril.', 'Controle a outra perna dele também (double trouble), com a mão ou com a sua perna.', 'Exponha o calcanhar de dentro para o heel hook ou transite para as costas se ele girar.'],
       details: ['O triângulo precisa estar acima do joelho dele.', 'Quadril virado para o oponente, nunca de costas no chão.', 'A perna livre dele é a que mais defende: controle-a.'],
       mistakes: ['Prender abaixo do joelho e deixar o joelho dele girar.', 'Deitar de costas e perder o ângulo.', 'Ignorar a perna livre.'],
-      concept: { text: 'Princípio do double trouble: a maior parte da defesa a um leg lock vem da outra perna. Controle as duas, e a fuga acaba.', source: 'Enter the System: Leg Locks' },
+      concept: { text: 'Princípio do double trouble: a maior parte da defesa a um leg lock vem da outra perna. Controle as duas, e a fuga acaba.', source: 'Sistema de ataques às pernas' },
       related: ['heel-hook', 'single-leg-x', '50-50', 'toe-hold'] },
 
     /* ===== ESCAPES ===== */
     { id: 'escape-montada', cat: 'escape', name: 'Fuga da montada', alt: 'Upa e elbow escape', level: 'Branca', style: 'Gi e No-Gi',
       summary: 'Upa (ponte e rolamento) e saída de cotovelo (joelho e cotovelo). As duas juntas resolvem quase tudo.',
-      idea: 'Danaher reduz todo o sistema de escapes a dois princípios: fuga de joelho e fuga de cotovelo. Na montada, o upa vira o oponente se ele se apoia em você; a elbow escape recupera a guarda se ele afasta o peso.',
+      idea: 'Todo o sistema de escapes se reduz a dois princípios: fuga de joelho e fuga de cotovelo. Na montada, o upa vira o oponente se ele se apoia em você; a elbow escape recupera a guarda se ele afasta o peso.',
       steps: ['Frames primeiro: cotovelos fechados, mãos protegendo o pescoço, não empurre com os braços esticados.', 'Upa: prenda um braço e o pé dele do mesmo lado, faça a ponte alto sobre o ombro oposto e role para cima dele.', 'Elbow escape: vire de lado, coloque o cotovelo por dentro do joelho dele e empurre o joelho com o antebraço, puxando o seu joelho para fora.', 'Recupere meia guarda com o joelho, depois a guarda fechada ou borboleta.', 'Se ele bloquear uma, a outra abre: alterne.'],
       details: ['Ponte alta e em diagonal, sobre o ombro.', 'Joelho e cotovelo se encontram: essa é a barreira.', 'Quadril fora da linha antes de tentar puxar a perna.'],
       mistakes: ['Empurrar o peito dele com os braços esticados: armlock.', 'Fazer a ponte reta para cima.', 'Ficar de costas planas.'],
-      concept: { text: 'Dois princípios, todas as posições: fuga de joelho e fuga de cotovelo. Danaher escolheu escapes como primeiro tema para iniciantes porque sobrevivência vem antes de tudo.', source: 'Go Further Faster: Pin Escapes' },
+      concept: { text: 'Dois princípios, todas as posições: fuga de joelho e fuga de cotovelo. Escapes são o primeiro tema para iniciantes porque sobrevivência vem antes de tudo.', source: 'Fundamentos de escapes' },
       related: ['montada', 'escape-cem-quilos', 'retencao', 'meia-guarda'] },
 
     { id: 'escape-cem-quilos', cat: 'escape', name: 'Fuga do cem quilos', alt: 'Side control escape', level: 'Branca', style: 'Gi e No-Gi',
@@ -1641,7 +1649,7 @@
       steps: ['Frames: antebraço de cima na garganta ou no pescoço dele, mão de baixo no quadril, cotovelos fechados.', 'Vire de lado para ele, nunca fique plano.', 'Faça a ponte em direção a ele para aliviar o peso, e no retorno faça o camarão, afastando o quadril.', 'Coloque o joelho por dentro, entre você e ele, e recupere a guarda.', 'Se ele der espaço no underhook, gire por baixo e venha de quatro ou pegue as costas.'],
       details: ['Cotovelos colados nas costelas: frame com o esqueleto, não com músculo.', 'Ponte antes do camarão: espaço primeiro, movimento depois.', 'Joelho por dentro fecha a fuga.'],
       mistakes: ['Empurrar com os braços e ser finalizado.', 'Camarão sem ponte, ele acompanha.', 'Ficar de costas planas e esperar.'],
-      concept: { text: 'Teoria dos frames de Danaher: frame, ângulo e movimento do quadril trabalham juntos. Um frame sem movimento é só um braço cansado.', source: 'Go Further Faster: Pin Escapes' },
+      concept: { text: 'Teoria dos frames: frame, ângulo e movimento do quadril trabalham juntos. Um frame sem movimento é só um braço cansado.', source: 'Fundamentos de escapes' },
       related: ['cem-quilos', 'escape-montada', 'retencao', 'escape-joelho-barriga'] },
 
     { id: 'escape-costas', cat: 'escape', name: 'Fuga das costas', alt: 'Back escape', level: 'Branca', style: 'Gi e No-Gi',
@@ -1650,7 +1658,7 @@
       steps: ['Mãos no braço estrangulador: uma mão no punho, a outra no cotovelo; queixo colado no peito.', 'Identifique o lado: escape para o lado do braço dele que passa por cima do ombro (lado fraco).', 'Retire o gancho desse lado com a mão ou pisando na perna dele.', 'Leve os ombros ao tatame, cabeça no chão, e escorregue o quadril para fora.', 'Vire para ele e recupere meia guarda ou passe por cima para o cem quilos.'],
       details: ['Não vire para o lado do underhook dele: é para lá que ele quer que você vá.', 'Ombros no chão primeiro; sem isso ele acompanha.', 'Mãos no braço dele até a fuga terminar.'],
       mistakes: ['Puxar o braço dele com força e virar para o lado errado.', 'Levantar a cabeça e dar o pescoço.', 'Fugir e não estabilizar por cima.'],
-      concept: { text: 'Nas costas, defesa é uma ordem de prioridades: pescoço, depois posição. Quem inverte a ordem é finalizado no meio da fuga.', source: 'Go Further Faster: Pin Escapes' },
+      concept: { text: 'Nas costas, defesa é uma ordem de prioridades: pescoço, depois posição. Quem inverte a ordem é finalizado no meio da fuga.', source: 'Fundamentos de escapes' },
       related: ['controle-costas', 'mata-leao', 'escape-casco'] },
 
     { id: 'escape-casco', cat: 'escape', name: 'Fuga do casco (quatro apoios)', alt: 'Turtle escape', level: 'Azul', style: 'Gi e No-Gi',
@@ -1659,7 +1667,7 @@
       steps: ['Cotovelos colados nos joelhos, mãos protegendo o pescoço, cabeça baixa.', 'Sinta de que lado ele está: você vai sentar em direção a ele, não para longe.', 'Sente sobre o quadril do lado dele, colocando o joelho de fora entre vocês.', 'Se ele tentar os ganchos, estenda a perna e feche o cotovelo no joelho.', 'Se ele pressiona por cima, role pelo ombro (granby) e recupere a guarda.'],
       details: ['Sentar para o lado dele, nunca dar as costas.', 'Cotovelos e joelhos juntos anulam os ganchos.', 'Não fique parado de quatro.'],
       mistakes: ['Deixar os cotovelos abertos e levar o gancho.', 'Sentar para longe dele e dar as costas.', 'Levantar a cabeça e levar a guilhotina.'],
-      concept: { text: 'Do casco, a regra é reconectar com a guarda o mais rápido possível: quanto mais tempo de quatro, mais chance de dar as costas.', source: 'Go Further Faster: Pin & Turtle Escapes' },
+      concept: { text: 'Do casco, a regra é reconectar com a guarda o mais rápido possível: quanto mais tempo de quatro, mais chance de dar as costas.', source: 'Fundamentos de escapes' },
       related: ['escape-costas', 'relogio', 'front-headlock', 'retencao'] },
 
     { id: 'escape-joelho-barriga', cat: 'escape', name: 'Fuga do joelho na barriga', alt: 'Knee on belly escape', level: 'Branca', style: 'Gi e No-Gi',
@@ -1668,7 +1676,7 @@
       steps: ['Vire de lado em direção a ele, queixo baixo.', 'Cotovelo de cima fechado; empurre o joelho dele com o antebraço, não com a mão aberta.', 'Faça o camarão afastando o quadril e coloque o joelho por dentro.', 'Alternativa: pegue o pé dele que está no chão e puxe para você, derrubando-o.', 'Recupere a guarda ou levante em single leg.'],
       details: ['Empurrar o joelho com a mão expõe o braço ao armlock.', 'De lado, o joelho escorrega para o chão.', 'O pé dele de base é uma raspagem grátis.'],
       mistakes: ['Ficar plano e empurrar com as mãos.', 'Esticar os braços.', 'Fugir e não recuperar guarda.'],
-      concept: { text: 'Fuga de cotovelo em ação: o cotovelo e o joelho se encontram e a posição por cima perde sentido.', source: 'Go Further Faster: Pin Escapes' },
+      concept: { text: 'Fuga de cotovelo em ação: o cotovelo e o joelho se encontram e a posição por cima perde sentido.', source: 'Fundamentos de escapes' },
       related: ['joelho-na-barriga', 'escape-cem-quilos', 'armlock'] },
 
     { id: 'defesa-armlock', cat: 'escape', name: 'Defesa do armlock', alt: 'Armbar escape', level: 'Branca', style: 'Gi e No-Gi',
@@ -1848,7 +1856,7 @@
         ${LIB_CATS.map(c => `<button class="chip ${libCat === c.id ? 'on' : ''}" data-action="libcat" data-cat="${c.id}">${esc(c.name)}</button>`).join('')}
       </div>
       <div id="libList" class="fade" style="animation-delay:.1s">${libListHTML()}</div>
-      <p class="small muted" style="margin:26px 4px 0;text-align:center">Conteúdo de referência baseado em fundamentos clássicos e nos sistemas de John Danaher. Treine sempre com supervisão do seu professor.</p>`;
+      <p class="small muted" style="margin:26px 4px 0;text-align:center">Conteúdo de referência baseado em fundamentos do jiu-jitsu. Treine sempre com supervisão do seu professor.</p>`;
   }
 
   function renderMove(id) {
@@ -1946,8 +1954,8 @@
       const k = `${el.dataset.date}|${el.dataset.cls}`;
       const c = byId[el.dataset.cls];
       if (classEnd(el.dataset.date, c) < now()) { toast('Aula encerrada. A presença é registrada pelo professor.'); return; }
-      if (state.confirmations[k]) { delete state.confirmations[k]; toast('Confirmação desfeita'); }
-      else { state.confirmations[k] = true; toast(`Você confirmou para as ${c.time}. Bom treino!`); }
+      if (state.confirmations[k]) { delete state.confirmations[k]; toast('Confirmação cancelada'); }
+      else { state.confirmations[k] = true; toast('Confirmação enviada. Aguardando o professor.'); }
       save(); render();
     }
     else if (a === 'openchat') { chatOpen = el.dataset.cls; go('chat'); }
@@ -2000,9 +2008,6 @@
       p.name = (fd.get('name') || '').toString().trim() || p.name;
       p.belt = fd.get('belt'); p.stripes = Number(fd.get('stripes')); p.group = fd.get('group'); p.lastGrau = fd.get('lastGrau') || p.lastGrau;
       if (a === 'saveprofile') {
-        state.rule.perWeek = Math.max(1, Number(fd.get('perWeek')) || 3);
-        state.rule.weeks = Math.max(1, Number(fd.get('weeks')) || 13);
-        state.rule.minDays = Math.max(0, Number(fd.get('minDays')) || 0);
         toast('Perfil salvo');
       } else {
         state.onboarded = true;
