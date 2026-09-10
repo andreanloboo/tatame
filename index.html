@@ -315,8 +315,13 @@
   .slot .t { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 19px; line-height: 1; min-width: 54px; padding-right: 10px; border-right: 1px solid var(--line); }
   .slot .g { font-weight: 600; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; min-width: 0; }
   .slot .g .gn { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .gi { display: inline-grid; place-items: center; width: 20px; height: 20px; color: var(--accent); flex: none; }
-  .gi svg { width: 18px; height: 18px; }
+  .gi { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; flex: none; }
+  .gi svg { width: 15px; height: 15px; stroke-width: 2; }
+  .gi[data-belt="Branca"] { background: #D9D9DF; box-shadow: 0 0 0 1px rgba(0, 0, 0, .12) inset; }
+  .gi[data-belt="Azul"] { background: #2456B8; }
+  .gi[data-belt="Roxa"] { background: #6B3FA0; }
+  .gi[data-belt="Marrom"] { background: var(--belt); }
+  .gi[data-belt="Preta"] { background: #111; }
   .slot .c { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
   .slot .actions { display: flex; gap: 8px; }
   .iconbtn { width: 38px; height: 38px; border-radius: 10px; border: 0; background: var(--surface-2); color: var(--ink); display: grid; place-items: center; }
@@ -821,7 +826,7 @@
         </div>
         <div class="grow">
           <div class="row" style="justify-content:space-between">
-            <div class="row" style="gap:8px"><div class="name">${esc(clsName(c))}</div>${mine && c.group !== 'Todos' ? `<span class="gi" title="Seu grupo" aria-label="Seu grupo">${I.gi}</span>` : ''}</div>
+            <div class="row" style="gap:8px"><div class="name">${esc(clsName(c))}</div>${mine && c.group !== 'Todos' ? `<span class="gi" data-belt="${me().belt}" title="Seu grupo" aria-label="Seu grupo">${I.gi}</span>` : ''}</div>
             ${c.group === 'Todos' ? '<span class="pill soft">Todas as faixas</span>' : ''}
           </div>
           <div class="meta">${esc(c.coach)}${c.name ? ` · ${esc(c.group)}` : ''} · <span class="num">${people.length} ${people.length === 1 ? 'confirmado' : 'confirmados'}</span></div>
@@ -930,7 +935,7 @@
         <button class="chip ${onlyMine ? 'on' : ''}" data-action="onlymine">Só meu grupo</button>
       </header>
       <div class="days fade" style="animation-delay:.05s">${dayBtns}</div>
-      <div class="row" style="justify-content:space-between;margin-bottom:10px"><div class="eyebrow">${fmtLong(d)}</div><div class="small muted row" style="gap:4px;font-size:12px"><span class="gi" aria-hidden="true">${I.gi}</span>seu grupo</div></div>
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><div class="eyebrow">${fmtLong(d)}</div><div class="small muted row" style="gap:4px;font-size:12px"><span class="gi" data-belt="${me().belt}" aria-hidden="true">${I.gi}</span>seu grupo</div></div>
       <div class="timeline fade" style="animation-delay:.1s">
         ${list.length ? list.map(c => {
           const dk = aulasDay, past = classEnd(dk, c) < now();
@@ -940,7 +945,7 @@
             <div class="card slot ${mine ? 'mine' : ''}">
               <div class="t num">${c.time}</div>
               <div>
-                <div class="g"><span class="gn">${esc(clsName(c))}</span>${mine ? `<span class="gi" title="Seu grupo" aria-label="Seu grupo">${I.gi}</span>` : ''}</div>
+                <div class="g"><span class="gn">${esc(clsName(c))}</span>${mine ? `<span class="gi" data-belt="${me().belt}" title="Seu grupo" aria-label="Seu grupo">${I.gi}</span>` : ''}</div>
                 <div class="c">${esc(c.coach)} · ${c.dur} min · <span class="num">${people.length} confirmados</span></div>
               </div>
               <div class="actions">
