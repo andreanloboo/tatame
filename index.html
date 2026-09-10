@@ -428,9 +428,14 @@
 
   /* espaço reservado para a foto da técnica */
   .photo { position: relative; border-radius: 12px; background: var(--surface-2); aspect-ratio: 16 / 9; display: grid; place-content: center; justify-items: center; gap: 8px; color: var(--ink-3); font-size: 13px; }
-  .photo .ph svg { width: 34px; height: 34px; }
-  .photo.sm { width: 84px; height: 56px; aspect-ratio: auto; border-radius: 10px; flex: none; }
-  .photo.sm .ph svg { width: 22px; height: 22px; }
+  .photo .ph { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; }
+  .photo .ph svg { width: 26px; height: 26px; }
+  .photo .ico.cat-info { background: var(--info); color: #fff; }
+  .photo .ico.cat-violet { background: var(--violet); color: #fff; }
+  .photo .ico.cat-warn { background: var(--warn); color: #fff; }
+  .photo .ico.cat-accent { background: var(--accent); color: #fff; }
+  .photo .ico.cat-ok { background: var(--ok); color: #fff; }
+  .photo .ico.cat-soft { background: var(--ink-2); color: #fff; }
   .figure { padding: 8px 8px 14px; }
   .figure .keylabel { margin: 12px 8px 0; text-align: center; font-size: 14px; line-height: 1.4; }
   .figure .keylabel b { color: var(--accent); font-weight: 700; }
@@ -444,12 +449,19 @@
   .catbar::-webkit-scrollbar { display: none; }
   .catbar .chip { flex: none; }
   .movelist { display: grid; gap: 10px; }
-  .thread.move { align-items: start; grid-template-columns: 84px 1fr 18px; }
+  .thread.move { align-items: start; grid-template-columns: 50px 1fr 18px; }
   .thread.art { grid-template-columns: 50px 1fr 18px; }
   .thread.art .p { white-space: normal; }
   .thread.art .chev { color: var(--ink-3); display: grid; place-items: center; }
   .thread.art .chev svg { width: 18px; height: 18px; }
-  .thread .ico.art-ico { background: var(--accent); color: #fff; }
+  .thread .ico.art-ico { background: var(--ink); color: #fff; }
+  .thread .ico.cat-info { background: var(--info); color: #fff; }
+  .thread .ico.cat-violet { background: var(--violet); color: #fff; }
+  .thread .ico.cat-warn { background: var(--warn); color: #fff; }
+  .thread .ico.cat-accent { background: var(--accent); color: #fff; }
+  .thread .ico.cat-ok { background: var(--ok); color: #fff; }
+  .thread .ico.cat-soft { background: var(--ink-2); color: #fff; }
+  .thread .ico svg { width: 24px; height: 24px; }
   .article p { margin: 0 0 10px; line-height: 1.55; }
   .article p:last-child { margin-bottom: 0; }
   .article .tips { margin-top: 4px; }
@@ -809,7 +821,7 @@
     Branca: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5a2.7 2.7 0 0 1 1.5 4.9c1.6.7 2.6 2.1 2.6 3.9H7.9c0-1.8 1-3.2 2.6-3.9A2.7 2.7 0 0 1 12 3.5Z"/><path d="M8.6 13.3h6.8l1.1 3.9H7.5l1.1-3.9Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
     Azul: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.8 4.5h2.2v2.1h1.9V4.5h2.2v2.1H15V4.5h2.2v4.2l-1.1 1.1v6.4l1.1 1H6.8l1.1-1v-6.4L6.8 8.7V4.5Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
     Roxa: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.6 17.2h9.2c0-4.3-1.3-8-4.7-10.5l.5-2.4-1.9.9-1-2.2-1.1 2.5C7.5 6.8 6.2 8.6 6 10.6l2.2 1c.4-.6 1-1 1.7-1.2-.2 1.7-1.3 3.5-2.9 4.7l1.6 2.1Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
-    Marrom: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5.2" cy="6.2" r="1.3"/><circle cx="8.6" cy="4.4" r="1.3"/><circle cx="12" cy="3.7" r="1.3"/><circle cx="15.4" cy="4.4" r="1.3"/><circle cx="18.8" cy="6.2" r="1.3"/><path d="M5.6 7.8 8.2 12l1.4-6.4L12 11.2l2.4-5.6L15.8 12l2.6-4.2 1 8.4-2.4 1H7l-2.4-1 1-8.4Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
+    Marrom: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="7.6" r="1.15"/><circle cx="8.7" cy="4.9" r="1.15"/><circle cx="12" cy="3.9" r="1.15"/><circle cx="15.3" cy="4.9" r="1.15"/><circle cx="18" cy="7.6" r="1.15"/><path d="M7.2 16.2 6.1 8.9l1.6 3.4 1-7 1.9 5.6L12 5.3l1.4 5.6 1.9-5.6 1 7 1.6-3.4-1.1 7.3c-1.5.6-3.1.9-4.8.9s-3.3-.3-4.8-.9Z"/><path d="M6.7 17.2h10.6l.4 1.3H6.3l.4-1.3Z"/><path d="M6 19.2h12v1.6H6z"/></svg>',
     Preta: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.1 2.5h1.8v1.7h1.7v1.7h-1.7v1.5h-1.8V5.9H9.4V4.2h1.7V2.5Z"/><path d="M12 7.6c3.2 0 5.6 2.1 5.6 4.9 0 1.9-.9 3.5-2.2 4.7H8.6c-1.3-1.2-2.2-2.8-2.2-4.7 0-2.8 2.4-4.9 5.6-4.9Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
   };
 
@@ -1822,7 +1834,7 @@
     'defesa-triangulo': 'Postura alta, cotovelo de dentro no quadril dele',
   };
   // Fotos das técnicas ainda não definidas: espaço reservado neutro.
-  const photoHTML = (m, small) => `<div class="photo ${small ? 'sm' : ''}" role="img" aria-label="Foto de ${esc(m.name)} em preparação"><span class="ph">${I.image}</span>${small ? '' : '<span class="t">Foto em preparação</span>'}</div>`;
+  const photoHTML = m => { const c = CAT_BY_ID[m.cat]; return `<div class="photo" role="img" aria-label="Foto de ${esc(m.name)} em preparação"><span class="ico cat-${c.tone} ph">${CAT_ICON[c.icon]}</span><span class="t">Foto em preparação</span></div>`; };
   const keyLabel = m => KEYPOINTS[m.id] || '';
 
 
@@ -1912,7 +1924,7 @@
     const c = CAT_BY_ID[m.cat];
     return `
       <button class="card thread move" data-action="openmove" data-id="${m.id}">
-        ${photoHTML(m, true)}
+        <span class="ico cat-${c.tone}" aria-hidden="true">${CAT_ICON[c.icon]}</span>
         <span class="grow">
           <div class="n">${esc(m.name)}</div>
           <div class="p">${esc(m.summary)}</div>
@@ -1976,7 +1988,7 @@
       <div class="tagrow fade" style="animation-delay:.03s"><span class="pill accent">Faixa ${esc(m.level.toLowerCase())}+</span><span class="pill soft">${esc(m.style)}</span></div>
 
       <section class="card figure fade section" style="animation-delay:.05s;margin-top:16px">
-        ${photoHTML(m, false)}
+        ${photoHTML(m)}
         ${keyLabel(m) ? `<div class="keylabel"><b>Ponto-chave:</b> ${esc(keyLabel(m))}</div>` : ''}
       </section>
 
