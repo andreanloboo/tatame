@@ -5,96 +5,96 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <title>Tatame</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
   :root {
-    --bg: #E9EBF4;
-    --frame: #DADDEA;
-    --surface: #FFFFFF;
-    --surface-2: #F3F4F9;
-    --ink: #15161C;
-    --ink-2: #5B5E70;
-    --ink-3: #9295A8;
-    --line: #E2E4EE;
-    --accent: #E2263C;
+    --bg: #F5F2EB;
+    --frame: #E9E5DB;
+    --surface: #FBFAF6;
+    --surface-2: #EFEBE2;
+    --ink: #1C1B19;
+    --ink-2: #5E5B54;
+    --ink-3: #9A968C;
+    --line: #DDD8CC;
+    --accent: #C2341F;
     --accent-ink: #FFFFFF;
-    --accent-soft: #FCE7EA;
-    --accent-glow: rgba(226, 38, 60, .55);
-    --pill: #17181F;
-    --pill-icon: #A4A7B8;
+    --accent-soft: #F6E4DE;
+    --accent-glow: rgba(194, 52, 31, .25);
+    --pill: #FBFAF6;
+    --pill-icon: #9A968C;
     --belt: #5B3921;
     --belt-dark: #3E2615;
-    --ok: #1E9A5A;
-    --ok-soft: #E3F5EB;
-    --warn: #C97C06;
-    --warn-soft: #FBF0DA;
-    --shadow: 0 14px 34px rgba(21, 22, 28, .14);
-    --shadow-sm: 0 2px 10px rgba(21, 22, 28, .06);
-    --bubble-them: #F3F4F9;
-    --info: #2456B8;
-    --info-soft: #E4EBF9;
-    --violet: #6B3FA0;
-    --violet-soft: #EFE7F8;
+    --ok: #4F7A5A;
+    --ok-soft: #E3EBE2;
+    --warn: #A9761F;
+    --warn-soft: #F3EAD4;
+    --shadow: 0 18px 40px rgba(28, 27, 25, .10);
+    --shadow-sm: none;
+    --bubble-them: #EFEBE2;
+    --info: #4A6B8A;
+    --info-soft: #E2E9EF;
+    --violet: #6E5B85;
+    --violet-soft: #EAE4EF;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0D0E13;
-      --frame: #181922;
-      --surface: #181922;
-      --surface-2: #20212B;
-      --ink: #F1F2F7;
-      --ink-2: #A7AABD;
-      --ink-3: #6F7288;
-      --line: #2A2B37;
-      --accent: #F0364B;
-      --accent-soft: #3A1720;
-      --accent-glow: rgba(240, 54, 75, .5);
-      --pill: #23242F;
-      --pill-icon: #9A9DB0;
+      --bg: #151412;
+      --frame: #0F0E0D;
+      --surface: #1D1C19;
+      --surface-2: #26241F;
+      --ink: #EDE8DD;
+      --ink-2: #A8A395;
+      --ink-3: #6E6A60;
+      --line: #2F2D27;
+      --accent: #D6482F;
+      --accent-soft: #3A211B;
+      --accent-glow: rgba(214, 72, 47, .3);
+      --pill: #1D1C19;
+      --pill-icon: #6E6A60;
       --belt: #6B4426;
       --belt-dark: #452A17;
-      --ok: #37C27A;
-      --ok-soft: #12301F;
-      --warn: #E8A33A;
-      --warn-soft: #33270F;
-      --shadow: 0 14px 34px rgba(0, 0, 0, .55);
-      --shadow-sm: 0 2px 10px rgba(0, 0, 0, .3);
-      --bubble-them: #20212B;
-      --info: #7DA3F0;
-      --info-soft: #172341;
-      --violet: #B48AE8;
-      --violet-soft: #2A1F3D;
+      --ok: #86B08F;
+      --ok-soft: #1F2C22;
+      --warn: #D2A04A;
+      --warn-soft: #332A17;
+      --shadow: 0 18px 40px rgba(0, 0, 0, .5);
+      --shadow-sm: none;
+      --bubble-them: #26241F;
+      --info: #8FAAC4;
+      --info-soft: #1C2731;
+      --violet: #A692BD;
+      --violet-soft: #2A2433;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0D0E13;
-    --frame: #181922;
-    --surface: #181922;
-    --surface-2: #20212B;
-    --ink: #F1F2F7;
-    --ink-2: #A7AABD;
-    --ink-3: #6F7288;
-    --line: #2A2B37;
-    --accent: #F0364B;
-    --accent-soft: #3A1720;
-    --accent-glow: rgba(240, 54, 75, .5);
-    --pill: #23242F;
-    --pill-icon: #9A9DB0;
+    --bg: #151412;
+    --frame: #0F0E0D;
+    --surface: #1D1C19;
+    --surface-2: #26241F;
+    --ink: #EDE8DD;
+    --ink-2: #A8A395;
+    --ink-3: #6E6A60;
+    --line: #2F2D27;
+    --accent: #D6482F;
+    --accent-soft: #3A211B;
+    --accent-glow: rgba(214, 72, 47, .3);
+    --pill: #1D1C19;
+    --pill-icon: #6E6A60;
     --belt: #6B4426;
     --belt-dark: #452A17;
-    --ok: #37C27A;
-    --ok-soft: #12301F;
-    --warn: #E8A33A;
-    --warn-soft: #33270F;
-    --shadow: 0 14px 34px rgba(0, 0, 0, .55);
-    --shadow-sm: 0 2px 10px rgba(0, 0, 0, .3);
-    --bubble-them: #20212B;
-    --info: #7DA3F0;
-    --info-soft: #172341;
-    --violet: #B48AE8;
-    --violet-soft: #2A1F3D;
+    --ok: #86B08F;
+    --ok-soft: #1F2C22;
+    --warn: #D2A04A;
+    --warn-soft: #332A17;
+    --shadow: 0 18px 40px rgba(0, 0, 0, .5);
+    --shadow-sm: none;
+    --bubble-them: #26241F;
+    --info: #8FAAC4;
+    --info-soft: #1C2731;
+    --violet: #A692BD;
+    --violet-soft: #2A2433;
     color-scheme: dark;
   }
 
@@ -104,7 +104,7 @@
     margin: 0;
     background: var(--frame);
     color: var(--ink);
-    font-family: "Barlow", "Segoe UI", system-ui, sans-serif;
+    font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif;
     font-size: 15px;
     line-height: 1.45;
     -webkit-font-smoothing: antialiased;
@@ -117,7 +117,7 @@
   button { cursor: pointer; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
   h1, h2, h3 { margin: 0; text-wrap: balance; }
-  .cond { font-family: "Barlow Condensed", "Barlow", system-ui, sans-serif; }
+  .cond { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; }
   .num { font-variant-numeric: tabular-nums; }
 
   /* ---------- app shell ---------- */
@@ -135,7 +135,7 @@
     body { align-items: center; padding: 24px 0; }
     .app {
       height: min(900px, calc(100dvh - 48px));
-      border-radius: 40px;
+      border-radius: 32px;
       box-shadow: var(--shadow);
       border: 1px solid var(--line);
     }
@@ -150,16 +150,17 @@
   .screen::-webkit-scrollbar { display: none; }
   .screen.chat-thread { padding-bottom: 0; display: flex; flex-direction: column; }
 
-  /* ---------- tab bar (reference: dark pill, red active square) ---------- */
+  /* ---------- tab bar: barra clara, indicador em ponto vermelhão ---------- */
   .tabbar {
     position: absolute;
-    left: 22px; right: 22px; bottom: 18px;
-    height: 66px;
+    left: 20px; right: 20px; bottom: 16px;
+    height: 64px;
     background: var(--pill);
-    border-radius: 33px;
+    border: 1px solid var(--line);
+    border-radius: 20px;
     display: flex;
     align-items: stretch;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, .28);
+    box-shadow: 0 12px 32px rgba(28, 27, 25, .10);
     z-index: 10;
     overflow: hidden;
   }
@@ -171,25 +172,14 @@
     pointer-events: none;
     transition: transform .42s cubic-bezier(.22, 1, .36, 1);
   }
-  .tabbar .ind::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 50%;
-    width: 30px; height: 4px;
-    transform: translateX(-50%);
-    background: var(--accent);
-    border-radius: 0 0 4px 4px;
-    box-shadow: 0 6px 16px var(--accent-glow);
-  }
   .tabbar .ind::after {
     content: "";
     position: absolute;
-    left: 50%; top: 50%;
-    width: 46px; height: 46px;
-    transform: translate(-50%, -50%);
+    left: 50%; bottom: 9px;
+    width: 6px; height: 6px;
+    transform: translateX(-50%);
     background: var(--accent);
-    border-radius: 15px;
-    box-shadow: 0 8px 22px var(--accent-glow), 0 0 0 1px rgba(255,255,255,.06) inset;
+    border-radius: 50%;
   }
   .tabbar button {
     position: relative;
@@ -203,22 +193,22 @@
     transition: color .25s;
     -webkit-tap-highlight-color: transparent;
   }
-  .tabbar button:focus-visible { outline-offset: -6px; border-radius: 22px; }
-  .tabbar button.on { color: #fff; }
-  .tabbar button svg { width: 21px; height: 21px; transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
-  .tabbar button.on svg { transform: translateY(-1px) scale(1.05); }
+  .tabbar button:focus-visible { outline-offset: -6px; border-radius: 14px; }
+  .tabbar button.on { color: var(--ink); }
+  .tabbar button svg { width: 22px; height: 22px; transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
+  .tabbar button.on svg { transform: translateY(-3px); }
   .tabbar .badge {
-    position: absolute; top: 17px; right: calc(50% - 16px);
-    width: 8px; height: 8px; border-radius: 50%;
+    position: absolute; top: 17px; right: calc(50% - 15px);
+    width: 7px; height: 7px; border-radius: 50%;
     background: var(--accent); border: 2px solid var(--pill);
   }
   .tabbar button.on .badge { display: none; }
 
   /* ---------- common ---------- */
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
-  .eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
-  .title { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 30px; line-height: 1.05; letter-spacing: -.01em; }
-  .h2 { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 20px; letter-spacing: .01em; }
+  .eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+  .title { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 600; font-size: 28px; line-height: 1.12; letter-spacing: 0; }
+  .h2 { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 600; font-size: 19px; letter-spacing: .01em; }
   .muted { color: var(--ink-2); }
   .small { font-size: 13px; }
   .section { margin-top: 26px; }
@@ -229,7 +219,7 @@
     width: 40px; height: 40px; border-radius: 50%;
     display: grid; place-items: center;
     background: var(--ink); color: var(--bg);
-    font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .02em;
+    font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 15px; letter-spacing: .02em;
     flex: none;
   }
   .avatar.sm { width: 26px; height: 26px; font-size: 11px; }
@@ -242,16 +232,16 @@
 
   .card {
     background: var(--surface);
-    border-radius: 20px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
     padding: 16px;
-    box-shadow: var(--shadow-sm);
   }
   .stack { display: flex; flex-direction: column; gap: 10px; }
   .row { display: flex; align-items: center; gap: 10px; }
   .grow { flex: 1; min-width: 0; }
 
   .btn {
-    border: 0; border-radius: 12px;
+    border: 0; border-radius: 10px;
     padding: 11px 16px;
     font-weight: 600; font-size: 14px;
     background: var(--ink); color: var(--bg);
@@ -283,7 +273,7 @@
 
   /* home class card */
   .class-card { display: grid; grid-template-columns: 62px 1fr; gap: 14px; align-items: start; }
-  .class-card .time { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 28px; line-height: 1; letter-spacing: -.01em; }
+  .class-card .time { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 28px; line-height: 1; letter-spacing: -.01em; }
   .class-card .dur { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
   .class-card .name { font-weight: 600; font-size: 16px; }
   .class-card .meta { color: var(--ink-2); font-size: 13px; }
@@ -291,7 +281,7 @@
   .stackav { display: flex; }
   .stackav .avatar.sm { border: 2px solid var(--surface); margin-left: -8px; }
   .stackav .avatar.sm:first-child { margin-left: 0; }
-  .class-card.mine { box-shadow: 0 0 0 1.5px var(--accent) inset, var(--shadow-sm); }
+  .class-card.mine { border-color: var(--accent); }
   .class-card.past { opacity: .82; }
 
   .progress { height: 8px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
@@ -299,7 +289,7 @@
 
   .weekdots { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
   .weekdots .d { display: grid; gap: 6px; justify-items: center; font-size: 11px; color: var(--ink-3); font-weight: 600; }
-  .weekdots .dot { width: 30px; height: 30px; border-radius: 10px; background: var(--surface-2); display: grid; place-items: center; color: var(--ink-3); }
+  .weekdots .dot { width: 30px; height: 30px; border-radius: 8px; background: var(--surface-2); display: grid; place-items: center; color: var(--ink-3); }
   .weekdots .dot.on { background: var(--accent); color: #fff; }
   .weekdots .dot.today { box-shadow: 0 0 0 2px var(--ink) inset; }
   .weekdots .dot svg { width: 14px; height: 14px; }
@@ -307,22 +297,22 @@
   /* day selector */
   .days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 18px; }
   .days button {
-    border: 0; background: var(--surface); border-radius: 14px; padding: 8px 0 7px; display: grid; gap: 2px; justify-items: center;
-    color: var(--ink-2); box-shadow: var(--shadow-sm);
+    border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 8px 0 7px; display: grid; gap: 2px; justify-items: center;
+    color: var(--ink-2);
   }
-  .days button b { font-family: "Barlow Condensed", system-ui, sans-serif; font-size: 20px; color: var(--ink); line-height: 1; }
+  .days button b { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-size: 20px; color: var(--ink); line-height: 1; }
   .days button small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
-  .days button.on { background: var(--ink); color: var(--bg); }
+  .days button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .days button.on b { color: var(--bg); }
   .days button.today small::after { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); margin-left: 4px; vertical-align: middle; }
 
   .timeline { display: grid; gap: 10px; }
   .slot { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; }
-  .slot .t { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 22px; line-height: 1; }
+  .slot .t { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 22px; line-height: 1; }
   .slot .g { font-weight: 600; }
   .slot .c { font-size: 12px; color: var(--ink-2); }
   .slot .actions { display: flex; gap: 6px; }
-  .iconbtn { width: 38px; height: 38px; border-radius: 12px; border: 0; background: var(--surface-2); color: var(--ink); display: grid; place-items: center; }
+  .iconbtn { width: 38px; height: 38px; border-radius: 10px; border: 0; background: var(--surface-2); color: var(--ink); display: grid; place-items: center; }
   .iconbtn svg { width: 18px; height: 18px; }
   .iconbtn.on { background: var(--accent); color: #fff; }
   .iconbtn.ok { background: var(--ok-soft); color: var(--ok); }
@@ -337,14 +327,14 @@
   /* chat */
   .thread-list { display: grid; gap: 8px; }
   .thread { display: grid; grid-template-columns: 46px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; text-align: left; border: 0; width: 100%; }
-  .thread .ico { width: 46px; height: 46px; border-radius: 15px; background: var(--surface-2); display: grid; place-items: center; font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); }
+  .thread .ico { width: 46px; height: 46px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 16px; color: var(--ink); }
   .thread .ico.accent { background: var(--accent); color: #fff; }
   .thread .n { font-weight: 600; }
   .thread .p { font-size: 13px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .thread .ts { font-size: 11px; color: var(--ink-3); align-self: start; padding-top: 3px; }
 
   .chat-head { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
-  .backbtn { width: 38px; height: 38px; border-radius: 12px; border: 0; background: var(--surface); color: var(--ink); display: grid; place-items: center; box-shadow: var(--shadow-sm); }
+  .backbtn { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); display: grid; place-items: center; }
   .backbtn svg { width: 18px; height: 18px; }
   .msgs { flex: 1; overflow-y: auto; padding: 14px 0; display: flex; flex-direction: column; gap: 10px; scrollbar-width: none; }
   .msgs::-webkit-scrollbar { display: none; }
@@ -364,13 +354,13 @@
 
   /* frequência */
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .stat .v { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 36px; line-height: 1; }
+  .stat .v { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 36px; line-height: 1; }
   .stat .l { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
   .ring-wrap { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; }
   .ring { width: 120px; height: 120px; position: relative; }
   .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
   .ring .c { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
-  .ring .c b { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 800; font-size: 34px; line-height: 1; display: block; }
+  .ring .c b { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1; display: block; }
   .ring .c small { font-size: 11px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
   .req { display: grid; gap: 8px; }
   .req .r { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
@@ -388,9 +378,9 @@
   .chart .bar b { position: absolute; top: -18px; left: 0; right: 0; text-align: center; font-size: 11px; color: var(--ink-2); font-weight: 600; }
   .chart-labels { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 6px; font-size: 10px; color: var(--ink-3); text-align: center; }
   .history { display: grid; gap: 6px; }
-  .history .h { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 12px; background: var(--surface); border-radius: 12px; }
-  .history .h .d { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 18px; line-height: 1; }
-  .history .h .d small { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-family: "Barlow", system-ui, sans-serif; font-weight: 600; }
+  .history .h { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+  .history .h .d { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 18px; line-height: 1; }
+  .history .h .d small { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 600; }
 
   /* forms */
   .field { display: grid; gap: 6px; }
@@ -401,10 +391,36 @@
   .field input:focus, .field select:focus { border-color: var(--ink); outline: none; }
   .stepper { display: grid; grid-template-columns: 44px 1fr 44px; gap: 8px; align-items: center; }
   .stepper .iconbtn { width: 44px; height: 44px; }
-  .stepper .val { text-align: center; font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 24px; }
+  .stepper .val { text-align: center; font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 24px; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   .danger { color: var(--accent); }
+
+  /* selo (hanko) */
+  .seal { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 5px; background: var(--accent); color: #fff; font-family: "Shippori Mincho", "Noto Serif", serif; font-size: 15px; font-weight: 700; line-height: 1; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.3) inset; }
+  .seal.lg { width: 40px; height: 40px; border-radius: 8px; font-size: 22px; }
+
+  /* ilustrações */
+  .illus { width: 100%; height: auto; display: block; }
+  .illus .you { fill: none; stroke: var(--ink); stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; }
+  .illus .you.hd { fill: var(--ink); stroke: none; }
+  .illus .opp { fill: none; stroke: var(--ink-3); stroke-width: 5.5; stroke-linecap: round; stroke-linejoin: round; opacity: .7; }
+  .illus .opp.hd { fill: var(--ink-3); stroke: none; opacity: .7; }
+  .illus .ground { stroke: var(--line); stroke-width: 1.5; }
+  .illus .key { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+  .illus.sm .you, .illus.sm .opp { stroke-width: 7; }
+  .illus.sm .key { stroke-width: 3.5; }
+  .figure { padding: 8px 10px 14px; }
+  .figure .legend { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; font-size: 12px; color: var(--ink-2); margin-top: 2px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+  .legend .l-you i { background: var(--ink); }
+  .legend .l-opp i { background: var(--ink-3); opacity: .7; }
+  .legend .l-key i { border: 2px solid var(--accent); width: 7px; height: 7px; }
+  .figure .keylabel { margin: 10px 8px 0; text-align: center; font-size: 14px; line-height: 1.4; }
+  .figure .keylabel b { color: var(--accent); font-weight: 700; }
+  .thumb { width: 84px; height: 52px; border-radius: 10px; background: var(--surface-2); display: grid; place-items: center; overflow: hidden; }
+  .thumb .illus { width: 84px; }
 
   /* biblioteca */
   .search { position: relative; margin-bottom: 12px; }
@@ -415,7 +431,7 @@
   .catbar::-webkit-scrollbar { display: none; }
   .catbar .chip { flex: none; }
   .movelist { display: grid; gap: 8px; }
-  .thread.move { align-items: start; grid-template-columns: 46px 1fr 18px; }
+  .thread.move { align-items: start; grid-template-columns: 84px 1fr 18px; }
   .thread.move .p { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .thread.move .chev { color: var(--ink-3); display: grid; place-items: center; align-self: center; }
   .thread.move .chev svg { width: 18px; height: 18px; }
@@ -431,12 +447,12 @@
   .tagrow { display: flex; gap: 6px; flex-wrap: wrap; }
   .steps { counter-reset: s; display: grid; gap: 12px; margin: 0; padding: 0; }
   .steps li { list-style: none; display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
-  .steps li::before { counter-increment: s; content: counter(s); width: 28px; height: 28px; border-radius: 9px; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; font-size: 15px; }
+  .steps li::before { counter-increment: s; content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 15px; }
   .tips { display: grid; gap: 8px; margin: 0; padding: 0; }
   .tips li { list-style: none; display: grid; grid-template-columns: 14px 1fr; gap: 6px; font-size: 13.5px; line-height: 1.4; }
   .tips li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ok); margin-top: 7px; justify-self: center; }
   .tips.warn li::before { background: var(--warn); }
-  .callout { border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 4px 16px 16px 4px; padding: 14px 16px; }
+  .callout { border-left: 3px solid var(--accent); background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 4px 14px 14px 4px; padding: 14px 16px; }
   .callout .q { font-size: 15px; line-height: 1.5; }
 
   .toast {
@@ -785,8 +801,8 @@
     return `
       <header class="topbar fade">
         <div>
-          <div class="eyebrow">${fmtLong(today)}</div>
-          <h1 class="title">${greet}, ${esc(p.name.split(' ')[0])}. Oss!</h1>
+          <div class="eyebrow row" style="gap:8px"><span class="seal" aria-hidden="true">畳</span>${fmtLong(today)}</div>
+          <h1 class="title" style="margin-top:6px">${greet}, ${esc(p.name.split(' ')[0])}. Oss!</h1>
         </div>
         <button class="avatar" data-action="go" data-tab="perfil" data-belt="${p.belt}" aria-label="Abrir perfil" style="border:0">${initials(p.name)}</button>
       </header>
@@ -1097,7 +1113,7 @@
     const p = { name: '', belt: 'Branca', stripes: 0, group: 'Fundamentos', lastGrau: key(now()) };
     return `
       <div style="padding-top:26px" class="fade">
-        <div class="eyebrow">Bem-vindo ao Tatame</div>
+        <div class="eyebrow row" style="gap:8px"><span class="seal" aria-hidden="true">畳</span>Bem-vindo ao Tatame</div>
         <h1 class="title" style="font-size:38px;margin:6px 0 10px">Crie seu perfil</h1>
         <p class="muted" style="margin:0 0 18px;max-width:34ch">Faixa, graus e grupo de treino definem seus horários, seu chat e a contagem até o próximo grau.</p>
         <section class="card">${profileForm(p, state.rule, true)}</section>
@@ -1675,6 +1691,101 @@
   ];
   const MOVE_BY_ID = Object.fromEntries(MOVES.map(m => [m.id, m]));
 
+  /* ---------------- biblioteca: ilustrações ----------------
+     Cada figura: "cabeça | pescoço | quadril | braço(cotovelo,mão) | braço | perna(joelho,pé) | perna"
+     Espaço 240x140, chão em y=116. "you" é quem lê (traço de tinta), "opp" é o oponente (cinza). */
+  const POSES = {
+    'guarda-fechada': { you: '38,100 52,98 105,100|70,80,118,66|72,88,120,80|140,66,168,84|138,74,170,92', opp: '150,50 150,62 160,96|128,76,110,86|132,82,112,94|190,110,212,112|186,112,208,116', key: [150, 62], label: 'Quebre a postura: cabeça dele para baixo' },
+    'meia-guarda': { you: '40,92 56,92 108,102|80,72,120,60|76,84,108,76|135,88,150,106|130,100,155,112', opp: '135,38 138,52 160,88|110,70,90,82|150,70,128,90|150,104,140,114|200,104,220,114', key: [120, 60], label: 'Underhook do lado da perna presa' },
+    'meia-guarda-profunda': { you: '128,106 114,104 62,106|130,90,148,86|126,96,150,96|44,84,30,110|46,90,22,102', opp: '152,30 152,42 154,84|130,62,112,74|174,62,188,80|142,104,132,116|192,100,212,116', key: [148, 88], label: 'Cabeça colada na coxa, quadril dele em cima de você' },
+    'borboleta': { you: '70,42 74,56 78,100|100,68,130,56|98,74,128,82|108,84,122,100|104,90,126,104', opp: '150,38 150,52 160,96|128,66,104,72|130,72,110,84|135,110,150,116|196,110,215,114', key: [122, 100], label: 'Gancho ativo por dentro da coxa' },
+    'de-la-riva': { you: '30,102 44,100 95,104|70,110,126,114|68,86,115,74|120,86,150,96|125,96,158,84', opp: '165,22 165,36 168,82|140,56,120,70|185,60,175,80|140,100,128,116|190,100,200,116', key: [150, 96], label: 'Gancho por fora da perna da frente, joelho dele para dentro' },
+    'de-la-riva-reversa': { you: '30,102 44,100 95,104|70,110,124,112|68,86,112,72|118,84,136,92|124,98,160,86', opp: '165,26 165,40 166,84|140,58,120,70|185,60,175,82|128,100,122,116|196,102,206,116', key: [136, 92], label: 'Gancho por dentro, joelho dele apontando para fora' },
+    'guarda-x': { you: '40,96 56,94 110,104|62,78,80,90|64,86,84,98|150,90,182,96|146,100,184,104', opp: '140,22 140,36 142,80|118,58,104,70|164,58,178,74|90,90,60,96|180,100,200,116', key: [182, 100], label: 'Pernas em X afastando a base dele' },
+    'single-leg-x': { you: '34,96 48,94 100,102|62,84,92,98|60,78,84,84|130,80,160,84|128,96,150,90', opp: '170,30 170,44 172,86|150,66,140,84|192,66,200,84|140,96,96,100|200,104,212,116', key: [96, 100], label: 'Pé dele preso na axila, joelho de dentro por dentro' },
+    'aranha': { you: '30,100 44,98 92,102|60,80,112,80|60,90,116,92|110,70,136,70|112,84,140,80', opp: '160,40 160,54 170,96|135,72,112,80|140,78,116,92|150,112,170,116|206,112,222,116', key: [136, 70], label: 'Pé no bíceps, manga controlada' },
+    'lasso': { you: '30,100 44,98 92,102|60,80,110,80|60,90,116,92|120,66,150,84|112,86,140,82', opp: '160,40 160,54 170,96|135,72,112,80|140,78,116,92|150,112,170,116|206,112,222,116', key: [150, 84], label: 'Pé por baixo da axila, braço dele preso' },
+    '50-50': { you: '50,44 54,58 70,100|80,74,108,86|76,80,100,94|100,84,130,98|104,96,135,106', opp: '190,44 186,58 170,100|160,74,134,86|164,80,140,94|140,84,112,98|136,96,108,106', key: [120, 96], label: 'Pernas entrelaçadas: controle o joelho dele' },
+    'retencao': { you: '30,102 44,100 92,104|66,84,128,66|64,92,104,92|122,84,132,94|120,100,150,88', opp: '160,24 160,38 164,84|136,58,124,70|184,60,178,80|136,100,126,116|194,100,204,116', key: [128, 70], label: 'Frame na cabeça, joelho por dentro' },
+
+    'tesoura': { you: '36,98 52,96 104,100|70,78,118,66|72,88,122,80|136,80,160,74|130,108,168,108', opp: '152,48 152,60 160,94|130,74,112,84|134,82,116,92|186,108,208,112|182,110,204,116', key: [160, 76], label: 'Canela de cima na barriga, perna de baixo varre o joelho' },
+    'hip-bump': { you: '74,48 80,62 96,102|100,70,146,48|60,90,44,112|120,88,140,104|118,94,146,110', opp: '150,40 150,54 160,96|132,70,116,84|168,72,180,92|190,110,212,112|188,112,206,116', key: [146, 50], label: 'Braço por cima do ombro, quadril lança para cima' },
+    'pendulo': { you: '46,100 60,98 104,100|76,80,130,72|78,92,124,112|130,60,150,50|60,66,26,60', opp: '150,44 150,56 158,94|128,70,110,80|132,80,116,92|186,108,208,112|182,110,204,116', key: [150, 52], label: 'Perna sobre o ombro, a outra balança como pêndulo' },
+    'raspagem-borboleta': { you: '44,68 54,80 80,106|84,72,130,60|60,94,40,112|110,88,132,86|104,98,130,110', opp: '162,26 158,40 150,80|132,54,110,66|150,60,140,78|140,86,132,70|170,100,196,110', key: [132, 86], label: 'Gancho levanta a perna dele na diagonal' },
+    'raspagem-meia-guarda': { you: '92,66 100,78 110,104|124,84,164,92|118,88,150,110|136,96,158,112|130,104,160,116', opp: '140,36 142,50 150,88|120,60,100,64|168,68,180,86|150,102,168,112|184,96,206,114', key: [164, 92], label: 'Saia por baixo e pegue o pé de fora dele' },
+    'raspagem-x': { you: '40,96 56,94 110,104|62,78,80,90|64,86,84,98|150,88,186,82|146,100,190,96', opp: '176,34 172,46 158,84|150,60,134,70|186,64,196,84|100,94,68,96|186,100,212,110', key: [186, 90], label: 'Estenda o X: a base dele se abre' },
+    'raspagem-tripe': { you: '30,102 44,100 92,104|66,112,126,116|66,86,100,86|120,84,150,86|126,100,178,106', opp: '160,24 160,38 164,84|136,56,120,66|184,60,190,82|142,100,128,116|186,104,182,118', key: [178, 106], label: 'Mão no tornozelo, pé no quadril, gancho na outra perna' },
+    'raspagem-gancho': { you: '30,102 44,100 95,104|70,110,124,116|68,86,118,70|120,86,156,100|126,96,160,80', opp: '184,30 180,44 172,86|150,62,134,72|196,64,206,84|136,104,124,118|196,102,212,116', key: [156, 100], label: 'Estenda o gancho, puxe o calcanhar: ele cai para o lado' },
+    'raspagem-lasso': { you: '30,100 44,98 92,102|60,80,110,80|60,90,116,92|120,66,150,84|116,86,146,98', opp: '176,46 172,58 170,98|140,74,112,80|150,80,126,96|150,112,166,116|206,110,222,116', key: [150, 84], label: 'Lasso preso: ele cai por cima do braço sem apoio' },
+    'berimbolo': { you: '96,112 100,98 96,64|112,90,140,96|110,94,136,108|110,50,140,46|104,44,128,30', opp: '176,50 176,64 170,102|150,78,130,92|150,86,136,100|140,98,116,108|198,110,222,116', key: [140, 96], label: 'Gire invertido segurando o quadril dele' },
+
+    'conceito-passagem': { you: '160,24 160,38 164,84|136,60,120,72|184,62,178,84|140,100,130,116|192,100,202,116', opp: '30,102 44,100 92,104|66,86,104,84|66,94,100,96|118,82,130,94|122,94,140,86', key: [92, 104], label: 'Quadril dele primeiro, cabeça depois' },
+    'knee-cut': { you: '150,40 150,52 160,92|126,64,104,58|130,74,110,80|150,100,128,106|198,108,216,116', opp: '36,100 52,98 100,104|72,84,120,84|70,92,112,96|120,92,140,108|130,90,166,80', key: [128, 104], label: 'Joelho corta sobre a coxa dele, cabeça baixa' },
+    'toreando': { you: '150,24 150,38 154,84|126,60,104,86|130,62,110,90|140,100,128,116|186,100,196,116', opp: '30,102 44,100 90,104|66,84,98,80|64,92,98,96|110,90,104,96|112,96,106,106', key: [106, 90], label: 'Joelhos dele para o lado, você passa pelo outro' },
+    'leg-drag': { you: '150,44 150,56 156,96|126,68,104,70|132,76,120,92|150,110,170,116|196,110,214,116', opp: '36,96 52,96 100,100|72,82,110,74|70,90,110,88|130,90,160,94|122,104,150,110', key: [160, 94], label: 'Perna dele cruzada sobre o seu quadril' },
+    'over-under': { you: '110,64 118,72 160,92|90,84,74,100|108,92,130,110|180,106,200,116|186,108,214,116', opp: '30,104 44,102 92,104|66,88,104,78|64,96,102,96|110,86,86,74|120,98,150,110', key: [86, 76], label: 'Um braço por baixo, outro por cima; ombro no quadril' },
+    'double-under': { you: '104,52 108,64 150,94|82,74,66,90|86,84,72,100|170,108,190,116|178,108,206,116', opp: '36,104 50,100 80,74|62,88,92,90|60,94,90,100|58,58,42,62|66,54,52,52', key: [80, 74], label: 'Quadril dele para cima, empilhado' },
+    'long-step': { you: '132,40 134,54 156,88|110,66,90,78|150,72,150,92|150,104,140,116|200,96,224,110', opp: '36,102 50,100 96,104|70,86,108,84|68,94,104,96|120,92,142,100|126,100,150,90', key: [224, 110], label: 'Passo longo para trás, quadril baixo' },
+    'smash-pass': { you: '96,52 108,60 150,84|80,70,60,78|100,78,80,96|160,100,148,112|190,98,214,112', opp: '36,100 52,100 100,104|72,86,96,72|70,92,100,96|120,96,150,108|126,90,160,86', key: [60, 78], label: 'Crossface primeiro: ombro no queixo dele' },
+    'body-lock': { you: '100,54 108,62 150,86|84,78,90,96|104,78,106,98|158,102,150,114|186,100,212,112', opp: '36,102 50,100 98,104|70,86,110,72|70,94,100,96|118,90,138,102|126,100,150,110', key: [96, 98], label: 'Mãos travadas na lombar, peito colado' },
+
+    'armlock': { you: '54,104 68,102 118,104|86,86,138,64|84,94,140,72|134,68,116,44|140,90,160,74', opp: '164,40 164,54 176,94|140,62,124,66|170,74,150,72|200,108,220,112|196,110,216,116', key: [124, 66], label: 'Braço dele preso, joelhos juntos, quadril sobe' },
+    'triangulo': { you: '38,100 52,98 104,100|70,80,120,70|72,90,112,60|134,60,160,40|136,72,168,58', opp: '150,46 150,58 160,96|130,72,112,78|134,82,120,94|190,110,212,112|186,112,208,116', key: [160, 44], label: 'Cabeça e um braço dentro; ângulo antes de travar' },
+    'omoplata': { you: '52,40 56,54 78,100|82,66,128,72|76,80,120,100|112,80,138,64|108,92,136,90', opp: '152,58 152,70 176,104|130,74,120,88|150,86,132,100|200,112,220,116|196,114,216,118', key: [138, 64], label: 'Perna enrola o braço; sente e incline para frente' },
+    'kimura': { you: '40,94 56,92 108,102|80,74,124,68|78,82,130,80|140,70,168,86|138,78,170,96', opp: '150,44 150,56 162,96|128,72,124,66|134,78,130,80|192,110,214,112|188,112,210,116', key: [126, 68], label: 'Figura quatro: punho preso, cotovelo dele no seu peito' },
+    'americana': { you: '96,52 108,62 150,90|84,72,60,74|94,82,70,88|170,106,190,116|180,106,208,116', opp: '36,102 50,100 98,104|60,84,46,66|64,90,96,96|120,96,150,108|126,90,160,86', key: [46, 66], label: 'Punho dele no tatame, arraste o cotovelo' },
+    'estrangulamento-cruzado': { you: '38,100 52,98 105,100|70,80,138,60|74,88,140,64|140,66,168,84|138,74,170,92', opp: '148,50 148,62 160,96|128,76,110,86|132,82,112,94|190,110,212,112|186,112,208,116', key: [148, 62], label: 'Mãos fundas e cruzadas na gola' },
+    'ezequiel': { you: '108,44 116,56 130,86|92,58,66,68|104,70,76,80|110,100,90,116|158,100,170,116', opp: '36,102 52,100 100,104|72,84,110,78|72,92,110,92|130,92,166,100|128,102,166,110', key: [66, 68], label: 'Braço por baixo da nuca, mão dentro da própria manga' },
+    'mata-leao': { you: '78,36 82,50 90,96|104,54,126,58|100,44,116,40|118,84,140,106|112,92,136,112', opp: '112,44 114,58 122,100|136,74,150,88|134,80,148,94|152,96,178,112|150,102,180,116', key: [124, 58], label: 'Cotovelo abaixo do queixo, mão escondida atrás da cabeça dele' },
+    'guilhotina': { you: '60,42 66,56 80,102|92,66,124,80|90,72,118,68|110,88,140,100|106,96,140,110', opp: '124,76 134,66 170,96|112,84,108,100|140,88,130,102|196,110,214,114|192,112,210,118', key: [124, 78], label: 'Lâmina do antebraço sob o queixo, quadril colado' },
+    'darce': { you: '104,44 112,56 150,90|84,72,150,76|110,76,90,60|172,106,190,116|182,106,208,116', opp: '76,84 90,76 136,100|80,90,84,104|110,90,110,106|160,112,180,116|156,114,178,118', key: [84, 74], label: 'Braço por baixo da axila até a nuca; ombro dele fecha o outro lado' },
+    'anaconda': { you: '160,60 148,68 100,90|140,86,86,80|150,80,130,60|80,104,60,112|82,100,54,100', opp: '90,86 104,80 150,100|88,96,82,110|124,94,122,108|172,112,192,116|168,114,190,118', key: [90, 78], label: 'Braço pelo pescoço saindo pela axila; role para o lado do braço preso' },
+    'katagatame': { you: '60,54 68,66 120,92|46,70,40,88|88,78,60,80|150,106,176,116|150,110,190,116', opp: '40,100 54,100 104,104|48,84,40,72|74,90,110,92|126,94,160,104|128,102,164,112', key: [40, 74], label: 'Braço dele cruzado no pescoço; seu ombro fecha o outro lado' },
+    'armlock-montada': { you: '150,40 150,52 130,88|126,62,94,80|130,70,100,88|96,96,70,102|150,104,168,116', opp: '36,102 52,100 100,104|72,84,100,72|70,92,110,92|130,92,166,100|128,102,166,110', key: [94, 80], label: 'Braço dele isolado, perna passa sobre a cabeça' },
+    'relogio': { you: '132,40 138,52 172,92|110,66,84,78|132,76,104,90|186,108,204,116|194,106,216,116', opp: '84,76 96,70 140,96|82,84,80,102|116,86,112,104|164,110,182,116|160,112,180,118', key: [84, 78], label: 'Mão funda na gola, peso na cabeça, caminhe como um relógio' },
+    'chave-de-pe': { you: '30,84 46,88 98,104|66,100,102,110|62,92,96,100|128,84,160,88|124,96,150,90', opp: '176,34 176,48 176,90|154,68,144,84|198,70,204,90|140,98,102,106|204,106,214,118', key: [102, 108], label: 'Calcanhar dele na axila, quadril para frente' },
+    'heel-hook': { you: '30,96 46,94 96,102|66,86,124,90|64,96,128,104|130,78,156,84|126,96,160,90', opp: '176,34 176,48 178,88|156,68,150,86|198,70,206,88|150,100,126,96|204,106,214,118', key: [126, 96], label: 'Joelho dele preso acima da linha; gire o calcanhar devagar' },
+    'toe-hold': { you: '30,96 46,94 96,102|66,86,120,98|64,96,126,104|130,80,156,86|126,96,160,90', opp: '176,34 176,48 178,88|156,68,150,86|198,70,206,88|150,100,122,100|204,106,214,118', key: [122, 100], label: 'Figura quatro no pé, leve-o em direção ao glúteo' },
+
+    'montada': { you: '120,38 122,50 128,88|104,66,90,78|142,68,158,80|104,100,86,114|154,100,172,114', opp: '36,102 52,100 100,104|72,84,100,72|72,92,112,92|130,92,166,100|128,102,166,110', key: [128, 88], label: 'Quadril baixo, joelhos altos rumo às axilas' },
+    'controle-costas': { you: '78,36 82,50 90,96|104,58,128,70|106,76,128,78|118,84,140,106|112,92,136,112', opp: '112,44 114,58 122,100|136,74,150,88|134,80,148,94|152,96,178,112|150,102,180,116', key: [128, 72], label: 'Cinto de segurança: um braço por cima do ombro, outro por baixo da axila' },
+    'cem-quilos': { you: '90,54 100,64 150,90|74,74,50,84|96,82,84,100|170,106,192,116|176,106,206,116', opp: '36,102 52,100 100,104|72,84,110,78|70,92,110,92|126,94,160,104|128,102,164,112', key: [50, 84], label: 'Peito no peito, crossface vira a cabeça dele' },
+    'joelho-na-barriga': { you: '124,30 126,44 130,86|104,58,74,70|146,60,150,92|100,98,84,110|176,100,204,116', opp: '36,102 52,100 100,104|72,84,100,72|70,92,110,92|130,92,166,100|128,102,166,110', key: [100, 100], label: 'Joelho no abdômen, perna de base longe' },
+    'front-headlock': { you: '104,44 112,56 150,90|84,70,72,84|104,76,84,90|170,106,190,116|182,106,208,116', opp: '78,86 90,78 136,100|76,94,74,110|110,90,108,108|160,112,180,116|156,114,178,118', key: [72, 84], label: 'Queixo e braço controlados, peito sobre os ombros dele' },
+    'saddle': { you: '32,90 48,90 98,100|68,82,128,92|66,92,130,106|130,74,166,80|126,96,164,90', opp: '180,32 180,46 180,90|158,68,150,86|202,70,208,88|150,100,120,98|208,106,218,118', key: [150, 98], label: 'Triângulo de pernas acima do joelho dele' },
+
+    'escape-montada': { you: '36,102 52,100 112,82|72,84,104,70|72,92,112,86|140,96,162,112|136,104,160,116', opp: '120,34 122,46 122,86|104,60,94,72|142,62,154,76|100,100,84,114|150,100,168,114', key: [112, 82], label: 'Ponte alta em diagonal; cotovelo por dentro do joelho dele' },
+    'escape-cem-quilos': { you: '36,100 52,98 104,104|68,84,92,66|70,90,110,90|122,88,118,74|126,100,160,110', opp: '92,50 100,60 150,90|76,74,58,84|100,78,92,96|170,106,192,116|176,106,206,116', key: [118, 76], label: 'Frames, ponte e joelho por dentro' },
+    'escape-costas': { you: '76,88 90,80 132,104|86,66,110,70|96,86,112,76|150,112,176,116|150,116,180,118|', opp: '132,40 134,54 138,96|118,66,104,70|118,74,112,78|150,110,170,116|154,108,180,116', key: [90, 80], label: 'Ombros no chão, escorregue o quadril para o lado do braço de cima' },
+    'escape-casco': { you: '78,66 88,72 120,96|72,86,70,104|100,90,100,108|140,110,160,116|136,112,158,118', opp: '166,40 166,54 168,96|142,66,124,78|150,74,128,90|150,112,168,116|196,110,214,116', key: [70, 100], label: 'Cotovelos colados nos joelhos; sente em direção a ele' },
+    'escape-joelho-barriga': { you: '36,98 52,96 104,104|68,82,102,90|70,90,112,92|124,90,120,76|126,100,160,110', opp: '124,30 126,44 130,86|104,58,84,70|146,60,150,92|100,98,84,110|176,100,204,116', key: [102, 92], label: 'Vire de lado; antebraço, não a mão, empurra o joelho' },
+    'defesa-armlock': { you: '164,36 164,50 168,92|140,66,112,70|146,76,130,90|150,104,138,116|196,106,208,118', opp: '54,104 68,102 118,104|86,86,126,68|84,94,124,76|130,66,112,50|140,90,160,74', key: [112, 70], label: 'Mãos travadas, empilhe o peso, polegar para baixo' },
+    'defesa-triangulo': { you: '166,30 166,44 168,90|142,62,132,84|186,66,172,88|150,104,138,116|196,104,208,118|', opp: '38,100 52,98 104,100|70,80,118,74|72,90,110,90|136,60,164,44|140,74,170,58', key: [166, 40], label: 'Postura alta, cotovelo de dentro no quadril dele' },
+  };
+
+  function parseFig(str) {
+    const parts = str.split('|').filter(Boolean);
+    const pts = parts[0].trim().split(/\s+/).map(p => p.split(',').map(Number));
+    const segs = parts.slice(1).map(p => p.split(',').map(Number));
+    return { head: pts[0], neck: pts[1], hip: pts[2], arms: segs.slice(0, 2), legs: segs.slice(2, 4) };
+  }
+  function figPath(f) {
+    const limb = (from, s) => `M${from[0]},${from[1]} L${s[0]},${s[1]} L${s[2]},${s[3]}`;
+    return `M${f.neck[0]},${f.neck[1]} L${f.hip[0]},${f.hip[1]} ` + f.arms.map(a => limb(f.neck, a)).join(' ') + ' ' + f.legs.map(l => limb(f.hip, l)).join(' ');
+  }
+  function figureSVG(m, small) {
+    const p = POSES[m.id];
+    if (!p) return '';
+    const you = parseFig(p.you), opp = parseFig(p.opp);
+    const draw = (f, cls) => `<path class="${cls}" d="${figPath(f)}"/><circle class="${cls} hd" cx="${f.head[0]}" cy="${f.head[1]}" r="8.5"/>`;
+    return `<svg class="illus ${small ? 'sm' : ''}" viewBox="0 0 240 140" role="img" aria-label="Ilustração: ${esc(m.name)}. ${esc(p.label)}">
+      <line class="ground" x1="12" y1="118" x2="228" y2="118"/>
+      ${draw(opp, 'opp')}${draw(you, 'you')}
+      <circle class="key" cx="${p.key[0]}" cy="${p.key[1]}" r="${small ? 11 : 13}"/>
+    </svg>`;
+  }
+  const poseLabel = m => (POSES[m.id] || {}).label || '';
+
   /* ---------------- biblioteca: telas ---------------- */
   const CAT_ICON = {
     shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6l-7-2.5Z"/><path d="m9 12 2 2 4-4.5"/></svg>',
@@ -1696,11 +1807,11 @@
     const c = CAT_BY_ID[m.cat];
     return `
       <button class="card thread move" data-action="openmove" data-id="${m.id}">
-        <span class="ico tone-${c.tone}">${CAT_ICON[c.icon]}</span>
+        <span class="thumb">${figureSVG(m, true)}</span>
         <span class="grow">
           <div class="n">${esc(m.name)}</div>
           <div class="p">${esc(m.summary)}</div>
-          <div class="tagrow" style="margin-top:6px"><span class="pill soft">${esc(c.name)}</span><span class="pill soft">${esc(m.level)}</span><span class="pill soft">${esc(m.style)}</span></div>
+          <div class="tagrow" style="margin-top:6px"><span class="pill soft">${esc(m.level)}</span><span class="pill soft">${esc(m.style)}</span></div>
         </span>
         <span class="chev">${I.chev}</span>
       </button>`;
@@ -1726,7 +1837,7 @@
           <div class="eyebrow">Guia de movimentações</div>
           <h1 class="title">Biblioteca</h1>
         </div>
-        <span class="pill soft num">${MOVES.length} técnicas</span>
+        <span class="seal lg" title="${MOVES.length} técnicas" aria-label="${MOVES.length} técnicas">技</span>
       </header>
       <div class="search fade" style="animation-delay:.05s">
         ${I.search}
@@ -1753,6 +1864,12 @@
       </div>
       <h1 class="title fade" style="font-size:32px;margin:6px 0 10px">${esc(m.name)}</h1>
       <div class="tagrow fade" style="animation-delay:.03s"><span class="pill accent">Faixa ${esc(m.level.toLowerCase())}+</span><span class="pill soft">${esc(m.style)}</span></div>
+
+      <section class="card figure fade section" style="animation-delay:.05s;margin-top:16px">
+        ${figureSVG(m)}
+        <div class="legend"><span class="l-you"><i></i>Você</span><span class="l-opp"><i></i>Oponente</span><span class="l-key"><i></i>Ponto-chave</span></div>
+        ${poseLabel(m) ? `<div class="keylabel"><b>Ponto-chave:</b> ${esc(poseLabel(m))}</div>` : ''}
+      </section>
 
       <section class="card fade section" style="animation-delay:.06s;margin-top:18px">
         <div class="eyebrow" style="margin-bottom:6px">Ideia central</div>
