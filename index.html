@@ -164,10 +164,11 @@
     z-index: 10;
     overflow: hidden;
   }
+  .tabbar[hidden] { display: none; }
   .tabbar .ind {
     position: absolute;
     top: 0; left: 0;
-    width: calc(100% / 6);
+    width: calc(100% / 7);
     height: 100%;
     pointer-events: none;
     transition: transform .42s cubic-bezier(.22, 1, .36, 1);
@@ -195,7 +196,7 @@
   }
   .tabbar button:focus-visible { outline-offset: -6px; border-radius: 14px; }
   .tabbar button.on { color: var(--ink); }
-  .tabbar button svg { width: 22px; height: 22px; transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
+  .tabbar button svg { width: 21px; height: 21px; transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
   .tabbar button.on svg { transform: translateY(-3px); }
   .tabbar .badge {
     position: absolute; top: 17px; right: calc(50% - 15px);
@@ -451,6 +452,42 @@
   .callout { border-left: 3px solid var(--accent); background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 4px 14px 14px 4px; padding: 14px 16px; }
   .callout .q { font-size: 15px; line-height: 1.5; }
 
+  /* login */
+  .login { min-height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 20px 4px 40px; }
+  .login .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 34px; }
+  .login .brand .seal.lg { width: 48px; height: 48px; font-size: 26px; border-radius: 10px; }
+  .login .brand .name { font-weight: 700; font-size: 26px; letter-spacing: -.01em; line-height: 1; }
+  .login .brand .sub { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
+  .login .field input { padding: 13px 14px; }
+  .login .pw { position: relative; }
+  .login .pw input { padding-right: 46px; }
+  .login .pw .iconbtn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: transparent; color: var(--ink-3); }
+  .login .err { color: var(--accent); font-size: 13px; font-weight: 600; min-height: 18px; }
+  .login .foot { text-align: center; color: var(--ink-3); font-size: 12px; margin-top: 26px; }
+  .field input.invalid { border-color: var(--accent); }
+
+  /* cronômetro */
+  .timer-wrap { display: grid; justify-items: center; gap: 18px; padding-top: 6px; }
+  .tring { position: relative; width: 250px; height: 250px; }
+  .tring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .tring .c { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
+  .tring .c .digits { font-weight: 700; font-size: 58px; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .tring .c .lbl { font-size: 12px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .12em; margin-top: 8px; }
+  .tring.done .c .digits { color: var(--accent); }
+  .tctrl { display: flex; gap: 10px; justify-content: center; width: 100%; }
+  .tctrl .btn { min-width: 128px; height: 50px; border-radius: 14px; font-size: 15px; }
+  .tctrl .btn svg { width: 20px; height: 20px; }
+  .tctrl .iconbtn.big { width: 50px; height: 50px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); }
+  .tctrl .iconbtn.big svg { width: 20px; height: 20px; }
+  .tadjust { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; }
+  .tadjust .stepper .val { font-size: 22px; }
+  .presets { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .countdown { position: absolute; inset: 0; z-index: 30; display: grid; place-items: center; background: var(--bg); text-align: center; }
+  .countdown .n { font-weight: 700; font-size: 150px; line-height: 1; letter-spacing: -.04em; color: var(--ink); animation: pop .9s cubic-bezier(.22, 1, .36, 1) both; }
+  .countdown .n.go { color: var(--accent); font-size: 72px; }
+  .countdown .hint { position: absolute; bottom: 48px; left: 0; right: 0; color: var(--ink-3); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; font-weight: 600; }
+  @keyframes pop { from { opacity: 0; transform: scale(.6); } to { opacity: 1; transform: none; } }
+
   .toast {
     position: absolute; left: 50%; bottom: 98px; transform: translate(-50%, 16px);
     background: var(--ink); color: var(--bg); border-radius: 999px; padding: 9px 16px; font-size: 13px; font-weight: 600;
@@ -477,6 +514,7 @@
     <button data-tab="biblioteca" aria-label="Biblioteca"></button>
     <button data-tab="chat" aria-label="Chat"></button>
     <button data-tab="freq" aria-label="Frequência"></button>
+    <button data-tab="timer" aria-label="Cronômetro"></button>
     <button data-tab="perfil" aria-label="Perfil"></button>
   </nav>
   <div class="toast" id="toast" role="status"></div>
@@ -508,6 +546,13 @@
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 16.5v-11Z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h4.5a1.5 1.5 0 0 0 1.5-1.5v-11Z"/><path d="M7 8h2.5M7 11h2.5M14.5 8H17M14.5 11H17"/></svg>',
     search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>',
     image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17 4.5-4.5 3 3 3-3.5 4.5 5"/></svg>',
+    timer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 10v3.5l2.5 1.5"/><path d="M9.5 3h5M12 3v3"/><path d="m18 7 1.5-1.5"/></svg>',
+    pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>',
+    play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10-6.5-10-6.5Z"/></svg>',
+    reset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4.5h4.5"/></svg>',
+    eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></svg>',
+    eyeoff: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l18 18"/><path d="M10.6 6.1A10.5 10.5 0 0 1 12 6c6 0 9.5 6 9.5 6a17 17 0 0 1-3.2 3.8"/><path d="M6.6 6.8A16.5 16.5 0 0 0 2.5 12S6 18.5 12 18.5c1.6 0 3-.4 4.2-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
+    lockicon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>',
     x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
     chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 6 6 6-6 6"/></svg>',
   };
@@ -678,12 +723,19 @@
   }
 
   /* ---------------- ui: nav ---------------- */
-  const TABS = ['home', 'aulas', 'biblioteca', 'chat', 'freq', 'perfil'];
-  const ICON_BY_TAB = { home: I.home, aulas: I.cal, biblioteca: I.book, chat: I.chat, freq: I.chart, perfil: I.user };
+  const TABS = ['home', 'aulas', 'biblioteca', 'chat', 'freq', 'timer', 'perfil'];
+  const ICON_BY_TAB = { home: I.home, aulas: I.cal, biblioteca: I.book, chat: I.chat, freq: I.chart, timer: I.timer, perfil: I.user };
   let tab = 'home';
   let chatOpen = null;
   let aulasDay = key(now());
   let onlyMine = false;
+  const AUTH_KEY = 'tatame-auth';
+  // Acesso provisório do lado do aluno. As credenciais passam a vir do módulo admin quando ele existir.
+  const ACCESS = { user: 'andrean', pass: '12345678' };
+  let auth = false;
+  try { auth = localStorage.getItem(AUTH_KEY) === '1'; } catch { auth = false; }
+  let showPw = false;
+  let loginError = '';
   let libOpen = null;
   let libQuery = '';
   let libCat = 'todas';
@@ -1106,7 +1158,8 @@
       <section class="section fade" style="animation-delay:.15s">
         <div class="stack">
           <button class="btn ghost block" data-action="theme">Alternar tema claro/escuro</button>
-          <button class="btn ghost block danger" data-action="logout">Sair e criar outro perfil</button>
+          <button class="btn ghost block" data-action="signout">${I.lockicon} Sair da conta</button>
+          <button class="btn ghost block danger" data-action="logout">Apagar perfil deste aparelho</button>
           <div class="small muted" style="text-align:center;padding:0 12px">Versão do aluno. Você envia a confirmação de que vai treinar e ela fica pendente até o professor registrar a presença no módulo da academia. Grade, colegas, mensagens e presenças são exemplos até esse módulo existir.</div>
         </div>
       </section>`;
@@ -1880,10 +1933,144 @@
       <p class="small muted" style="margin:24px 4px 0;text-align:center">Tutorial resumido para revisão. A execução segura depende de orientação presencial.</p>`;
   }
 
+  /* ---------------- login ---------------- */
+  function renderLogin() {
+    return `
+      <div class="login fade">
+        <div class="brand">
+          <span class="seal lg" aria-hidden="true">畳</span>
+          <div><div class="name">Tatame</div><div class="sub">Área do aluno</div></div>
+        </div>
+        <form class="stack" data-action="login" style="gap:14px" novalidate>
+          <div class="field"><label for="l-user">Usuário</label><input id="l-user" name="user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="seu usuário" required class="${loginError ? 'invalid' : ''}"></div>
+          <div class="field"><label for="l-pass">Senha</label>
+            <div class="pw">
+              <input id="l-pass" name="pass" type="${showPw ? 'text' : 'password'}" autocomplete="current-password" placeholder="sua senha" required class="${loginError ? 'invalid' : ''}">
+              <button type="button" class="iconbtn" data-action="togglepw" aria-label="${showPw ? 'Ocultar senha' : 'Mostrar senha'}">${showPw ? I.eyeoff : I.eye}</button>
+            </div></div>
+          <div class="err" role="alert">${esc(loginError)}</div>
+          <button class="btn primary block" type="submit" style="height:50px;border-radius:14px;font-size:15px">Entrar</button>
+        </form>
+        <div class="foot">Acesso liberado pela academia</div>
+      </div>`;
+  }
+
+  /* ---------------- cronômetro ---------------- */
+  const T = { total: 300, left: 300, phase: 'idle', endAt: 0, tick: null, count: null, countVal: 3 };
+  const fmtT = sec => `${pad(Math.floor(sec / 60))}:${pad(Math.floor(sec % 60))}`;
+  let audio;
+  function beep(freq = 880, dur = .12, vol = .18) {
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.type = 'sine'; o.frequency.value = freq;
+      g.gain.setValueAtTime(vol, audio.currentTime);
+      g.gain.exponentialRampToValueAtTime(.0001, audio.currentTime + dur);
+      o.connect(g).connect(audio.destination); o.start(); o.stop(audio.currentTime + dur);
+    } catch { /* sem áudio */ }
+  }
+  function timerSet(total) { T.total = Math.max(10, Math.min(3600, total)); T.left = T.total; T.phase = 'idle'; }
+  function timerStart() {
+    clearInterval(T.count);
+    T.phase = 'count'; T.countVal = 3;
+    beep(660);
+    render();
+    T.count = setInterval(() => {
+      T.countVal -= 1;
+      if (T.countVal >= 1) { beep(660); renderCountdown(); return; }
+      if (T.countVal === 0) { beep(990, .25, .22); renderCountdown(); return; }
+      clearInterval(T.count);
+      timerRun();
+    }, 1000);
+  }
+  function timerRun() {
+    T.phase = 'run';
+    T.endAt = Date.now() + T.left * 1000;
+    clearInterval(T.tick);
+    T.tick = setInterval(timerTick, 200);
+    render();
+  }
+  function timerTick() {
+    const left = Math.max(0, Math.ceil((T.endAt - Date.now()) / 1000));
+    if (left !== T.left) {
+      T.left = left;
+      if (left <= 3 && left > 0) beep(660, .08, .12);
+    }
+    if (left === 0) {
+      clearInterval(T.tick); T.phase = 'done';
+      beep(990, .5, .25); setTimeout(() => beep(990, .5, .25), 600);
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 400]);
+      if (tab === 'timer') render();
+      return;
+    }
+    if (tab === 'timer') updateTimerDisplay();
+  }
+  function timerPause() { clearInterval(T.tick); T.left = Math.max(0, Math.ceil((T.endAt - Date.now()) / 1000)); T.phase = 'paused'; render(); }
+  function timerReset() { clearInterval(T.tick); clearInterval(T.count); T.left = T.total; T.phase = 'idle'; render(); }
+  function updateTimerDisplay() {
+    const d = document.getElementById('tDigits'); if (d) d.textContent = fmtT(T.left);
+    const r = document.getElementById('tRing'); if (r) { const C = Number(r.dataset.c); r.setAttribute('stroke-dashoffset', C * (1 - T.left / T.total)); }
+  }
+  function renderCountdown() {
+    const el = document.getElementById('countdown'); if (!el) return;
+    const go = T.countVal === 0;
+    el.innerHTML = `<div class="n ${go ? 'go' : ''}" key="${T.countVal}">${go ? 'Valendo!' : T.countVal}</div><div class="hint">${fmtT(T.total)} no relógio</div>`;
+  }
+  function renderTimer() {
+    const R = 110, C = 2 * Math.PI * R;
+    const pct = T.left / T.total;
+    const label = { idle: 'pronto', count: 'preparar', run: 'valendo', paused: 'pausado', done: 'tempo!' }[T.phase];
+    const presets = [180, 300, 360, 420, 600];
+    let ctrl;
+    if (T.phase === 'idle') ctrl = `
+      <div class="tadjust">
+        <div class="field"><label>Minutos</label><div class="stepper">
+          <button class="iconbtn" data-action="tadj" data-d="-60" aria-label="Menos um minuto">${I.minus}</button>
+          <div class="val num">${Math.floor(T.total / 60)}</div>
+          <button class="iconbtn" data-action="tadj" data-d="60" aria-label="Mais um minuto">${I.plus}</button></div></div>
+        <div class="field"><label>Segundos</label><div class="stepper">
+          <button class="iconbtn" data-action="tadj" data-d="-10" aria-label="Menos dez segundos">${I.minus}</button>
+          <div class="val num">${pad(T.total % 60)}</div>
+          <button class="iconbtn" data-action="tadj" data-d="10" aria-label="Mais dez segundos">${I.plus}</button></div></div>
+      </div>
+      <div class="presets">${presets.map(p => `<button class="chip ${p === T.total ? 'on' : ''}" data-action="tpreset" data-s="${p}">${p / 60} min</button>`).join('')}</div>
+      <div class="tctrl"><button class="btn primary" data-action="tstart">${I.play} Iniciar</button></div>`;
+    else if (T.phase === 'run') ctrl = `<div class="tctrl"><button class="btn" data-action="tpause">${I.pause} Pausar</button><button class="iconbtn big" data-action="treset" aria-label="Resetar">${I.reset}</button></div>`;
+    else if (T.phase === 'paused') ctrl = `<div class="tctrl"><button class="btn primary" data-action="tresume">${I.play} Continuar</button><button class="iconbtn big" data-action="treset" aria-label="Resetar">${I.reset}</button></div>`;
+    else ctrl = `<div class="tctrl"><button class="btn primary" data-action="treset">${I.reset} Resetar</button></div>`;
+    return `
+      <header class="topbar fade">
+        <div>
+          <div class="eyebrow">Rounds e drills</div>
+          <h1 class="title">Cronômetro</h1>
+        </div>
+        <span class="pill soft num">${fmtT(T.total)}</span>
+      </header>
+      <div class="timer-wrap fade" style="animation-delay:.05s">
+        <div class="tring ${T.phase === 'done' ? 'done' : ''}" role="timer" aria-live="off">
+          <svg viewBox="0 0 250 250">
+            <circle cx="125" cy="125" r="${R}" fill="none" stroke="var(--surface-2)" stroke-width="10"/>
+            <circle id="tRing" data-c="${C}" cx="125" cy="125" r="${R}" fill="none" stroke="${T.phase === 'done' ? 'var(--accent)' : 'var(--ink)'}" stroke-width="10" stroke-linecap="round"
+              stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}" style="transition: stroke-dashoffset .2s linear"/>
+          </svg>
+          <div class="c"><div><div class="digits num" id="tDigits">${fmtT(T.left)}</div><div class="lbl">${label}</div></div></div>
+        </div>
+        ${ctrl}
+      </div>
+      ${T.phase === 'count' ? '<div class="countdown" id="countdown" aria-live="assertive"></div>' : ''}`;
+  }
+
   /* ---------------- render ---------------- */
   function render() {
     settleConfirmations();
     const $tab = document.getElementById('tabbar');
+    if (!auth) {
+      $tab.hidden = true;
+      $screen.className = 'screen';
+      $screen.innerHTML = renderLogin();
+      const u = document.getElementById('l-user'); if (u && !loginError) u.focus();
+      return;
+    }
     if (!state.onboarded) {
       $tab.hidden = true;
       $screen.className = 'screen';
@@ -1898,8 +2085,10 @@
     else if (tab === 'biblioteca') html = libOpen ? renderMove(libOpen) : renderLib();
     else if (tab === 'chat') html = chatOpen ? renderChatThread(chatOpen) : renderChatList();
     else if (tab === 'freq') html = renderFreq();
+    else if (tab === 'timer') html = renderTimer();
     else html = renderPerfil();
     $screen.innerHTML = html;
+    if (tab === 'timer' && T.phase === 'count') renderCountdown();
     if (chatOpen && tab === 'chat') {
       const $m = document.getElementById('msgs');
       if ($m) $m.scrollTop = $m.scrollHeight;
@@ -1947,6 +2136,14 @@
       const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
       root.dataset.theme = dark ? 'light' : 'dark';
     }
+    else if (a === 'togglepw') { showPw = !showPw; const f = $screen.querySelector('form'); const u = f.user.value, p = f.pass.value; render(); const f2 = $screen.querySelector('form'); f2.user.value = u; f2.pass.value = p; f2.pass.focus(); }
+    else if (a === 'signout') { try { localStorage.removeItem(AUTH_KEY); } catch {} auth = false; loginError = ''; tab = 'home'; render(); }
+    else if (a === 'tadj') { timerSet(T.total + Number(el.dataset.d)); render(); }
+    else if (a === 'tpreset') { timerSet(Number(el.dataset.s)); render(); }
+    else if (a === 'tstart') timerStart();
+    else if (a === 'tpause') timerPause();
+    else if (a === 'tresume') timerRun();
+    else if (a === 'treset') timerReset();
     else if (a === 'logout') {
       if (!confirm('Sair deste perfil? Presenças e mensagens deste aparelho serão apagadas.')) return;
       state = defaultState();
@@ -1962,6 +2159,21 @@
     e.preventDefault();
     const a = form.dataset.action;
     const fd = new FormData(form);
+    if (a === 'login') {
+      const u = (fd.get('user') || '').toString().trim().toLowerCase();
+      const p = (fd.get('pass') || '').toString();
+      if (u === ACCESS.user && p === ACCESS.pass) {
+        auth = true; loginError = '';
+        try { localStorage.setItem(AUTH_KEY, '1'); } catch {}
+        render();
+        if (state.onboarded) { go('home'); toast(`Oss, ${me().name.split(' ')[0]}!`); }
+      } else {
+        loginError = u && p ? 'Usuário ou senha incorretos.' : 'Preencha usuário e senha.';
+        render();
+        const f = $screen.querySelector('form'); if (f) { f.user.value = fd.get('user') || ''; f.pass.focus(); }
+      }
+      return;
+    }
     if (a === 'send') {
       const text = (fd.get('text') || '').toString().trim();
       if (!text) return;
