@@ -224,7 +224,7 @@
     flex: none;
   }
   .avatar.sm { width: 26px; height: 26px; font-size: 11px; }
-  .avatar.lg { width: 68px; height: 68px; font-size: 26px; }
+  .avatar svg { width: 58%; height: 58%; display: block; }
   .avatar[data-belt="Branca"] { background: #E9E9EC; color: #333; }
   .avatar[data-belt="Azul"] { background: #2456B8; color: #fff; }
   .avatar[data-belt="Roxa"] { background: #6B3FA0; color: #fff; }
@@ -295,6 +295,8 @@
   .weekdots .d { display: grid; gap: 6px; justify-items: center; font-size: 11px; color: var(--ink-3); font-weight: 600; }
   .weekdots .dot { width: 30px; height: 30px; border-radius: 8px; background: var(--surface-2); display: grid; place-items: center; color: var(--ink-3); }
   .weekdots .dot.on { background: var(--accent); color: #fff; }
+  .weekdots .dot.miss { background: var(--accent-soft); color: var(--accent); }
+  .weekdots .dot.wait { background: var(--warn-soft); color: var(--warn); }
   .weekdots .dot.today { box-shadow: 0 0 0 2px var(--ink) inset; }
   .weekdots .dot svg { width: 14px; height: 14px; }
 
@@ -444,6 +446,14 @@
   .catbar .chip { flex: none; }
   .movelist { display: grid; gap: 10px; }
   .thread.move { align-items: start; grid-template-columns: 84px 1fr 18px; }
+  .thread.art { grid-template-columns: 50px 1fr 18px; }
+  .thread.art .p { white-space: normal; }
+  .thread.art .chev { color: var(--ink-3); display: grid; place-items: center; }
+  .thread.art .chev svg { width: 18px; height: 18px; }
+  .thread .ico.kanji { background: var(--accent); color: #fff; font-size: 20px; font-weight: 700; }
+  .article p { margin: 0 0 10px; line-height: 1.55; }
+  .article p:last-child { margin-bottom: 0; }
+  .article .tips { margin-top: 4px; }
   .thread.move .p { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .thread.move .chev { color: var(--ink-3); display: grid; place-items: center; align-self: center; }
   .thread.move .chev svg { width: 18px; height: 18px; }
@@ -619,7 +629,6 @@
   const fmtLong = d => `${WD_LONG[d.getDay()]}, ${d.getDate()} de ${MONTHS[d.getMonth()]}`;
   const fmtShort = d => `${d.getDate()} ${MON_SHORT[d.getMonth()]}`;
   const fmtTime = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  const initials = name => name.trim().split(/\s+/).slice(0, 2).map(p => p[0]).join('').toUpperCase() || '?';
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   /* ---------------- state ---------------- */
@@ -795,7 +804,16 @@
     s += '</svg>';
     return s;
   }
-  const avatar = (m, cls = '') => `<span class="avatar ${cls}" data-belt="${m.belt}" title="${esc(m.name)}">${initials(m.name)}</span>`;
+  // Peças de xadrez por faixa: peão (branca), cavalo (azul), bispo (roxa), torre (marrom), rei (preta).
+  const PIECE = {
+    Branca: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.5a2.7 2.7 0 0 1 1.5 4.9c1.6.7 2.6 2.1 2.6 3.9H7.9c0-1.8 1-3.2 2.6-3.9A2.7 2.7 0 0 1 12 3.5Z"/><path d="M8.6 13.3h6.8l1.1 3.9H7.5l1.1-3.9Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
+    Azul: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.6 17.2h9.2c0-4.3-1.3-8-4.7-10.5l.5-2.4-1.9.9-1-2.2-1.1 2.5C7.5 6.8 6.2 8.6 6 10.6l2.2 1c.4-.6 1-1 1.7-1.2-.2 1.7-1.3 3.5-2.9 4.7l1.6 2.1Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
+    Roxa: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="4.6" r="1.5"/><path d="M12 6.8c2.7 1.7 4.1 4.2 4.1 6.6 0 1.4-.4 2.6-1.2 3.8H9.1c-.8-1.2-1.2-2.4-1.2-3.8 0-2.4 1.4-4.9 4.1-6.6Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
+    Marrom: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.8 4.5h2.2v2.1h1.9V4.5h2.2v2.1H15V4.5h2.2v4.2l-1.1 1.1v6.4l1.1 1H6.8l1.1-1v-6.4L6.8 8.7V4.5Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
+    Preta: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.1 2.5h1.8v1.7h1.7v1.7h-1.7v1.5h-1.8V5.9H9.4V4.2h1.7V2.5Z"/><path d="M12 7.6c3.2 0 5.6 2.1 5.6 4.9 0 1.9-.9 3.5-2.2 4.7H8.6c-1.3-1.2-2.2-2.8-2.2-4.7 0-2.8 2.4-4.9 5.6-4.9Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
+  };
+  const piece = belt => PIECE[belt] || PIECE.Branca;
+  const avatar = (m, cls = '') => `<span class="avatar ${cls}" data-belt="${m.belt}" title="${esc(m.name)} · faixa ${m.belt.toLowerCase()}" aria-label="${esc(m.name)}">${piece(m.belt)}</span>`;
   const me = () => state.profile;
 
   function confirmedList(dk, c) {
@@ -851,7 +869,14 @@
       const d = addDays(mon, i), k = key(d);
       const on = Object.keys(state.attendance).some(a => a.startsWith(k + '|'));
       const planned = Object.keys(state.confirmations).some(a => a.startsWith(k + '|'));
-      return `<div class="d"><span class="dot ${on ? 'on' : ''} ${k === dk ? 'today' : ''}">${on ? I.check : (planned ? I.dot : '')}</span>${WD[d.getDay()]}</div>`;
+      const pastDay = d < startOfDay(today);
+      const hadClass = classesOn(d, true).length > 0;
+      let cls = '', icon = '', label = '';
+      if (on) { cls = 'on'; icon = I.check; label = 'Presença confirmada'; }
+      else if (pastDay && hadClass && planned) { cls = 'wait'; icon = I.clock; label = 'Aguardando o professor'; }
+      else if (pastDay && hadClass) { cls = 'miss'; icon = I.x; label = 'Falta'; }
+      else if (planned) { icon = I.dot; label = 'Confirmado'; }
+      return `<div class="d"><span class="dot ${cls} ${k === dk ? 'today' : ''}" ${label ? `title="${label}" aria-label="${label}"` : ''}>${icon}</span>${WD[d.getDay()]}</div>`;
     }).join('');
     const wk = weekCount(mon);
     const hour = today.getHours();
@@ -871,7 +896,7 @@
           <div class="eyebrow row" style="gap:8px"><span class="seal" aria-hidden="true">畳</span>${fmtLong(today)}</div>
           <h1 class="title" style="margin-top:6px">${greet}, ${esc(p.name.split(' ')[0])}. Oss!</h1>
         </div>
-        <button class="avatar" data-action="go" data-tab="perfil" data-belt="${p.belt}" aria-label="Abrir perfil" style="border:0">${initials(p.name)}</button>
+        <button class="avatar" data-action="go" data-tab="perfil" data-belt="${p.belt}" aria-label="Abrir perfil" style="border:0">${piece(p.belt)}</button>
       </header>
 
       <section class="card fade" style="animation-delay:.05s">
@@ -1141,7 +1166,7 @@
           <div class="eyebrow">Seu perfil</div>
           <h1 class="title">${esc(p.name)}</h1>
         </div>
-        ${avatar(p, 'lg')}
+        ${avatar(p)}
       </header>
       <section class="card fade" style="animation-delay:.05s">
         <div class="row" style="justify-content:space-between;margin-bottom:10px">
@@ -1799,6 +1824,72 @@
   const photoHTML = (m, small) => `<div class="photo ${small ? 'sm' : ''}" role="img" aria-label="Foto de ${esc(m.name)} em preparação"><span class="ph">${I.image}</span>${small ? '' : '<span class="t">Foto em preparação</span>'}</div>`;
   const keyLabel = m => KEYPOINTS[m.id] || '';
 
+
+  /* ---------------- biblioteca: conhecimento (artigos) ---------------- */
+  const ARTICLES = [
+    { id: 'historia', title: 'História do jiu-jitsu', kanji: '史', summary: 'Do Japão feudal ao Brasil, e do vale-tudo ao esporte moderno.',
+      blocks: [
+        { h: 'Raízes no Japão', p: ['O jiu-jitsu (jūjutsu, "arte suave") nasce como o conjunto de técnicas de combate corpo a corpo dos samurais, usado quando a espada não estava disponível: projeções, chaves, estrangulamentos e imobilizações. Existiam dezenas de escolas (ryū), cada uma com seu currículo.', 'Em 1882, Jigoro Kano reuniu e reorganizou essas técnicas em um método de ensino com regras, graduação por faixas e treino com resistência (randori). Assim nasceu o Judô Kodokan, que rapidamente se espalhou pelo Japão e depois pelo mundo.'] },
+        { h: 'A viagem de Mitsuyo Maeda', p: ['Mitsuyo Maeda, aluno destacado da Kodokan, saiu do Japão em 1904 para demonstrar a arte no exterior. Lutou em desafios nos Estados Unidos, na Europa e na América Central, onde ficou conhecido como Conde Koma.', 'Em 1914 chegou ao Brasil e se estabeleceu em Belém do Pará, onde passou a ensinar. Entre seus alunos estava Carlos Gracie, que começou a treinar por volta de 1917.'] },
+        { h: 'Os Gracie e a adaptação brasileira', p: ['Carlos Gracie levou o que aprendeu ao Rio de Janeiro e abriu a primeira academia da família em 1925, com os irmãos. Hélio Gracie, o mais novo e de físico frágil, adaptou as técnicas para depender de alavanca e tempo, e não de força, moldando o estilo que ficaria conhecido como jiu-jitsu brasileiro.', 'A família consolidou o método em desafios abertos (o vale-tudo), onde o jiu-jitsu se provou contra boxeadores, lutadores de luta livre e capoeiristas. Em paralelo, a linhagem de Luiz França e Oswaldo Fadda, também aluno de Maeda, difundiu o jiu-jitsu nos subúrbios do Rio, fora da família Gracie.'] },
+        { h: 'Do vale-tudo ao mundo', p: ['Em 1993, Royce Gracie venceu o primeiro UFC, nos Estados Unidos, finalizando adversários maiores. O evento mostrou ao mundo o poder da luta no chão e provocou uma explosão de academias fora do Brasil.', 'Em 1994 foi criada a IBJJF (Federação Internacional de Jiu-Jitsu Brasileiro), por Carlos Gracie Jr., e em 1996 aconteceu o primeiro Campeonato Mundial, o Mundial. Em 1998 surgiu o ADCC, principal torneio de luta agarrada sem kimono.'] },
+        { h: 'O esporte hoje', p: ['O jiu-jitsu moderno tem duas grandes vertentes: com kimono (gi), onde as pegadas na roupa geram guardas e estrangulamentos próprios, e sem kimono (no-gi), mais rápido e com forte presença de ataques às pernas. Regras de pontos e de finalização variam entre IBJJF, ADCC e eventos de finalização direta.', 'A graduação adulta segue as faixas branca, azul, roxa, marrom e preta, com até quatro graus por faixa. Depois vêm as faixas coral e vermelha, reservadas a décadas de dedicação. O que não mudou desde Maeda: a base é técnica, alavanca e controle, e o tatame é o lugar onde isso se aprende.'] },
+      ] },
+    { id: 'guardas', title: 'Quantas guardas existem?', kanji: '守', summary: 'Não há um número fechado. Existem famílias de guarda, e dezenas de variações.',
+      blocks: [
+        { h: 'A resposta curta', p: ['Guarda é qualquer posição em que você está por baixo e usa as pernas entre você e o oponente para se defender e atacar. Como toda nova pegada ou gancho pode virar uma "guarda com nome", não existe um número oficial. Na prática, fala-se em cerca de 15 a 20 guardas principais, e passando de 40 quando se contam as variações.', 'O que importa para o aluno não é decorar nomes, e sim entender as famílias. Toda guarda pertence a uma delas, e as regras de retenção e ataque são parecidas dentro de cada família.'] },
+        { h: 'Guarda fechada', list: ['Guarda fechada clássica: pernas cruzadas nas costas dele.', 'Guarda alta: pernas mais próximas das axilas, base para triângulo e armlock.', 'Rubber guard: perna por cima do ombro segurando a própria canela (jogo do 10th Planet).', 'Guarda de gola e manga (collar-sleeve), aberta a partir da fechada.'] },
+        { h: 'Meia guarda', list: ['Meia guarda clássica, com underhook.', 'Meia guarda com joelho escudo (Z guard).', 'Meia guarda profunda (deep half).', 'Lockdown (variação do 10th Planet).', 'Meia guarda reversa e meia guarda com lapela.'] },
+        { h: 'Guardas abertas sentadas', list: ['Borboleta: dois ganchos por dentro das coxas.', 'Guarda sentada com um gancho (single butterfly).', 'Shin-to-shin: canela na canela dele para entradas em pé.', 'Guarda K (K guard) e entradas de perna do jogo sem kimono.'] },
+        { h: 'Guardas de enrolar a perna', list: ['De La Riva.', 'De La Riva reversa.', 'Guarda X.', 'Single leg X (ashi garami).', '50/50.', 'Guarda de perna (leg entanglements) do jogo moderno: saddle, outside ashi, 80/20.'] },
+        { h: 'Guardas de controle dos braços (kimono)', list: ['Aranha: pés nos bíceps.', 'Lasso: perna enrolada no braço dele.', 'Guarda de lapela: worm guard, squid guard e variações de Keenan Cornelius.', 'Guarda de gola e manga.'] },
+        { h: 'Como estudar', p: ['Escolha uma guarda fechada, uma meia guarda e uma guarda aberta e aprofunde nelas antes de colecionar nomes. Nesta Biblioteca, cada guarda tem uma ficha com passo a passo, detalhes e erros comuns. Comece por guarda fechada, meia guarda, borboleta e De La Riva: são as bases de quase todas as outras.'] },
+      ], related: ['guarda-fechada', 'meia-guarda', 'borboleta', 'de-la-riva', 'guarda-x', 'aranha', 'retencao'] },
+    { id: 'passagens', title: 'Tipos de passagem de guarda', kanji: '越', summary: 'Pressão ou movimento, em pé ou de joelhos: as famílias de passagem e quando usar cada uma.',
+      blocks: [
+        { h: 'O que é passar a guarda', p: ['Passar a guarda é sair de dentro das pernas do oponente e estabilizar uma posição de controle por cima: cem quilos, joelho na barriga ou montada. Só conta quando ele para de se mover. Toda passagem segue a mesma ordem: postura, anular as pernas, controlar o quadril, controlar a cabeça e estabilizar. Quadril primeiro, cabeça depois.'] },
+        { h: 'Passagens de pressão', p: ['Você cola o corpo no dele, tira o espaço e avança devagar. São lentas, pesadas e exigem base. Funcionam bem contra guardas ativas e em pé ou de joelhos.'], list: ['Over-under: um braço por baixo de uma perna, outro por cima.', 'Empilhada (double under): dois braços por baixo, quadril dele para cima.', 'Smash da meia guarda: crossface, underhook e o joelho dele esmagado.', 'Body lock: abraço no tronco, peito colado.', 'Knee cut de pressão: joelho cortando a coxa com underhook.'] },
+        { h: 'Passagens de movimento', p: ['Você fica longe das pegadas dele e usa velocidade, ângulo e mudança de direção. Costumam ser feitas em pé. Cansam menos o passador e mais o guardeiro.'], list: ['Toreando: controla os joelhos e passa pelo lado.', 'Leg drag: arrasta uma perna cruzada sobre o seu quadril.', 'Long step: passo longo para trás saindo do gancho.', 'X-pass e passagens de corrida (running pass).', 'Cartwheel e passagens de salto, mais raras e arriscadas.'] },
+        { h: 'Passagens de meia guarda', p: ['A meia guarda é a parada mais comum de qualquer passagem, por isso tem uma família própria de passagens.'], list: ['Knee cut a partir da meia guarda.', 'Smash pass com crossface e underhook.', 'Back step: girar o quadril para trás, saindo pelo outro lado.', 'Hip switch e passagens por cima da perna presa.'] },
+        { h: 'Passagens por finalização', p: ['Em vez de passar, você ameaça e obriga o oponente a abrir a guarda. A kimura, a guilhotina e, no sem kimono, os ataques às pernas são os exemplos mais comuns. Se ele defende a finalização, você passa; se ele defende a passagem, você finaliza.'] },
+        { h: 'Qual usar?', p: ['Contra um guardeiro que fica sentado e busca ganchos: movimento, em pé. Contra um que deita e estica as pernas: pressão. Contra alguém muito mais forte: movimento. Contra alguém muito mais rápido: pressão. O passador completo alterna entre as duas famílias na mesma sequência.'] },
+      ], related: ['conceito-passagem', 'toreando', 'knee-cut', 'leg-drag', 'over-under', 'double-under', 'smash-pass', 'body-lock', 'long-step'] },
+  ];
+  const ART_BY_ID = Object.fromEntries(ARTICLES.map(a => [a.id, a]));
+
+  function articleRow(a) {
+    return `
+      <button class="card thread art" data-action="openart" data-id="${a.id}">
+        <span class="ico kanji" aria-hidden="true">${a.kanji}</span>
+        <span class="grow"><div class="n">${esc(a.title)}</div><div class="p">${esc(a.summary)}</div></span>
+        <span class="chev">${I.chev}</span>
+      </button>`;
+  }
+  function renderArticle(id) {
+    const a = ART_BY_ID[id];
+    if (!a) { libOpen = null; return renderLib(); }
+    const related = (a.related || []).map(r => MOVE_BY_ID[r]).filter(Boolean);
+    return `
+      <div class="chat-head fade" style="border:0;padding-bottom:6px">
+        <button class="backbtn" data-action="closemove" aria-label="Voltar para a biblioteca">${I.back}</button>
+        <div class="grow"><div class="eyebrow">Conhecimento</div></div>
+        <span class="seal" aria-hidden="true">${a.kanji}</span>
+      </div>
+      <h1 class="title fade" style="font-size:30px;margin:6px 0 8px">${esc(a.title)}</h1>
+      <p class="muted fade" style="margin:0 0 6px">${esc(a.summary)}</p>
+      ${a.blocks.map((b, i) => `
+      <section class="card section fade article" style="animation-delay:${.05 + i * .03}s">
+        <h2 class="h2" style="margin-bottom:10px">${esc(b.h)}</h2>
+        ${(b.p || []).map(t => `<p>${esc(t)}</p>`).join('')}
+        ${b.list ? `<ul class="tips">${b.list.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
+      </section>`).join('')}
+      ${related.length ? `
+      <section class="section fade">
+        <div class="section-head"><h2 class="h2">Fichas relacionadas</h2></div>
+        <div class="chips">${related.map(r => `<button class="chip" data-action="openmove" data-id="${r.id}">${esc(r.name)}</button>`).join('')}</div>
+      </section>` : ''}`;
+  }
+
   /* ---------------- biblioteca: telas ---------------- */
   const CAT_ICON = {
     shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6l-7-2.5Z"/><path d="m9 12 2 2 4-4.5"/></svg>',
@@ -1832,9 +1923,14 @@
 
   function libListHTML() {
     const list = libFiltered();
-    if (!list.length) return `<div class="card empty"><div class="title cond">Nada encontrado</div><div>Tente outro nome: "triângulo", "meia guarda", "knee cut"...</div></div>`;
+    const q = norm(libQuery.trim());
+    const arts = q && libCat === 'todas' ? ARTICLES.filter(a => norm(`${a.title} ${a.summary}`).includes(q)) : [];
+    if (!list.length && !arts.length) return `<div class="card empty"><div class="title cond">Nada encontrado</div><div>Tente outro nome: "triângulo", "meia guarda", "knee cut"...</div></div>`;
+    if (arts.length && (libCat !== 'todas' || libQuery.trim())) return `<div class="movelist">${arts.map(articleRow).join('')}${list.map(moveRow).join('')}</div>`;
     if (libCat !== 'todas' || libQuery.trim()) return `<div class="movelist">${list.map(moveRow).join('')}</div>`;
-    return LIB_CATS.map(c => {
+    return `
+        <div class="section-head" style="margin-top:22px"><h2 class="h2">Conhecimento</h2><span class="small muted num">${ARTICLES.length}</span></div>
+        <div class="movelist">${ARTICLES.map(articleRow).join('')}</div>` + LIB_CATS.map(c => {
       const items = list.filter(m => m.cat === c.id);
       if (!items.length) return '';
       return `
@@ -2066,7 +2162,7 @@
     let html = '';
     if (tab === 'home') html = renderHome();
     else if (tab === 'aulas') html = renderAulas();
-    else if (tab === 'biblioteca') html = libOpen ? renderMove(libOpen) : renderLib();
+    else if (tab === 'biblioteca') html = libOpen ? (libOpen.startsWith('art:') ? renderArticle(libOpen.slice(4)) : renderMove(libOpen)) : renderLib();
     else if (tab === 'chat') html = chatOpen ? renderChatThread(chatOpen) : renderChatList();
     else if (tab === 'timer') html = renderTimer();
     else html = renderPerfil();
@@ -2102,6 +2198,7 @@
     else if (a === 'openchat') { chatOpen = el.dataset.cls; go('chat'); }
     else if (a === 'closechat') { chatOpen = null; render(); }
     else if (a === 'openmove') { libOpen = el.dataset.id; if (tab !== 'biblioteca') go('biblioteca'); else render(); }
+    else if (a === 'openart') { libOpen = 'art:' + el.dataset.id; if (tab !== 'biblioteca') go('biblioteca'); else render(); }
     else if (a === 'closemove') { libOpen = null; render(); }
     else if (a === 'libcat') { libCat = el.dataset.cat; render(); const inp = document.getElementById('libSearch'); if (inp && libQuery) inp.focus(); }
     else if (a === 'day') { aulasDay = el.dataset.day; render(); }

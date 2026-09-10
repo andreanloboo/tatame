@@ -2,7 +2,9 @@
 
 App single-file para acompanhar a frequência na academia de jiu-jitsu: 3 aulas por semana ao longo de 13 semanas (39 aulas em 90 dias).
 
-O perfil mostra faixa, graus, grupo e toda a frequência (aulas desde o último grau, ritmo, próximo grau, últimas semanas e últimos treinos) em modo leitura: nome, faixa, graus e grupo são atualizados pelo professor no módulo admin. Na grade e na home, um ícone de kimono marca as aulas do seu grupo. O chat mostra a bolinha no footer só quando há mensagens novas, com contador por conversa e separador de não lidas dentro da conversa.
+O perfil mostra faixa, graus, grupo e toda a frequência (aulas desde o último grau, ritmo, próximo grau, últimas semanas e últimos treinos) em modo leitura: nome, faixa, graus e grupo são atualizados pelo professor no módulo admin. Na grade e na home, um ícone redondo na cor da faixa do aluno, com um kimono branco, marca as aulas do seu grupo. Os avatares usam peças de xadrez por faixa: peão (branca), cavalo (azul), bispo (roxa), torre (marrom) e rei (preta). No resumo da semana, dias com aula do grupo e sem presença aparecem com um X em vermelho suave; confirmações ainda não registradas pelo professor aparecem com um relógio. O chat mostra a bolinha no footer só quando há mensagens novas, com contador por conversa e separador de não lidas dentro da conversa.
+
+A Biblioteca abre com uma área de **Conhecimento**: história do jiu-jitsu, quantas guardas existem e tipos de passagem de guarda, com links para as fichas relacionadas.
 
 Inclui uma **Biblioteca** de movimentações (guardas, raspagens, passagens, finalizações, controles e escapes), com busca, filtro por categoria e um tutorial resumido por técnica: espaço para a foto da posição, ponto-chave, ideia central, passo a passo, detalhes, erros comuns, conceito de referência e técnicas relacionadas.
 
