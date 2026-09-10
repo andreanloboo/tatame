@@ -2,6 +2,8 @@
 
 App single-file para acompanhar a frequência na academia de jiu-jitsu: 3 aulas por semana ao longo de 13 semanas (39 aulas em 90 dias).
 
+O perfil mostra faixa, graus, grupo e toda a frequência (aulas desde o último grau, ritmo, próximo grau, últimas semanas e últimos treinos) em modo leitura: nome, faixa, graus e grupo são atualizados pelo professor no módulo admin. Na grade e na home, um ícone de kimono marca as aulas do seu grupo. O chat mostra a bolinha no footer só quando há mensagens novas, com contador por conversa e separador de não lidas dentro da conversa.
+
 Inclui uma **Biblioteca** de movimentações (guardas, raspagens, passagens, finalizações, controles e escapes), com busca, filtro por categoria e um tutorial resumido por técnica: espaço para a foto da posição, ponto-chave, ideia central, passo a passo, detalhes, erros comuns, conceito de referência e técnicas relacionadas.
 
 O visual segue uma linha minimalista de inspiração oriental: fundo de papel, tinta e vermelhão, tipografia sem serifa (Zen Kaku Gothic New). 
@@ -15,7 +17,7 @@ Ainda não definidas: cada técnica mostra um espaço reservado neutro na lista 
 Este app é a visão do aluno. O aluno envia a confirmação de que vai treinar; ela fica **pendente** (com um X para cancelar) até o professor registrar a presença. Dependem de um módulo admin, ainda a fazer:
 
 - registrar presença e aprovar ou recusar confirmações enviadas;
-- grade de aulas, professores e regra de graduação da academia (hoje dados fixos, somente leitura no perfil);
+- cadastro do aluno (nome, faixa, graus, grupo), grade de aulas, professores e regra de graduação (hoje dados fixos, somente leitura);
 - colegas, contagem de confirmados e chat (hoje exemplos locais).
 
 ## Login e cronômetro

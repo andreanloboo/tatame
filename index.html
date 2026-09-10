@@ -168,7 +168,7 @@
   .tabbar .ind {
     position: absolute;
     top: 0; left: 0;
-    width: calc(100% / 7);
+    width: calc(100% / 6);
     height: 100%;
     pointer-events: none;
     transition: transform .42s cubic-bezier(.22, 1, .36, 1);
@@ -203,7 +203,7 @@
     width: 7px; height: 7px; border-radius: 50%;
     background: var(--accent); border: 2px solid var(--pill);
   }
-  .tabbar button.on .badge { display: none; }
+  .tabbar .badge[hidden] { display: none; }
 
   /* ---------- common ---------- */
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 24px; }
@@ -311,9 +311,12 @@
   .days button.today small::after { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); margin-left: 4px; vertical-align: middle; }
 
   .timeline { display: grid; gap: 12px; }
-  .slot { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 14px 16px; }
-  .slot .t { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 20px; line-height: 1; min-width: 58px; padding-right: 12px; border-right: 1px solid var(--line); }
-  .slot .g { font-weight: 600; margin-bottom: 2px; }
+  .slot { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 16px; }
+  .slot .t { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 19px; line-height: 1; min-width: 54px; padding-right: 10px; border-right: 1px solid var(--line); }
+  .slot .g { font-weight: 600; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .slot .g .gn { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .gi { display: inline-grid; place-items: center; width: 20px; height: 20px; color: var(--accent); flex: none; }
+  .gi svg { width: 18px; height: 18px; }
   .slot .c { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
   .slot .actions { display: flex; gap: 8px; }
   .iconbtn { width: 38px; height: 38px; border-radius: 10px; border: 0; background: var(--surface-2); color: var(--ink); display: grid; place-items: center; }
@@ -336,12 +339,17 @@
 
   /* chat */
   .thread-list { display: grid; gap: 10px; }
-  .thread { display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: center; padding: 14px 16px; text-align: left; width: 100%; }
-  .thread .ico { width: 46px; height: 46px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); }
+  .thread { display: grid; grid-template-columns: 50px 1fr auto; gap: 14px; align-items: center; padding: 14px 16px; text-align: left; width: 100%; }
+  .thread .ico { width: 50px; height: 46px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 13.5px; letter-spacing: -.02em; color: var(--ink); }
   .thread .ico.accent { background: var(--accent); color: #fff; }
   .thread .n { font-weight: 600; }
   .thread .p { font-size: 13px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .thread .ts { font-size: 11px; color: var(--ink-3); align-self: start; padding-top: 3px; }
+  .thread .ts { font-size: 11px; color: var(--ink-3); }
+  .thread .side { display: grid; justify-items: end; gap: 6px; align-self: start; padding-top: 3px; }
+  .thread.unread .ts { color: var(--ok); font-weight: 700; }
+  .thread.unread .p { color: var(--ink); font-weight: 500; }
+  .unread-badge { min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--ok); color: #fff; font-size: 11.5px; font-weight: 700; display: inline-grid; place-items: center; }
+  .newsep { align-self: stretch; text-align: center; font-size: 11px; color: var(--ok); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: var(--ok-soft); border-radius: 8px; padding: 6px 10px; margin: 6px 0; }
 
   .chat-head { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
   .backbtn { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); display: grid; place-items: center; }
@@ -366,11 +374,13 @@
   .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .stat .v { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 36px; line-height: 1; }
   .stat .l { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
-  .ring-wrap { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; }
+  .ring-wrap { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: center; }
+  .ring-col { display: grid; justify-items: center; gap: 6px; }
+  .ring-lbl { font-size: 11px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .1em; }
   .ring { width: 120px; height: 120px; position: relative; }
   .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
   .ring .c { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
-  .ring .c b { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 34px; line-height: 1; display: block; }
+  .ring .c b { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 40px; line-height: 1; display: block; letter-spacing: -.02em; }
   .ring .c small { font-size: 11px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
   .req { display: grid; gap: 8px; }
   .req .r { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
@@ -513,7 +523,6 @@
     <button data-tab="aulas" aria-label="Aulas"></button>
     <button data-tab="biblioteca" aria-label="Biblioteca"></button>
     <button data-tab="chat" aria-label="Chat"></button>
-    <button data-tab="freq" aria-label="Frequência"></button>
     <button data-tab="timer" aria-label="Cronômetro"></button>
     <button data-tab="perfil" aria-label="Perfil"></button>
   </nav>
@@ -534,7 +543,6 @@
     home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M10 20v-5.5h4V20"/></svg>',
     cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h3M13 14h3M8 17.5h3"/></svg>',
     chat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 12a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.2-4.2A8.5 8.5 0 1 1 20.5 12Z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>',
-    chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6.5 16.5v-5M12 16.5V7M17.5 16.5v-8"/></svg>',
     user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.8"/><path d="M4.5 20c.8-3.6 3.9-5.5 7.5-5.5s6.7 1.9 7.5 5.5"/></svg>',
     check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
     send: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12 20 4l-4 16-4-7-8-1Z"/><path d="m12 13 8-9"/></svg>',
@@ -546,6 +554,7 @@
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 16.5v-11Z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h4.5a1.5 1.5 0 0 0 1.5-1.5v-11Z"/><path d="M7 8h2.5M7 11h2.5M14.5 8H17M14.5 11H17"/></svg>',
     search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>',
     image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17 4.5-4.5 3 3 3-3.5 4.5 5"/></svg>',
+    gi: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 3.5h7l4 3-2.2 2.6V20H6.7V9.1L4.5 6.5l4-3Z"/><path d="M8.5 3.5 12 11l3.5-7.5"/><path d="M6.7 15h10.6"/><path d="M12 15v2.4"/></svg>',
     timer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.5" r="7.5"/><path d="M12 10v3.5l2.5 1.5"/><path d="M9.5 3h5M12 3v3"/><path d="m18 7 1.5-1.5"/></svg>',
     pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>',
     play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10-6.5-10-6.5Z"/></svg>',
@@ -559,7 +568,6 @@
 
   /* ---------------- static data ---------------- */
   const BELTS = ['Branca', 'Azul', 'Roxa', 'Marrom', 'Preta'];
-  const GROUPS = ['Fundamentos', 'Avançado', 'No-Gi', 'Competição'];
   const WD = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
   const WD_LONG = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
   const MONTHS = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
@@ -723,8 +731,8 @@
   }
 
   /* ---------------- ui: nav ---------------- */
-  const TABS = ['home', 'aulas', 'biblioteca', 'chat', 'freq', 'timer', 'perfil'];
-  const ICON_BY_TAB = { home: I.home, aulas: I.cal, biblioteca: I.book, chat: I.chat, freq: I.chart, timer: I.timer, perfil: I.user };
+  const TABS = ['home', 'aulas', 'biblioteca', 'chat', 'timer', 'perfil'];
+  const ICON_BY_TAB = { home: I.home, aulas: I.cal, biblioteca: I.book, chat: I.chat, timer: I.timer, perfil: I.user };
   let tab = 'home';
   let chatOpen = null;
   let aulasDay = key(now());
@@ -813,8 +821,8 @@
         </div>
         <div class="grow">
           <div class="row" style="justify-content:space-between">
-            <div class="name">${esc(clsName(c))}</div>
-            ${c.group === 'Todos' ? '<span class="pill soft">Todas as faixas</span>' : (mine ? '<span class="pill soft">Seu grupo</span>' : '')}
+            <div class="row" style="gap:8px"><div class="name">${esc(clsName(c))}</div>${mine && c.group !== 'Todos' ? `<span class="gi" title="Seu grupo" aria-label="Seu grupo">${I.gi}</span>` : ''}</div>
+            ${c.group === 'Todos' ? '<span class="pill soft">Todas as faixas</span>' : ''}
           </div>
           <div class="meta">${esc(c.coach)}${c.name ? ` · ${esc(c.group)}` : ''} · <span class="num">${people.length} ${people.length === 1 ? 'confirmado' : 'confirmados'}</span></div>
         </div>
@@ -867,7 +875,7 @@
             <div class="eyebrow">Sua graduação</div>
             <div class="h2">Faixa ${p.belt.toLowerCase()} · ${p.stripes} ${p.stripes === 1 ? 'grau' : 'graus'}</div>
           </div>
-          <button class="linkbtn" data-action="go" data-tab="freq">Ver detalhes</button>
+          <button class="linkbtn" data-action="go" data-tab="perfil">Ver detalhes</button>
         </div>
         ${beltSVG(p.belt, p.stripes)}
         <div class="row" style="justify-content:space-between;margin-top:14px;margin-bottom:6px">
@@ -922,7 +930,7 @@
         <button class="chip ${onlyMine ? 'on' : ''}" data-action="onlymine">Só meu grupo</button>
       </header>
       <div class="days fade" style="animation-delay:.05s">${dayBtns}</div>
-      <div class="eyebrow" style="margin-bottom:10px">${fmtLong(d)}</div>
+      <div class="row" style="justify-content:space-between;margin-bottom:10px"><div class="eyebrow">${fmtLong(d)}</div><div class="small muted row" style="gap:4px;font-size:12px"><span class="gi" aria-hidden="true">${I.gi}</span>seu grupo</div></div>
       <div class="timeline fade" style="animation-delay:.1s">
         ${list.length ? list.map(c => {
           const dk = aulasDay, past = classEnd(dk, c) < now();
@@ -932,7 +940,7 @@
             <div class="card slot ${mine ? 'mine' : ''}">
               <div class="t num">${c.time}</div>
               <div>
-                <div class="g">${esc(clsName(c))} ${mine ? '<span class="pill accent" style="margin-left:4px">Seu grupo</span>' : ''}</div>
+                <div class="g"><span class="gn">${esc(clsName(c))}</span>${mine ? `<span class="gi" title="Seu grupo" aria-label="Seu grupo">${I.gi}</span>` : ''}</div>
                 <div class="c">${esc(c.coach)} · ${c.dur} min · <span class="num">${people.length} confirmados</span></div>
               </div>
               <div class="actions">
@@ -947,6 +955,15 @@
       </div>`;
   }
 
+  const lastRead = cid => (state.lastRead && state.lastRead[cid]) || 0;
+  const unreadCount = cid => (state.chats[cid] || []).filter(m => m.author !== 'me' && m.ts > lastRead(cid)).length;
+  const totalUnread = () => SCHEDULE.reduce((n, c) => n + unreadCount(c.id), 0);
+  function markRead(cid) {
+    state.lastRead ||= {};
+    const arr = state.chats[cid] || [];
+    const latest = arr.length ? Math.max(...arr.map(m => m.ts)) : 0;
+    if (latest > lastRead(cid)) { state.lastRead[cid] = latest; save(); }
+  }
   function lastMsg(cid) {
     const arr = state.chats[cid] || [];
     return arr[arr.length - 1];
@@ -962,14 +979,18 @@
     const item = (c, accent) => {
       const m = lastMsg(c.id);
       const who = m ? (m.author === 'me' ? 'Você' : MEMBERS[m.author].name.split(' ')[0]) : '';
+      const un = unreadCount(c.id);
       return `
-        <button class="card thread" data-action="openchat" data-cls="${c.id}">
+        <button class="card thread ${un ? 'unread' : ''}" data-action="openchat" data-cls="${c.id}">
           <span class="ico ${accent ? 'accent' : ''} num">${c.time}</span>
           <span class="grow">
             <div class="n">${esc(clsName(c))} <span class="muted small" style="font-weight:500">· ${threadLabel(c)}</span></div>
             <div class="p">${m ? `<b>${esc(who)}:</b> ${esc(m.text)}` : 'Nenhuma mensagem ainda. Puxe o papo.'}</div>
           </span>
-          <span class="ts num">${m ? fmtRel(m.ts) : ''}</span>
+          <span class="side">
+            <span class="ts num">${m ? fmtRel(m.ts) : ''}</span>
+            ${un ? `<span class="unread-badge num" aria-label="${un} ${un === 1 ? 'mensagem nova' : 'mensagens novas'}">${un > 99 ? '99+' : un}</span>` : ''}
+          </span>
         </button>`;
     };
     return `
@@ -996,11 +1017,15 @@
     const c = byId[cid];
     const msgs = state.chats[cid] || [];
     const people = confirmedList(key(now()), c);
+    const since = lastRead(cid);
+    const un = unreadCount(cid);
+    const firstUnread = msgs.findIndex(m => m.author !== 'me' && m.ts > since);
     let lastDay = '';
-    const html = msgs.map(m => {
+    const html = msgs.map((m, i) => {
       const d = new Date(m.ts), dk = key(d);
       let sep = '';
-      if (dk !== lastDay) { lastDay = dk; sep = `<div class="daysep">${dk === key(now()) ? 'Hoje' : (dk === key(addDays(now(), -1)) ? 'Ontem' : fmtShort(d))}</div>`; }
+      if (un && i === firstUnread) sep += `<div class="newsep">${un} ${un === 1 ? 'mensagem não lida' : 'mensagens não lidas'}</div>`;
+      if (dk !== lastDay) { lastDay = dk; sep += `<div class="daysep">${dk === key(now()) ? 'Hoje' : (dk === key(addDays(now(), -1)) ? 'Ontem' : fmtShort(d))}</div>`; }
       const mine = m.author === 'me';
       const a = mine ? me() : MEMBERS[m.author];
       return sep + `
@@ -1029,7 +1054,7 @@
       </form>`;
   }
 
-  function renderFreq() {
+  function renderFreqBody() {
     const p = me(), r = state.rule, pr = progress();
     const pct = Math.min(1, pr.done / pr.target);
     const R = 52, C = 2 * Math.PI * R;
@@ -1038,28 +1063,25 @@
     const goalPct = (r.perWeek / max) * 100;
     const hist = attendanceList().slice(0, 8);
     return `
-      <header class="topbar fade">
-        <div>
-          <div class="eyebrow">Desde o último grau · ${fmtShort(parse(p.lastGrau))}</div>
-          <h1 class="title">Frequência</h1>
-        </div>
-      </header>
 
-      <div class="stats fade" style="animation-delay:.05s">
-        <div class="card stat"><div class="v num">${pr.done}</div><div class="l">aulas desde o último grau</div></div>
+      <div class="stats section fade" style="animation-delay:.1s">
+        <div class="card stat"><div class="v num">${pr.done}</div><div class="l">aulas desde o último grau (${fmtShort(parse(p.lastGrau))})</div></div>
         <div class="card stat"><div class="v num">${pr.pace.toFixed(1)}</div><div class="l">aulas por semana, em média</div></div>
       </div>
 
       <section class="card section fade" style="animation-delay:.1s">
         <div class="eyebrow" style="margin-bottom:12px">Próximo: ${nextRank(p)}</div>
         <div class="ring-wrap">
+          <div class="ring-col">
           <div class="ring">
             <svg viewBox="0 0 120 120">
               <circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--surface-2)" stroke-width="10"/>
               <circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round"
                 stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/>
             </svg>
-            <div class="c"><div><b class="num">${pr.left}</b><small>${pr.left === 1 ? 'aula falta' : 'aulas faltam'}</small></div></div>
+            <div class="c"><b class="num">${pr.left}</b></div>
+          </div>
+          <div class="ring-lbl">${pr.left === 1 ? 'aula falta' : 'aulas faltam'}</div>
           </div>
           <div class="req">
             <div class="r">
@@ -1074,7 +1096,8 @@
             </div>
           </div>
         </div>
-        <div class="row" style="margin-top:14px;justify-content:space-between">
+        <div class="small muted" style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line)">Regra da academia: <b class="num">${r.perWeek} aulas/semana por ${r.weeks} semanas</b> e mínimo de <b class="num">${r.minDays} dias</b> no grau. Definida pelo professor.</div>
+        <div class="row" style="margin-top:12px;justify-content:space-between">
           <span class="small muted">${pr.ready ? 'Requisitos cumpridos' : 'Previsão no ritmo atual'}</span>
           <span class="pill ${pr.ready ? 'ok' : 'accent'} num">${pr.ready ? 'Pronto para graduar' : fmtShort(pr.eta)}</span>
         </div>
@@ -1105,38 +1128,8 @@
       </section>`;
   }
 
-  function profileForm(p, r, isNew) {
-    return `
-      <form class="stack" data-action="${isNew ? 'create' : 'saveprofile'}" style="gap:14px">
-        <div class="field"><label for="f-name">Nome</label><input id="f-name" name="name" value="${esc(p.name)}" required placeholder="Seu nome completo"></div>
-        <div class="grid2">
-          <div class="field"><label for="f-belt">Faixa</label>
-            <select id="f-belt" name="belt">${BELTS.map(b => `<option ${b === p.belt ? 'selected' : ''}>${b}</option>`).join('')}</select></div>
-          <div class="field"><label>Graus</label>
-            <div class="stepper">
-              <button type="button" class="iconbtn" data-action="step" data-d="-1" aria-label="Menos um grau">${I.minus}</button>
-              <input type="hidden" name="stripes" value="${p.stripes}"><div class="val num" id="f-stripes">${p.stripes}</div>
-              <button type="button" class="iconbtn" data-action="step" data-d="1" aria-label="Mais um grau">${I.plus}</button>
-            </div></div>
-        </div>
-        <div class="field"><label>Grupo de treino</label>
-          <div class="chips" role="radiogroup">${GROUPS.map(g => `<button type="button" class="chip ${g === p.group ? 'on' : ''}" data-action="pickgroup" data-g="${g}" role="radio" aria-checked="${g === p.group}">${g}</button>`).join('')}</div>
-          <input type="hidden" name="group" value="${esc(p.group)}"></div>
-        <div class="field"><label for="f-grau">Data do último grau</label><input id="f-grau" type="date" name="lastGrau" value="${p.lastGrau}" required></div>
-        ${isNew ? '' : `
-        <div class="eyebrow" style="margin-top:8px">Regra de graduação da academia</div>
-        <div class="grid3">
-          <div class="card" style="padding:10px 12px"><div class="eyebrow">Aulas/sem</div><div class="h2 num">${r.perWeek}</div></div>
-          <div class="card" style="padding:10px 12px"><div class="eyebrow">Semanas</div><div class="h2 num">${r.weeks}</div></div>
-          <div class="card" style="padding:10px 12px"><div class="eyebrow">Dias mín.</div><div class="h2 num">${r.minDays}</div></div>
-        </div>
-        <div class="small muted"><b class="num">${r.perWeek} × ${r.weeks} = ${r.perWeek * r.weeks} aulas</b> e no mínimo <b class="num">${r.minDays} dias</b> no grau. Valem os dois. A regra é definida pelo professor no módulo da academia.</div>`}
-        <button class="btn ${isNew ? 'primary' : ''} block" type="submit">${isNew ? 'Entrar no tatame' : 'Salvar perfil'}</button>
-      </form>`;
-  }
-
   function renderPerfil() {
-    const p = me(), r = state.rule;
+    const p = me();
     return `
       <header class="topbar fade">
         <div>
@@ -1151,29 +1144,16 @@
           <span class="pill soft">${esc(p.group)}</span>
         </div>
         ${beltSVG(p.belt, p.stripes)}
+        <div class="small muted" style="margin-top:12px">Nome, faixa, graus e grupo são atualizados pelo professor.</div>
       </section>
-      <section class="card section fade" style="animation-delay:.1s">
-        ${profileForm(p, r, false)}
-      </section>
-      <section class="section fade" style="animation-delay:.15s">
+      ${renderFreqBody()}
+      <section class="section fade" style="animation-delay:.25s">
         <div class="stack">
           <button class="btn ghost block" data-action="theme">Alternar tema claro/escuro</button>
           <button class="btn ghost block" data-action="signout">${I.lockicon} Sair da conta</button>
-          <button class="btn ghost block danger" data-action="logout">Apagar perfil deste aparelho</button>
           <div class="small muted" style="text-align:center;padding:0 12px">Versão do aluno. Você envia a confirmação de que vai treinar e ela fica pendente até o professor registrar a presença no módulo da academia. Grade, colegas, mensagens e presenças são exemplos até esse módulo existir.</div>
         </div>
       </section>`;
-  }
-
-  function renderOnboarding() {
-    const p = { name: '', belt: 'Branca', stripes: 0, group: 'Fundamentos', lastGrau: key(now()) };
-    return `
-      <div style="padding-top:26px" class="fade">
-        <div class="eyebrow row" style="gap:8px"><span class="seal" aria-hidden="true">畳</span>Bem-vindo ao Tatame</div>
-        <h1 class="title" style="font-size:38px;margin:6px 0 10px">Crie seu perfil</h1>
-        <p class="muted" style="margin:0 0 18px;max-width:34ch">Faixa, graus e grupo de treino definem seus horários, seu chat e a contagem até o próximo grau.</p>
-        <section class="card">${profileForm(p, state.rule, true)}</section>
-      </div>`;
   }
 
   /* ---------------- biblioteca: dados ---------------- */
@@ -2061,6 +2041,11 @@
   }
 
   /* ---------------- render ---------------- */
+  function updateChatBadge() {
+    const badge = document.getElementById('chatBadge');
+    if (badge) badge.hidden = totalUnread() === 0;
+  }
+
   function render() {
     settleConfirmations();
     const $tab = document.getElementById('tabbar');
@@ -2071,12 +2056,6 @@
       const u = document.getElementById('l-user'); if (u && !loginError) u.focus();
       return;
     }
-    if (!state.onboarded) {
-      $tab.hidden = true;
-      $screen.className = 'screen';
-      $screen.innerHTML = renderOnboarding();
-      return;
-    }
     $tab.hidden = false;
     $screen.className = 'screen' + (tab === 'chat' && chatOpen ? ' chat-thread' : '');
     let html = '';
@@ -2084,19 +2063,21 @@
     else if (tab === 'aulas') html = renderAulas();
     else if (tab === 'biblioteca') html = libOpen ? renderMove(libOpen) : renderLib();
     else if (tab === 'chat') html = chatOpen ? renderChatThread(chatOpen) : renderChatList();
-    else if (tab === 'freq') html = renderFreq();
     else if (tab === 'timer') html = renderTimer();
     else html = renderPerfil();
     $screen.innerHTML = html;
     if (tab === 'timer' && T.phase === 'count') renderCountdown();
     if (chatOpen && tab === 'chat') {
       const $m = document.getElementById('msgs');
-      if ($m) $m.scrollTop = $m.scrollHeight;
+      if ($m) {
+        const sep = $m.querySelector('.newsep');
+        if (sep) $m.scrollTop = Math.max(0, sep.offsetTop - $m.offsetTop - 12); else $m.scrollTop = $m.scrollHeight;
+      }
+      markRead(chatOpen);
     } else {
       $screen.scrollTop = 0;
     }
-    const badge = document.getElementById('chatBadge');
-    if (badge) badge.style.display = tab === 'chat' ? 'none' : '';
+    updateChatBadge();
   }
 
   /* ---------------- actions ---------------- */
@@ -2120,17 +2101,6 @@
     else if (a === 'libcat') { libCat = el.dataset.cat; render(); const inp = document.getElementById('libSearch'); if (inp && libQuery) inp.focus(); }
     else if (a === 'day') { aulasDay = el.dataset.day; render(); }
     else if (a === 'onlymine') { onlyMine = !onlyMine; render(); }
-    else if (a === 'step') {
-      const form = el.closest('form'), inp = form.querySelector('[name=stripes]'), belt = form.querySelector('[name=belt]').value;
-      const max = belt === 'Preta' ? 6 : 4;
-      const v = Math.max(0, Math.min(max, Number(inp.value) + Number(el.dataset.d)));
-      inp.value = v; form.querySelector('#f-stripes').textContent = v;
-    }
-    else if (a === 'pickgroup') {
-      const form = el.closest('form');
-      form.querySelectorAll('[data-action=pickgroup]').forEach(b => { b.classList.toggle('on', b === el); b.setAttribute('aria-checked', b === el); });
-      form.querySelector('[name=group]').value = el.dataset.g;
-    }
     else if (a === 'theme') {
       const root = document.documentElement;
       const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
@@ -2144,13 +2114,6 @@
     else if (a === 'tpause') timerPause();
     else if (a === 'tresume') timerRun();
     else if (a === 'treset') timerReset();
-    else if (a === 'logout') {
-      if (!confirm('Sair deste perfil? Presenças e mensagens deste aparelho serão apagadas.')) return;
-      state = defaultState();
-      state.onboarded = false;
-      state.attendance = {}; state.chats = {}; state.confirmations = {};
-      save(); render();
-    }
   });
 
   $screen.addEventListener('submit', e => {
@@ -2166,7 +2129,7 @@
         auth = true; loginError = '';
         try { localStorage.setItem(AUTH_KEY, '1'); } catch {}
         render();
-        if (state.onboarded) { go('home'); toast(`Oss, ${me().name.split(' ')[0]}!`); }
+        go('home'); toast(`Oss, ${me().name.split(' ')[0]}!`);
       } else {
         loginError = u && p ? 'Usuário ou senha incorretos.' : 'Preencha usuário e senha.';
         render();
@@ -2179,22 +2142,8 @@
       if (!text) return;
       const cid = form.dataset.cls;
       (state.chats[cid] ||= []).push({ id: 'u' + Date.now().toString(36), author: 'me', text, ts: Date.now() });
-      save(); render();
+      markRead(cid); save(); render();
       const inp = $screen.querySelector('.composer input'); if (inp) inp.focus();
-    } else if (a === 'saveprofile' || a === 'create') {
-      const p = state.profile;
-      p.name = (fd.get('name') || '').toString().trim() || p.name;
-      p.belt = fd.get('belt'); p.stripes = Number(fd.get('stripes')); p.group = fd.get('group'); p.lastGrau = fd.get('lastGrau') || p.lastGrau;
-      if (a === 'saveprofile') {
-        toast('Perfil salvo');
-      } else {
-        state.onboarded = true;
-        state.chats = seedChats();
-        toast(`Oss, ${p.name.split(' ')[0]}! Bem-vindo ao tatame.`);
-        tab = 'home';
-      }
-      save(); render();
-      if (a === 'create') go('home');
     }
   });
 
