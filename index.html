@@ -427,15 +427,9 @@
   .seal { display: inline-grid; place-items: center; background: var(--accent); color: #fff; flex: none; }
 
   /* espaço reservado para a foto da técnica */
-  .photo { position: relative; border-radius: 12px; background: var(--surface-2); aspect-ratio: 16 / 9; display: grid; place-content: center; justify-items: center; gap: 8px; color: var(--ink-3); font-size: 13px; }
+  .photo { position: relative; border-radius: 12px; background: var(--surface-2); aspect-ratio: 16 / 9; border: 1px dashed var(--line); display: grid; place-content: center; justify-items: center; gap: 8px; color: var(--ink-3); font-size: 13px; }
   .photo .ph { width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; }
-  .photo .ph svg { width: 26px; height: 26px; }
-  .photo .ico.cat-info { background: var(--info); color: #fff; }
-  .photo .ico.cat-violet { background: var(--violet); color: #fff; }
-  .photo .ico.cat-warn { background: var(--warn); color: #fff; }
-  .photo .ico.cat-accent { background: var(--accent); color: #fff; }
-  .photo .ico.cat-ok { background: var(--ok); color: #fff; }
-  .photo .ico.cat-soft { background: var(--ink-2); color: #fff; }
+  .photo .ph svg { width: 30px; height: 30px; }
   .figure { padding: 8px 8px 14px; }
   .figure .keylabel { margin: 12px 8px 0; text-align: center; font-size: 14px; line-height: 1.4; }
   .figure .keylabel b { color: var(--accent); font-weight: 700; }
@@ -455,13 +449,13 @@
   .thread.art .chev { color: var(--ink-3); display: grid; place-items: center; }
   .thread.art .chev svg { width: 18px; height: 18px; }
   .thread .ico.art-ico { background: var(--ink); color: #fff; }
-  .thread .ico.cat-info { background: var(--info); color: #fff; }
-  .thread .ico.cat-violet { background: var(--violet); color: #fff; }
-  .thread .ico.cat-warn { background: var(--warn); color: #fff; }
-  .thread .ico.cat-accent { background: var(--accent); color: #fff; }
-  .thread .ico.cat-ok { background: var(--ok); color: #fff; }
-  .thread .ico.cat-soft { background: var(--ink-2); color: #fff; }
-  .thread .ico svg { width: 24px; height: 24px; }
+  .thread .ico svg { width: 28px; height: 28px; }
+  .thread .ico.tone-info, .photo .ico.tone-info { background: var(--info-soft); color: var(--info); }
+  .thread .ico.tone-violet, .photo .ico.tone-violet { background: var(--violet-soft); color: var(--violet); }
+  .thread .ico.tone-warn, .photo .ico.tone-warn { background: var(--warn-soft); color: var(--warn); }
+  .thread .ico.tone-accent, .photo .ico.tone-accent { background: var(--accent-soft); color: var(--accent); }
+  .thread .ico.tone-ok, .photo .ico.tone-ok { background: var(--ok-soft); color: var(--ok); }
+  .thread .ico.tone-soft, .photo .ico.tone-soft { background: var(--surface-2); color: var(--ink-2); }
   .article p { margin: 0 0 10px; line-height: 1.55; }
   .article p:last-child { margin-bottom: 0; }
   .article .tips { margin-top: 4px; }
@@ -1834,7 +1828,7 @@
     'defesa-triangulo': 'Postura alta, cotovelo de dentro no quadril dele',
   };
   // Fotos das técnicas ainda não definidas: espaço reservado neutro.
-  const photoHTML = m => { const c = CAT_BY_ID[m.cat]; return `<div class="photo" role="img" aria-label="Foto de ${esc(m.name)} em preparação"><span class="ico cat-${c.tone} ph">${CAT_ICON[c.icon]}</span><span class="t">Foto em preparação</span></div>`; };
+  const photoHTML = m => { const c = CAT_BY_ID[m.cat]; return `<div class="photo" role="img" aria-label="Foto de ${esc(m.name)} em preparação"><span class="ico tone-${c.tone} ph">${CAT_ICON[c.icon]}</span><span class="t">Foto em preparação</span></div>`; };
   const keyLabel = m => KEYPOINTS[m.id] || '';
 
 
@@ -1905,12 +1899,18 @@
 
   /* ---------------- biblioteca: telas ---------------- */
   const CAT_ICON = {
-    shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 5 6v5.5c0 4.2 2.9 7.6 7 9 4.1-1.4 7-4.8 7-9V6l-7-2.5Z"/><path d="m9 12 2 2 4-4.5"/></svg>',
-    sweep: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4.5h-4.5"/></svg>',
-    pass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h13"/><path d="m13 7 5 5-5 5"/><path d="M20 5v14"/></svg>',
-    lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><path d="M12 14.5v2.5"/></svg>',
-    anchor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2.5"/><path d="M12 8.5V21"/><path d="M5 13a7 7 0 0 0 14 0"/><path d="M8.5 21h7"/></svg>',
-    exit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 4H6.5A2.5 2.5 0 0 0 4 6.5v11A2.5 2.5 0 0 0 6.5 20H13"/><path d="M10 12h10"/><path d="m16.5 8.5 3.5 3.5-3.5 3.5"/></svg>',
+    // guarda: aluno de costas no chão com as pernas erguidas em guarda
+    shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="4.6" cy="15.6" r="1.9" fill="currentColor" stroke="none"/><path d="M7.2 16.6h6.3"/><path d="M13.5 16.6 17.6 8.4"/><path d="M13.5 16.6 20.6 12"/><path d="M3 20.5h18"/></svg>',
+    // raspagem: corpo girando por cima, seta de rotação
+    sweep: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.2" cy="17" r="1.9" fill="currentColor" stroke="none"/><path d="M7.6 15.2A7.6 7.6 0 0 1 19 9.6"/><path d="M15.4 9.8h3.8V6"/><path d="M3 20.5h18"/></svg>',
+    // passagem: passar por cima das pernas do oponente
+    pass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17.6 10 11l3.5 6.6"/><path d="M3.5 12.4A8.6 8.6 0 0 1 17.8 8"/><path d="M14.4 7.8h3.6V4.2"/><path d="M3 20.5h18"/></svg>',
+    // finalização: mão batendo (tap)
+    lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 12.6V7a1.4 1.4 0 0 1 2.8 0v4.6"/><path d="M12 6.4a1.4 1.4 0 0 1 2.8 0v5.2"/><path d="M14.8 7.8a1.4 1.4 0 0 1 2.8 0v6.6c0 3.5-2.4 6-5.7 6-2.3 0-3.9-1-5.2-3.2L4.9 14.2a1.5 1.5 0 0 1 2.4-1.7l1.9 2.4"/><path d="M5.6 6.2 4 4.8M5 9.2H3.2"/></svg>',
+    // controle: montada, um por cima do outro
+    anchor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4.6" r="1.9" fill="currentColor" stroke="none"/><path d="M11 7v5.2"/><path d="M8 17.4l3-5.2 3 5.2"/><circle cx="19.4" cy="16.9" r="1.7" fill="currentColor" stroke="none"/><path d="M4 17.4h13"/><path d="M3 20.5h18"/></svg>',
+    // escape: ponte (upa), quadril para cima
+    exit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="4.4" cy="17.4" r="1.9" fill="currentColor" stroke="none"/><path d="M6.6 16.2c2.4-4.4 5.8-6.2 9.2-5.2 1.9.6 3 2 3.6 4"/><path d="M15.2 11.4l2.2 6.2"/><path d="M19.4 15l1.2 3.6"/><path d="M3 20.5h18"/></svg>',
   };
   const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
@@ -1924,7 +1924,7 @@
     const c = CAT_BY_ID[m.cat];
     return `
       <button class="card thread move" data-action="openmove" data-id="${m.id}">
-        <span class="ico cat-${c.tone}" aria-hidden="true">${CAT_ICON[c.icon]}</span>
+        <span class="ico tone-${c.tone}" aria-hidden="true">${CAT_ICON[c.icon]}</span>
         <span class="grow">
           <div class="n">${esc(m.name)}</div>
           <div class="p">${esc(m.summary)}</div>
