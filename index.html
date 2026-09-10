@@ -482,19 +482,94 @@
   .callout { border-left: 3px solid var(--accent); background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 4px 14px 14px 4px; padding: 14px 16px; }
   .callout .q { font-size: 15px; line-height: 1.5; }
 
-  /* login */
-  .login { min-height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 20px 4px 40px; }
-  .login .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 34px; }
-  .login .brand .seal.lg { width: 48px; height: 48px; border-radius: 12px; }
-  .login .brand .seal.lg svg { width: 26px; height: 26px; }
-  .login .brand .name { font-weight: 700; font-size: 26px; letter-spacing: -.01em; line-height: 1; }
-  .login .brand .sub { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
-  .login .field input { padding: 13px 14px; }
+  /* login: foto de fundo, disco de vidro com as peças em cima, card de vidro com o formulário embaixo */
+  .screen.login-screen { padding: 0; overflow-y: auto; }
+  .login {
+    position: relative; min-height: 100%; height: 100%; display: flex; flex-direction: column;
+    isolation: isolate; background: #14110E; color: #F6F1E6;
+  }
+  .hero-bg, .hero-glow, .hero-scrim { position: absolute; inset: 0; }
+  .hero-bg {
+    background: url("assets/dojo.jpg") center 36% / cover no-repeat;
+    transform: scale(1.06);
+    animation: heroDrift 26s ease-in-out infinite alternate;
+  }
+  @keyframes heroDrift { from { transform: scale(1.06) translateY(0); } to { transform: scale(1.15) translateY(-12px); } }
+  .hero-glow {
+    background-color: var(--hg);
+    -webkit-mask-image: radial-gradient(60% 30% at 50% 30%, #000 0%, rgba(0, 0, 0, .5) 46%, transparent 78%);
+    mask-image: radial-gradient(60% 30% at 50% 30%, #000 0%, rgba(0, 0, 0, .5) 46%, transparent 78%);
+    mix-blend-mode: screen; opacity: .62;
+    transition: background-color .9s cubic-bezier(.4, 0, .2, 1);
+  }
+  .hero-scrim { background: linear-gradient(180deg, rgba(12, 10, 8, .42) 0%, rgba(12, 10, 8, .22) 38%, rgba(12, 10, 8, .5) 72%, rgba(12, 10, 8, .74) 100%); }
+
+  .hero {
+    position: relative; flex: 1 1 auto; min-height: 220px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+    padding: 28px 22px 26px;
+  }
+  .hero-disc {
+    position: relative; width: clamp(124px, 40vw, 172px); aspect-ratio: 1; border-radius: 50%; padding: 0;
+    border: 1px solid rgba(255, 255, 255, .3); color: var(--hi); overflow: hidden;
+    background: linear-gradient(160deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .04));
+    -webkit-backdrop-filter: blur(22px) saturate(1.5); backdrop-filter: blur(22px) saturate(1.5);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .42), inset 0 -22px 40px rgba(0, 0, 0, .16), 0 28px 64px rgba(0, 0, 0, .5);
+    transition: color .9s cubic-bezier(.4, 0, .2, 1), transform .25s ease;
+  }
+  .hero-disc:active { transform: scale(.97); }
+  .hero-disc::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%; background-color: var(--hc); opacity: .66;
+    -webkit-mask-image: radial-gradient(circle at 50% 28%, #000 0%, rgba(0, 0, 0, .55) 48%, transparent 82%);
+    mask-image: radial-gradient(circle at 50% 28%, #000 0%, rgba(0, 0, 0, .55) 48%, transparent 82%);
+    transition: background-color .9s cubic-bezier(.4, 0, .2, 1);
+  }
+  .hero-disc::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+    background: linear-gradient(165deg, rgba(255, 255, 255, .34) 0%, rgba(255, 255, 255, .06) 38%, transparent 58%);
+  }
+  .hero-piece { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; opacity: 0; transform: translateY(16px) scale(.86); }
+  .hero-piece svg { width: 54%; height: 54%; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, .28)); }
+  .hero-piece.is-on { opacity: 1; transform: none; transition: opacity .5s ease, transform .62s cubic-bezier(.22, 1, .36, 1); }
+  .hero-piece.is-out { opacity: 0; transform: translateY(-18px) scale(.92); transition: opacity .38s ease, transform .5s cubic-bezier(.4, 0, 1, 1); }
+
+  .hero-cap { flex: none; text-align: center; min-height: 52px; text-shadow: 0 2px 14px rgba(0, 0, 0, .5); }
+  .hero-cap .pc { font-size: 17px; font-weight: 700; letter-spacing: .01em; }
+  .hero-cap .ln { font-size: 13.5px; color: rgba(246, 241, 230, .72); margin-top: 4px; }
+  .hero-cap.in { animation: heroCap .55s cubic-bezier(.22, 1, .36, 1) both; }
+  @keyframes heroCap { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .login-card {
+    position: relative; z-index: 2; flex: none;
+    margin: 0 12px calc(12px + env(safe-area-inset-bottom)); border-radius: 28px;
+    padding: 22px 18px 18px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .15), rgba(255, 255, 255, .07));
+    border: 1px solid rgba(255, 255, 255, .22);
+    -webkit-backdrop-filter: blur(26px) saturate(1.4); backdrop-filter: blur(26px) saturate(1.4);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 24px 60px rgba(0, 0, 0, .45);
+  }
+  .login .field label { color: rgba(246, 241, 230, .74); }
+  .login .field input { padding: 13px 14px; color: #F6F1E6; background: rgba(255, 255, 255, .09); border-color: rgba(255, 255, 255, .18); }
+  .login .field input::placeholder { color: rgba(246, 241, 230, .45); }
+  .login .field input:focus { border-color: rgba(255, 255, 255, .6); background: rgba(255, 255, 255, .13); }
+  .login .field input.invalid { border-color: #FF8A73; }
+  .login .field input:-webkit-autofill { -webkit-text-fill-color: #F6F1E6; -webkit-box-shadow: 0 0 0 1000px #3A3430 inset; }
   .login .pw { position: relative; }
   .login .pw input { padding-right: 46px; }
-  .login .pw .iconbtn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: transparent; color: var(--ink-3); }
-  .login .err { color: var(--accent); font-size: 13px; font-weight: 600; min-height: 18px; }
-  .login .foot { text-align: center; color: var(--ink-3); font-size: 12px; margin-top: 26px; }
+  .login .pw .iconbtn { position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 34px; height: 34px; background: transparent; color: rgba(246, 241, 230, .62); }
+  .login .err { color: #FF9A86; font-size: 13px; font-weight: 600; min-height: 18px; }
+  .login .foot { text-align: center; color: rgba(246, 241, 230, .5); font-size: 12px; margin-top: 16px; }
+  .login :focus-visible { outline-color: #F6F1E6; }
+
+  @media (max-height: 700px) {
+    .hero { gap: 16px; padding: 18px 22px; }
+    .hero-cap { min-height: 44px; }
+    .hero-cap .ln { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bg { animation: none; }
+    .hero-piece.is-on, .hero-piece.is-out, .hero-cap.in { transition: none; animation: none; }
+  }
   .field input.invalid { border-color: var(--accent); }
 
   /* cronômetro */
@@ -818,6 +893,17 @@
     Marrom: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="7.6" r="1.15"/><circle cx="8.7" cy="4.9" r="1.15"/><circle cx="12" cy="3.9" r="1.15"/><circle cx="15.3" cy="4.9" r="1.15"/><circle cx="18" cy="7.6" r="1.15"/><path d="M7.2 16.2 6.1 8.9l1.6 3.4 1-7 1.9 5.6L12 5.3l1.4 5.6 1.9-5.6 1 7 1.6-3.4-1.1 7.3c-1.5.6-3.1.9-4.8.9s-3.3-.3-4.8-.9Z"/><path d="M6.7 17.2h10.6l.4 1.3H6.3l.4-1.3Z"/><path d="M6 19.2h12v1.6H6z"/></svg>',
     Preta: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.1 2.5h1.8v1.7h1.7v1.7h-1.7v1.5h-1.8V5.9H9.4V4.2h1.7V2.5Z"/><path d="M12 7.6c3.2 0 5.6 2.1 5.6 4.9 0 1.9-.9 3.5-2.2 4.7H8.6c-1.3-1.2-2.2-2.8-2.2-4.7 0-2.8 2.4-4.9 5.6-4.9Z"/><path d="M6.5 18.2h11v2h-11z"/></svg>',
   };
+
+  // Hero do login: cada peça aparece com a cor da faixa que ela representa.
+  const HERO = [
+    { belt: 'Branca', disc: '#EDEBE4', ink: '#2A2723', glow: '#F0DFC0', line: 'Todo mundo começa aqui.' },
+    { belt: 'Azul', disc: '#2456B8', ink: '#FFFFFF', glow: '#3F79EE', line: 'Base firme, jogo estruturado.' },
+    { belt: 'Roxa', disc: '#6B3FA0', ink: '#FFFFFF', glow: '#9159D6', line: 'Movimento que ninguém prevê.' },
+    { belt: 'Marrom', disc: '#5B3921', ink: '#FFFFFF', glow: '#A2663A', line: 'Alcance em todas as direções.' },
+    { belt: 'Preta', disc: '#141414', ink: '#F4F1E8', glow: '#C8202F', line: 'A peça que define o jogo.' },
+  ];
+  const HERO_MS = 3400;
+  let heroIdx = 0, heroTimer = null;
 
   const piece = belt => PIECE[belt] || PIECE.Branca;
   const avatar = (m, cls = '') => `<span class="avatar ${cls}" data-belt="${m.belt}" title="${esc(m.name)} · faixa ${m.belt.toLowerCase()}" aria-label="${esc(m.name)}">${piece(m.belt)}</span>`;
@@ -2017,13 +2103,47 @@
   }
 
   /* ---------------- login ---------------- */
+  function heroVars(h) { return `--hc:${h.disc};--hi:${h.ink};--hg:${h.glow}`; }
+
+  function heroPaint(next) {
+    const hero = $screen.querySelector('.login');
+    if (!hero) return;
+    const h = HERO[next], prev = heroIdx;
+    heroIdx = next;
+    hero.setAttribute('style', heroVars(h));
+    hero.querySelectorAll('.hero-piece').forEach((el, i) => {
+      el.classList.toggle('is-on', i === next);
+      el.classList.toggle('is-out', i === prev && prev !== next);
+    });
+    const cap = hero.querySelector('.hero-cap');
+    if (cap) {
+      cap.innerHTML = heroCaption(h);
+      cap.classList.remove('in'); void cap.offsetWidth; cap.classList.add('in');
+    }
+  }
+  const heroCaption = h => `<div class="pc">Faixa ${h.belt.toLowerCase()}</div><div class="ln">${esc(h.line)}</div>`;
+
+  function heroStop() { clearInterval(heroTimer); heroTimer = null; }
+  function heroStart() {
+    heroStop();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    heroTimer = setInterval(() => heroPaint((heroIdx + 1) % HERO.length), HERO_MS);
+  }
+
   function renderLogin() {
+    const h = HERO[heroIdx];
     return `
-      <div class="login fade">
-        <div class="brand">
-          <span class="seal lg" aria-hidden="true">${I.gi}</span>
-          <div><div class="name">Tatame</div><div class="sub">Área do aluno</div></div>
-        </div>
+      <div class="login" style="${heroVars(h)}">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-glow" aria-hidden="true"></div>
+        <div class="hero-scrim" aria-hidden="true"></div>
+        <section class="hero">
+          <button type="button" class="hero-disc" data-action="hero" aria-label="Próxima faixa">
+            ${HERO.map((b, i) => `<span class="hero-piece${i === heroIdx ? ' is-on' : ''}" aria-hidden="true">${piece(b.belt)}</span>`).join('')}
+          </button>
+          <div class="hero-cap" role="status">${heroCaption(h)}</div>
+        </section>
+        <section class="login-card">
         <form class="stack" data-action="login" style="gap:14px" novalidate>
           <div class="field"><label for="l-user">Usuário</label><input id="l-user" name="user" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="seu usuário" required class="${loginError ? 'invalid' : ''}"></div>
           <div class="field"><label for="l-pass">Senha</label>
@@ -2035,6 +2155,7 @@
           <button class="btn primary block" type="submit" style="height:50px;border-radius:14px;font-size:15px">Entrar</button>
         </form>
         <div class="foot">Acesso liberado pela academia</div>
+        </section>
       </div>`;
   }
 
@@ -2154,11 +2275,13 @@
     const $tab = document.getElementById('tabbar');
     if (!auth) {
       $tab.hidden = true;
-      $screen.className = 'screen';
+      $screen.className = 'screen login-screen';
       $screen.innerHTML = renderLogin();
+      heroStart();
       const u = document.getElementById('l-user'); if (u && !loginError) u.focus();
       return;
     }
+    heroStop();
     $tab.hidden = false;
     $screen.className = 'screen' + (tab === 'chat' && chatOpen ? ' chat-thread' : '');
     let html = '';
@@ -2210,6 +2333,7 @@
       const dark = root.dataset.theme === 'dark' || (!root.dataset.theme && matchMedia('(prefers-color-scheme: dark)').matches);
       root.dataset.theme = dark ? 'light' : 'dark';
     }
+    else if (a === 'hero') { heroPaint((heroIdx + 1) % HERO.length); heroStart(); }
     else if (a === 'togglepw') { showPw = !showPw; const f = $screen.querySelector('form'); const u = f.user.value, p = f.pass.value; render(); const f2 = $screen.querySelector('form'); f2.user.value = u; f2.pass.value = p; f2.pass.focus(); }
     else if (a === 'signout') { try { localStorage.removeItem(AUTH_KEY); } catch {} auth = false; loginError = ''; tab = 'home'; render(); }
     else if (a === 'tadj') { timerSet(T.total + Number(el.dataset.d)); render(); }
