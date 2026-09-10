@@ -424,8 +424,7 @@
   .danger { color: var(--accent); }
 
   /* selo (hanko) */
-  .seal { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 5px; background: var(--accent); color: #fff; font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-size: 15px; font-weight: 700; line-height: 1; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.3) inset; }
-  .seal.lg { width: 40px; height: 40px; border-radius: 8px; font-size: 22px; }
+  .seal { display: inline-grid; place-items: center; background: var(--accent); color: #fff; flex: none; }
 
   /* espaço reservado para a foto da técnica */
   .photo { position: relative; border-radius: 12px; background: var(--surface-2); aspect-ratio: 16 / 9; display: grid; place-content: center; justify-items: center; gap: 8px; color: var(--ink-3); font-size: 13px; }
@@ -450,7 +449,7 @@
   .thread.art .p { white-space: normal; }
   .thread.art .chev { color: var(--ink-3); display: grid; place-items: center; }
   .thread.art .chev svg { width: 18px; height: 18px; }
-  .thread .ico.kanji { background: var(--accent); color: #fff; font-size: 20px; font-weight: 700; }
+  .thread .ico.art-ico { background: var(--accent); color: #fff; }
   .article p { margin: 0 0 10px; line-height: 1.55; }
   .article p:last-child { margin-bottom: 0; }
   .article .tips { margin-top: 4px; }
@@ -480,7 +479,8 @@
   /* login */
   .login { min-height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 20px 4px 40px; }
   .login .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 34px; }
-  .login .brand .seal.lg { width: 48px; height: 48px; font-size: 26px; border-radius: 10px; }
+  .login .brand .seal.lg { width: 48px; height: 48px; border-radius: 12px; }
+  .login .brand .seal.lg svg { width: 26px; height: 26px; }
   .login .brand .name { font-weight: 700; font-size: 26px; letter-spacing: -.01em; line-height: 1; }
   .login .brand .sub { font-size: 13px; color: var(--ink-2); margin-top: 4px; }
   .login .field input { padding: 13px 14px; }
@@ -893,8 +893,8 @@
     return `
       <header class="topbar fade">
         <div>
-          <div class="eyebrow row" style="gap:8px"><span class="seal" aria-hidden="true">畳</span>${fmtLong(today)}</div>
-          <h1 class="title" style="margin-top:6px">${greet}, ${esc(p.name.split(' ')[0])}. Oss!</h1>
+          <div class="eyebrow">${fmtLong(today)}</div>
+          <h1 class="title">${greet}, ${esc(p.name.split(' ')[0])}. Oss!</h1>
         </div>
         <button class="avatar" data-action="go" data-tab="perfil" data-belt="${p.belt}" aria-label="Abrir perfil" style="border:0">${piece(p.belt)}</button>
       </header>
@@ -1827,7 +1827,7 @@
 
   /* ---------------- biblioteca: conhecimento (artigos) ---------------- */
   const ARTICLES = [
-    { id: 'historia', title: 'História do jiu-jitsu', kanji: '史', summary: 'Do Japão feudal ao Brasil, e do vale-tudo ao esporte moderno.',
+    { id: 'historia', title: 'História do jiu-jitsu', summary: 'Do Japão feudal ao Brasil, e do vale-tudo ao esporte moderno.',
       blocks: [
         { h: 'Raízes no Japão', p: ['O jiu-jitsu (jūjutsu, "arte suave") nasce como o conjunto de técnicas de combate corpo a corpo dos samurais, usado quando a espada não estava disponível: projeções, chaves, estrangulamentos e imobilizações. Existiam dezenas de escolas (ryū), cada uma com seu currículo.', 'Em 1882, Jigoro Kano reuniu e reorganizou essas técnicas em um método de ensino com regras, graduação por faixas e treino com resistência (randori). Assim nasceu o Judô Kodokan, que rapidamente se espalhou pelo Japão e depois pelo mundo.'] },
         { h: 'A viagem de Mitsuyo Maeda', p: ['Mitsuyo Maeda, aluno destacado da Kodokan, saiu do Japão em 1904 para demonstrar a arte no exterior. Lutou em desafios nos Estados Unidos, na Europa e na América Central, onde ficou conhecido como Conde Koma.', 'Em 1914 chegou ao Brasil e se estabeleceu em Belém do Pará, onde passou a ensinar. Entre seus alunos estava Carlos Gracie, que começou a treinar por volta de 1917.'] },
@@ -1835,7 +1835,7 @@
         { h: 'Do vale-tudo ao mundo', p: ['Em 1993, Royce Gracie venceu o primeiro UFC, nos Estados Unidos, finalizando adversários maiores. O evento mostrou ao mundo o poder da luta no chão e provocou uma explosão de academias fora do Brasil.', 'Em 1994 foi criada a IBJJF (Federação Internacional de Jiu-Jitsu Brasileiro), por Carlos Gracie Jr., e em 1996 aconteceu o primeiro Campeonato Mundial, o Mundial. Em 1998 surgiu o ADCC, principal torneio de luta agarrada sem kimono.'] },
         { h: 'O esporte hoje', p: ['O jiu-jitsu moderno tem duas grandes vertentes: com kimono (gi), onde as pegadas na roupa geram guardas e estrangulamentos próprios, e sem kimono (no-gi), mais rápido e com forte presença de ataques às pernas. Regras de pontos e de finalização variam entre IBJJF, ADCC e eventos de finalização direta.', 'A graduação adulta segue as faixas branca, azul, roxa, marrom e preta, com até quatro graus por faixa. Depois vêm as faixas coral e vermelha, reservadas a décadas de dedicação. O que não mudou desde Maeda: a base é técnica, alavanca e controle, e o tatame é o lugar onde isso se aprende.'] },
       ] },
-    { id: 'guardas', title: 'Quantas guardas existem?', kanji: '守', summary: 'Não há um número fechado. Existem famílias de guarda, e dezenas de variações.',
+    { id: 'guardas', title: 'Quantas guardas existem?', summary: 'Não há um número fechado. Existem famílias de guarda, e dezenas de variações.',
       blocks: [
         { h: 'A resposta curta', p: ['Guarda é qualquer posição em que você está por baixo e usa as pernas entre você e o oponente para se defender e atacar. Como toda nova pegada ou gancho pode virar uma "guarda com nome", não existe um número oficial. Na prática, fala-se em cerca de 15 a 20 guardas principais, e passando de 40 quando se contam as variações.', 'O que importa para o aluno não é decorar nomes, e sim entender as famílias. Toda guarda pertence a uma delas, e as regras de retenção e ataque são parecidas dentro de cada família.'] },
         { h: 'Guarda fechada', list: ['Guarda fechada clássica: pernas cruzadas nas costas dele.', 'Guarda alta: pernas mais próximas das axilas, base para triângulo e armlock.', 'Rubber guard: perna por cima do ombro segurando a própria canela (jogo do 10th Planet).', 'Guarda de gola e manga (collar-sleeve), aberta a partir da fechada.'] },
@@ -1845,7 +1845,7 @@
         { h: 'Guardas de controle dos braços (kimono)', list: ['Aranha: pés nos bíceps.', 'Lasso: perna enrolada no braço dele.', 'Guarda de lapela: worm guard, squid guard e variações de Keenan Cornelius.', 'Guarda de gola e manga.'] },
         { h: 'Como estudar', p: ['Escolha uma guarda fechada, uma meia guarda e uma guarda aberta e aprofunde nelas antes de colecionar nomes. Nesta Biblioteca, cada guarda tem uma ficha com passo a passo, detalhes e erros comuns. Comece por guarda fechada, meia guarda, borboleta e De La Riva: são as bases de quase todas as outras.'] },
       ], related: ['guarda-fechada', 'meia-guarda', 'borboleta', 'de-la-riva', 'guarda-x', 'aranha', 'retencao'] },
-    { id: 'passagens', title: 'Tipos de passagem de guarda', kanji: '越', summary: 'Pressão ou movimento, em pé ou de joelhos: as famílias de passagem e quando usar cada uma.',
+    { id: 'passagens', title: 'Tipos de passagem de guarda', summary: 'Pressão ou movimento, em pé ou de joelhos: as famílias de passagem e quando usar cada uma.',
       blocks: [
         { h: 'O que é passar a guarda', p: ['Passar a guarda é sair de dentro das pernas do oponente e estabilizar uma posição de controle por cima: cem quilos, joelho na barriga ou montada. Só conta quando ele para de se mover. Toda passagem segue a mesma ordem: postura, anular as pernas, controlar o quadril, controlar a cabeça e estabilizar. Quadril primeiro, cabeça depois.'] },
         { h: 'Passagens de pressão', p: ['Você cola o corpo no dele, tira o espaço e avança devagar. São lentas, pesadas e exigem base. Funcionam bem contra guardas ativas e em pé ou de joelhos.'], list: ['Over-under: um braço por baixo de uma perna, outro por cima.', 'Empilhada (double under): dois braços por baixo, quadril dele para cima.', 'Smash da meia guarda: crossface, underhook e o joelho dele esmagado.', 'Body lock: abraço no tronco, peito colado.', 'Knee cut de pressão: joelho cortando a coxa com underhook.'] },
@@ -1860,7 +1860,7 @@
   function articleRow(a) {
     return `
       <button class="card thread art" data-action="openart" data-id="${a.id}">
-        <span class="ico kanji" aria-hidden="true">${a.kanji}</span>
+        <span class="ico art-ico" aria-hidden="true">${I.book}</span>
         <span class="grow"><div class="n">${esc(a.title)}</div><div class="p">${esc(a.summary)}</div></span>
         <span class="chev">${I.chev}</span>
       </button>`;
@@ -1873,7 +1873,7 @@
       <div class="chat-head fade" style="border:0;padding-bottom:6px">
         <button class="backbtn" data-action="closemove" aria-label="Voltar para a biblioteca">${I.back}</button>
         <div class="grow"><div class="eyebrow">Conhecimento</div></div>
-        <span class="seal" aria-hidden="true">${a.kanji}</span>
+        <span class="ico-sm tone-accent" aria-hidden="true">${I.book}</span>
       </div>
       <h1 class="title fade" style="font-size:30px;margin:6px 0 8px">${esc(a.title)}</h1>
       <p class="muted fade" style="margin:0 0 6px">${esc(a.summary)}</p>
@@ -1946,7 +1946,7 @@
           <div class="eyebrow">Guia de movimentações</div>
           <h1 class="title">Biblioteca</h1>
         </div>
-        <span class="seal lg" title="${MOVES.length} técnicas" aria-label="${MOVES.length} técnicas">技</span>
+        <span class="pill soft num">${MOVES.length} técnicas</span>
       </header>
       <div class="search fade" style="animation-delay:.05s">
         ${I.search}
@@ -2019,7 +2019,7 @@
     return `
       <div class="login fade">
         <div class="brand">
-          <span class="seal lg" aria-hidden="true">畳</span>
+          <span class="seal lg" aria-hidden="true">${I.gi}</span>
           <div><div class="name">Tatame</div><div class="sub">Área do aluno</div></div>
         </div>
         <form class="stack" data-action="login" style="gap:14px" novalidate>
