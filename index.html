@@ -449,7 +449,7 @@
   .thread.art .chev { color: var(--ink-3); display: grid; place-items: center; }
   .thread.art .chev svg { width: 18px; height: 18px; }
   .thread .ico.art-ico { background: var(--accent); color: #fff; }
-  .thread .ico svg { width: 28px; height: 28px; }
+  .thread .ico svg { width: 26px; height: 26px; }
   .thread .ico.tone-info, .photo .ico.tone-info { background: var(--info-soft); color: var(--info); }
   .thread .ico.tone-violet, .photo .ico.tone-violet { background: var(--violet-soft); color: var(--violet); }
   .thread .ico.tone-warn, .photo .ico.tone-warn { background: var(--warn-soft); color: var(--warn); }
@@ -1898,20 +1898,9 @@
   }
 
   /* ---------------- biblioteca: telas ---------------- */
-  const CAT_ICON = {
-    // guarda: aluno de costas no chão com as pernas erguidas em guarda
-    shield: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="4.6" cy="15.6" r="1.9" fill="currentColor" stroke="none"/><path d="M7.2 16.6h6.3"/><path d="M13.5 16.6 17.6 8.4"/><path d="M13.5 16.6 20.6 12"/><path d="M3 20.5h18"/></svg>',
-    // raspagem: corpo girando por cima, seta de rotação
-    sweep: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="5.2" cy="17" r="1.9" fill="currentColor" stroke="none"/><path d="M7.6 15.2A7.6 7.6 0 0 1 19 9.6"/><path d="M15.4 9.8h3.8V6"/><path d="M3 20.5h18"/></svg>',
-    // passagem: passar por cima das pernas do oponente
-    pass: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 17.6 10 11l3.5 6.6"/><path d="M3.5 12.4A8.6 8.6 0 0 1 17.8 8"/><path d="M14.4 7.8h3.6V4.2"/><path d="M3 20.5h18"/></svg>',
-    // finalização: mão batendo (tap)
-    lock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 12.6V7a1.4 1.4 0 0 1 2.8 0v4.6"/><path d="M12 6.4a1.4 1.4 0 0 1 2.8 0v5.2"/><path d="M14.8 7.8a1.4 1.4 0 0 1 2.8 0v6.6c0 3.5-2.4 6-5.7 6-2.3 0-3.9-1-5.2-3.2L4.9 14.2a1.5 1.5 0 0 1 2.4-1.7l1.9 2.4"/><path d="M5.6 6.2 4 4.8M5 9.2H3.2"/></svg>',
-    // controle: montada, um por cima do outro
-    anchor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4.6" r="1.9" fill="currentColor" stroke="none"/><path d="M11 7v5.2"/><path d="M8 17.4l3-5.2 3 5.2"/><circle cx="19.4" cy="16.9" r="1.7" fill="currentColor" stroke="none"/><path d="M4 17.4h13"/><path d="M3 20.5h18"/></svg>',
-    // escape: ponte (upa), quadril para cima
-    exit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="4.4" cy="17.4" r="1.9" fill="currentColor" stroke="none"/><path d="M6.6 16.2c2.4-4.4 5.8-6.2 9.2-5.2 1.9.6 3 2 3.6 4"/><path d="M15.2 11.4l2.2 6.2"/><path d="M19.4 15l1.2 3.6"/><path d="M3 20.5h18"/></svg>',
-  };
+  // Ícone neutro para todas as categorias; a cor do fundo identifica a categoria.
+  const CAT_ICON = { shield: I.gi, sweep: I.gi, pass: I.gi, lock: I.gi, anchor: I.gi, exit: I.gi };
+
   const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
   function libFiltered() {
