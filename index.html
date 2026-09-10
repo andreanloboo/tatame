@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
 <title>Tatame</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
 <style>
   :root {
     --bg: #F5F2EB;
@@ -117,7 +117,7 @@
   button { cursor: pointer; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
   h1, h2, h3 { margin: 0; text-wrap: balance; }
-  .cond { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; }
+  .cond { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; }
   .num { font-variant-numeric: tabular-nums; }
 
   /* ---------- app shell ---------- */
@@ -144,7 +144,7 @@
     flex: 1;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 22px 20px 118px;
+    padding: 24px 20px 120px;
     scrollbar-width: none;
   }
   .screen::-webkit-scrollbar { display: none; }
@@ -205,21 +205,21 @@
   .tabbar button.on .badge { display: none; }
 
   /* ---------- common ---------- */
-  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 24px; }
   .eyebrow { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
-  .title { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 600; font-size: 28px; line-height: 1.12; letter-spacing: 0; }
-  .h2 { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 600; font-size: 19px; letter-spacing: .01em; }
+  .title { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 27px; line-height: 1.15; letter-spacing: -.01em; }
+  .h2 { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0; }
   .muted { color: var(--ink-2); }
   .small { font-size: 13px; }
-  .section { margin-top: 26px; }
-  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+  .section { margin-top: 30px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
   .linkbtn { background: none; border: 0; color: var(--accent); font-weight: 600; font-size: 13px; padding: 0; }
 
   .avatar {
     width: 40px; height: 40px; border-radius: 50%;
     display: grid; place-items: center;
     background: var(--ink); color: var(--bg);
-    font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 15px; letter-spacing: .02em;
+    font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .02em;
     flex: none;
   }
   .avatar.sm { width: 26px; height: 26px; font-size: 11px; }
@@ -234,10 +234,10 @@
     background: var(--surface);
     border: 1px solid var(--line);
     border-radius: 14px;
-    padding: 16px;
+    padding: 18px;
   }
-  .stack { display: flex; flex-direction: column; gap: 10px; }
-  .row { display: flex; align-items: center; gap: 10px; }
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; align-items: center; gap: 12px; }
   .grow { flex: 1; min-width: 0; }
 
   .btn {
@@ -254,6 +254,8 @@
   .btn.ok { background: var(--ok-soft); color: var(--ok); }
   .btn.block { width: 100%; }
   .btn svg { width: 18px; height: 18px; }
+  .btn.sm { padding: 9px 14px; font-size: 13px; border-radius: 10px; height: 38px; }
+  .btn.sm svg { width: 16px; height: 16px; }
 
   .chips { display: flex; gap: 8px; flex-wrap: wrap; }
   .chip {
@@ -272,12 +274,13 @@
   .belt { width: 100%; height: 26px; display: block; }
 
   /* home class card */
-  .class-card { display: grid; grid-template-columns: 62px 1fr; gap: 14px; align-items: start; }
-  .class-card .time { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 28px; line-height: 1; letter-spacing: -.01em; }
+  .class-card { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; }
+  .class-card .time { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 26px; line-height: 1; letter-spacing: -.02em; min-width: 62px; }
   .class-card .dur { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
-  .class-card .name { font-weight: 600; font-size: 16px; }
-  .class-card .meta { color: var(--ink-2); font-size: 13px; }
-  .class-card .foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+  .class-card .name { font-weight: 700; font-size: 16px; }
+  .class-card .meta { color: var(--ink-2); font-size: 13px; margin-top: 4px; }
+  .class-card .foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .class-card .foot .actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
   .stackav { display: flex; }
   .stackav .avatar.sm { border: 2px solid var(--surface); margin-left: -8px; }
   .stackav .avatar.sm:first-child { margin-left: 0; }
@@ -295,23 +298,23 @@
   .weekdots .dot svg { width: 14px; height: 14px; }
 
   /* day selector */
-  .days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; margin-bottom: 18px; }
+  .days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 22px; }
   .days button {
     border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 8px 0 7px; display: grid; gap: 2px; justify-items: center;
     color: var(--ink-2);
   }
-  .days button b { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-size: 20px; color: var(--ink); line-height: 1; }
+  .days button b { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-size: 20px; color: var(--ink); line-height: 1; }
   .days button small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
   .days button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
   .days button.on b { color: var(--bg); }
   .days button.today small::after { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); margin-left: 4px; vertical-align: middle; }
 
-  .timeline { display: grid; gap: 10px; }
-  .slot { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; }
-  .slot .t { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 22px; line-height: 1; }
-  .slot .g { font-weight: 600; }
-  .slot .c { font-size: 12px; color: var(--ink-2); }
-  .slot .actions { display: flex; gap: 6px; }
+  .timeline { display: grid; gap: 12px; }
+  .slot { display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; padding: 14px 16px; }
+  .slot .t { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 20px; line-height: 1; min-width: 58px; padding-right: 12px; border-right: 1px solid var(--line); }
+  .slot .g { font-weight: 600; margin-bottom: 2px; }
+  .slot .c { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+  .slot .actions { display: flex; gap: 8px; }
   .iconbtn { width: 38px; height: 38px; border-radius: 10px; border: 0; background: var(--surface-2); color: var(--ink); display: grid; place-items: center; }
   .iconbtn svg { width: 18px; height: 18px; }
   .iconbtn.on { background: var(--accent); color: #fff; }
@@ -320,16 +323,20 @@
   .iconbtn.off { background: var(--surface-2); color: var(--ink-3); }
   .iconbtn.cancel { background: var(--surface); color: var(--ink-2); border: 1px solid var(--line); flex: none; }
   .status.grow { min-width: 0; }
-  .status { display: flex; align-items: center; gap: 8px; border-radius: 12px; padding: 10px 14px; font-weight: 600; font-size: 13px; }
+  .status { display: flex; align-items: center; gap: 8px; border-radius: 10px; padding: 10px 14px; font-weight: 600; font-size: 13px; }
+  .status.sm { height: 38px; padding: 0 12px; white-space: nowrap; }
+  .pending { display: inline-flex; align-items: stretch; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); height: 38px; }
+  .pending .status { border-radius: 0; height: 100%; }
+  .pending .iconbtn { border-radius: 0; border: 0; border-left: 1px solid var(--line); width: 36px; height: 100%; background: var(--surface); color: var(--ink-2); }
   .status svg { width: 16px; height: 16px; flex: none; }
   .status.ok { background: var(--ok-soft); color: var(--ok); }
   .status.wait { background: var(--warn-soft); color: var(--warn); }
   .status.muted { background: var(--surface-2); color: var(--ink-2); font-weight: 500; }
 
   /* chat */
-  .thread-list { display: grid; gap: 8px; }
-  .thread { display: grid; grid-template-columns: 46px 1fr auto; gap: 12px; align-items: center; padding: 12px 14px; text-align: left; border: 0; width: 100%; }
-  .thread .ico { width: 46px; height: 46px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 16px; color: var(--ink); }
+  .thread-list { display: grid; gap: 10px; }
+  .thread { display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: center; padding: 14px 16px; text-align: left; width: 100%; }
+  .thread .ico { width: 46px; height: 46px; border-radius: 12px; background: var(--surface-2); display: grid; place-items: center; font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); }
   .thread .ico.accent { background: var(--accent); color: #fff; }
   .thread .n { font-weight: 600; }
   .thread .p { font-size: 13px; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -355,14 +362,14 @@
   .composer button svg { width: 18px; height: 18px; }
 
   /* frequência */
-  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .stat .v { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 36px; line-height: 1; }
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat .v { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 36px; line-height: 1; }
   .stat .l { font-size: 12px; color: var(--ink-2); margin-top: 4px; }
   .ring-wrap { display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; }
   .ring { width: 120px; height: 120px; position: relative; }
   .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
   .ring .c { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; }
-  .ring .c b { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 34px; line-height: 1; display: block; }
+  .ring .c b { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 34px; line-height: 1; display: block; }
   .ring .c small { font-size: 11px; color: var(--ink-2); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
   .req { display: grid; gap: 8px; }
   .req .r { display: grid; grid-template-columns: 22px 1fr auto; gap: 10px; align-items: center; font-size: 14px; }
@@ -379,9 +386,9 @@
   .chart .bar.cur i { outline: 2px solid var(--ink); outline-offset: -2px; }
   .chart .bar b { position: absolute; top: -18px; left: 0; right: 0; text-align: center; font-size: 11px; color: var(--ink-2); font-weight: 600; }
   .chart-labels { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 6px; font-size: 10px; color: var(--ink-3); text-align: center; }
-  .history { display: grid; gap: 6px; }
+  .history { display: grid; gap: 8px; }
   .history .h { display: grid; grid-template-columns: 44px 1fr auto; gap: 10px; align-items: center; padding: 9px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
-  .history .h .d { font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 18px; line-height: 1; }
+  .history .h .d { font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 18px; line-height: 1; }
   .history .h .d small { display: block; font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 600; }
 
   /* forms */
@@ -393,25 +400,20 @@
   .field input:focus, .field select:focus { border-color: var(--ink); outline: none; }
   .stepper { display: grid; grid-template-columns: 44px 1fr 44px; gap: 8px; align-items: center; }
   .stepper .iconbtn { width: 44px; height: 44px; }
-  .stepper .val { text-align: center; font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 24px; }
+  .stepper .val { text-align: center; font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 24px; }
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
   .danger { color: var(--accent); }
 
   /* selo (hanko) */
-  .seal { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 5px; background: var(--accent); color: #fff; font-family: "Shippori Mincho", "Noto Serif", serif; font-size: 15px; font-weight: 700; line-height: 1; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.3) inset; }
+  .seal { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 5px; background: var(--accent); color: #fff; font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-size: 15px; font-weight: 700; line-height: 1; flex: none; box-shadow: 0 0 0 1px rgba(255,255,255,.3) inset; }
   .seal.lg { width: 40px; height: 40px; border-radius: 8px; font-size: 22px; }
 
-  /* fotos das técnicas */
-  .photo { position: relative; margin: 0; border-radius: 12px; overflow: hidden; background: var(--surface-2); aspect-ratio: 16 / 10; }
-  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .photo .ph-empty { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 8px; color: var(--ink-3); font-size: 13px; }
-  .photo figcaption { position: absolute; right: 8px; bottom: 8px; font-size: 10px; letter-spacing: .02em; background: rgba(20, 19, 17, .55); color: #fff; padding: 3px 8px; border-radius: 999px; }
-  .photo figcaption a { color: #fff; text-decoration: none; }
+  /* espaço reservado para a foto da técnica */
+  .photo { position: relative; border-radius: 12px; background: var(--surface-2); aspect-ratio: 16 / 9; display: grid; place-content: center; justify-items: center; gap: 8px; color: var(--ink-3); font-size: 13px; }
+  .photo .ph svg { width: 34px; height: 34px; }
   .photo.sm { width: 84px; height: 56px; aspect-ratio: auto; border-radius: 10px; flex: none; }
-  .photo.sm .ph-empty { gap: 0; }
-  .photo.sm .ph-empty .t { display: none; }
-  .photo.sm .seal { width: 22px; height: 22px; font-size: 12px; border-radius: 4px; }
+  .photo.sm .ph svg { width: 22px; height: 22px; }
   .figure { padding: 8px 8px 14px; }
   .figure .keylabel { margin: 12px 8px 0; text-align: center; font-size: 14px; line-height: 1.4; }
   .figure .keylabel b { color: var(--accent); font-weight: 700; }
@@ -424,7 +426,7 @@
   .catbar { display: flex; gap: 8px; overflow-x: auto; margin: 0 -20px 6px; padding: 2px 20px 6px; scrollbar-width: none; }
   .catbar::-webkit-scrollbar { display: none; }
   .catbar .chip { flex: none; }
-  .movelist { display: grid; gap: 8px; }
+  .movelist { display: grid; gap: 10px; }
   .thread.move { align-items: start; grid-template-columns: 84px 1fr 18px; }
   .thread.move .p { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
   .thread.move .chev { color: var(--ink-3); display: grid; place-items: center; align-self: center; }
@@ -441,7 +443,7 @@
   .tagrow { display: flex; gap: 6px; flex-wrap: wrap; }
   .steps { counter-reset: s; display: grid; gap: 12px; margin: 0; padding: 0; }
   .steps li { list-style: none; display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
-  .steps li::before { counter-increment: s; content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-family: "Shippori Mincho", "Noto Serif", Georgia, serif; font-weight: 700; font-size: 15px; }
+  .steps li::before { counter-increment: s; content: counter(s); width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; font-family: "Zen Kaku Gothic New", "Noto Sans", system-ui, sans-serif; font-weight: 700; font-size: 15px; }
   .tips { display: grid; gap: 8px; margin: 0; padding: 0; }
   .tips li { list-style: none; display: grid; grid-template-columns: 14px 1fr; gap: 6px; font-size: 13.5px; line-height: 1.4; }
   .tips li::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ok); margin-top: 7px; justify-self: center; }
@@ -505,6 +507,7 @@
     dot: '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="3"/></svg>',
     book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H5.5A1.5 1.5 0 0 1 4 16.5v-11Z"/><path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h4.5a1.5 1.5 0 0 0 1.5-1.5v-11Z"/><path d="M7 8h2.5M7 11h2.5M14.5 8H17M14.5 11H17"/></svg>',
     search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg>',
+    image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="m4.5 17 4.5-4.5 3 3 3-3.5 4.5 5"/></svg>',
     x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>',
     chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.5 6 6 6-6 6"/></svg>',
   };
@@ -743,12 +746,12 @@
     const conf = isConfirmed(dk, c), att = attended(dk, c);
     const mine = myGroups().includes(c.group);
     const people = confirmedList(dk, c);
-    let btn;
-    if (att) btn = `<div class="status ok">${I.check} Presença confirmada pelo professor</div>`;
-    else if (past && conf) btn = `<div class="status wait">${I.clock} Confirmação enviada. Aguardando o professor</div>`;
-    else if (past) btn = `<div class="status muted">Aula encerrada. Presença é registrada pelo professor</div>`;
-    else if (conf) btn = `<div class="row" style="gap:8px"><div class="status wait grow">${I.clock} Confirmação pendente. Aguardando o professor</div><button class="iconbtn cancel" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="Cancelar confirmação" title="Cancelar confirmação">${I.x}</button></div>`;
-    else btn = `<button class="btn primary" data-action="toggle" data-date="${dk}" data-cls="${c.id}">Confirmar presença</button>`;
+    let action;
+    if (att) action = `<div class="status ok sm" title="Presença confirmada pelo professor">${I.check} Presença confirmada</div>`;
+    else if (past && conf) action = `<div class="status wait sm" title="Confirmação enviada. Aguardando o professor">${I.clock} Aguardando professor</div>`;
+    else if (past) action = `<div class="status muted sm" title="Aula encerrada. A presença é registrada pelo professor">Encerrada</div>`;
+    else if (conf) action = `<div class="pending" title="Confirmação pendente. Aguardando o professor"><div class="status wait sm">${I.clock} Pendente</div><button class="iconbtn" data-action="toggle" data-date="${dk}" data-cls="${c.id}" aria-label="Cancelar confirmação" title="Cancelar confirmação">${I.x}</button></div>`;
+    else action = `<button class="btn primary sm" data-action="toggle" data-date="${dk}" data-cls="${c.id}">Confirmar presença</button>`;
     return `
       <article class="card class-card ${mine ? 'mine' : ''} ${past ? 'past' : ''}">
         <div>
@@ -761,15 +764,14 @@
             <div class="name">${esc(clsName(c))}</div>
             ${c.group === 'Todos' ? '<span class="pill soft">Todas as faixas</span>' : (mine ? '<span class="pill soft">Seu grupo</span>' : '')}
           </div>
-          <div class="meta">${esc(c.coach)}${c.name ? ` · ${esc(c.group)}` : ''}</div>
-          <div class="foot">
-            <div class="row" style="gap:8px">
-              <div class="stackav">${people.slice(0, 4).map(m => avatar(m, 'sm')).join('')}</div>
-              <span class="small muted num">${people.length} ${people.length === 1 ? 'confirmado' : 'confirmados'}</span>
-            </div>
+          <div class="meta">${esc(c.coach)}${c.name ? ` · ${esc(c.group)}` : ''} · <span class="num">${people.length} ${people.length === 1 ? 'confirmado' : 'confirmados'}</span></div>
+        </div>
+        <div class="foot">
+          <div class="stackav" title="${people.length} ${people.length === 1 ? 'confirmado' : 'confirmados'}">${people.slice(0, 4).map(m => avatar(m, 'sm')).join('')}</div>
+          <div class="actions">
             ${opts.chat ? `<button class="iconbtn" data-action="openchat" data-cls="${c.id}" aria-label="Abrir chat">${I.chat}</button>` : ''}
+            ${action}
           </div>
-          <div style="margin-top:10px">${btn}</div>
         </div>
       </article>`;
   }
@@ -1691,9 +1693,7 @@
   ];
   const MOVE_BY_ID = Object.fromEntries(MOVES.map(m => [m.id, m]));
 
-  /* ---------------- biblioteca: fotos e pontos-chave ----------------
-     Fotos: 1) img/<id>.jpg no repositório (fotos da própria academia, prioridade);
-     2) Wikimedia Commons (licença livre, com crédito); 3) sem foto: espaço reservado. */
+  /* ---------------- biblioteca: pontos-chave ---------------- */
   const KEYPOINTS = {
     'guarda-fechada': 'Quebre a postura: cabeça dele para baixo',
     'meia-guarda': 'Underhook do lado da perna presa',
@@ -1757,51 +1757,8 @@
     'defesa-armlock': 'Mãos travadas, empilhe o peso, polegar para baixo',
     'defesa-triangulo': 'Postura alta, cotovelo de dentro no quadril dele',
   };
-  const PHOTOS = {
-    'guarda-fechada': { file: 'Brazilian Jiu-jitsu Kimura lock from guard.jpg' },
-    'kimura': { file: 'Brazilian Jiu-jitsu Kimura lock from guard.jpg' },
-    'armlock': { file: 'In-guard armbar.jpg' },
-    'armlock-montada': { file: 'Brazilian Jiu-Jitsu Gi Competition-Armbar.jpg' },
-    'triangulo': { file: 'GABRIEL VELLA vs ROMINHO 51.jpg' },
-    'katagatame': { file: 'Arm triangle choke.jpg' },
-    'mata-leao': { file: 'Submission Grappling - rear naked choke.jpg' },
-    'controle-costas': { file: '120 365 Taking the Back (4565556770).jpg' },
-    'omoplata': { file: 'Omoplata armlock.jpg' },
-    'chave-de-pe': { file: 'Leglock straight ankle lock.jpg' },
-    'toe-hold': { file: 'Figure four toe hold.jpg' },
-    'meia-guarda': { file: 'BJJ-half guard.jpg' },
-    'borboleta': { file: 'Judo10-butterfly guard.jpg' },
-    'cem-quilos': { file: 'Hon-kesa-gatame.jpg' },
-    'guilhotina': { file: 'Guillotine choke standing.gif' },
-  };
-  const commonsUrl = (file, w) => `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${w}`;
-  const commonsPage = file => `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file.replace(/ /g, '_'))}`;
-  function photoHTML(m, small) {
-    const ph = PHOTOS[m.id];
-    const fb = ph ? commonsUrl(ph.file, small ? 320 : 1000) : '';
-    return `<figure class="photo ${small ? 'sm' : ''}">
-      <img src="img/${m.id}.jpg" data-fallback="${fb}" alt="${esc(m.name)}" loading="lazy" decoding="async">
-      <div class="ph-empty" hidden><span class="seal" aria-hidden="true">技</span><span class="t">Foto em preparação</span></div>
-      ${ph ? `<figcaption hidden><a href="${commonsPage(ph.file)}" target="_blank" rel="noopener noreferrer">Foto: Wikimedia Commons</a></figcaption>` : ''}
-    </figure>`;
-  }
-  // Cadeia de fallback: foto da academia -> Wikimedia Commons -> espaço reservado.
-  document.addEventListener('error', e => {
-    const img = e.target;
-    if (!img || img.tagName !== 'IMG' || !img.closest('.photo')) return;
-    const fb = img.dataset.fallback;
-    if (fb) { img.dataset.fallback = ''; img.dataset.source = 'commons'; img.src = fb; return; }
-    const fig = img.closest('.photo');
-    img.hidden = true;
-    fig.classList.add('empty');
-    const empty = fig.querySelector('.ph-empty'); if (empty) empty.hidden = false;
-    const cap = fig.querySelector('figcaption'); if (cap) cap.hidden = true;
-  }, true);
-  document.addEventListener('load', e => {
-    const img = e.target;
-    if (!img || img.tagName !== 'IMG' || img.dataset.source !== 'commons') return;
-    const cap = img.closest('.photo').querySelector('figcaption'); if (cap) cap.hidden = false;
-  }, true);
+  // Fotos das técnicas ainda não definidas: espaço reservado neutro.
+  const photoHTML = (m, small) => `<div class="photo ${small ? 'sm' : ''}" role="img" aria-label="Foto de ${esc(m.name)} em preparação"><span class="ph">${I.image}</span>${small ? '' : '<span class="t">Foto em preparação</span>'}</div>`;
   const keyLabel = m => KEYPOINTS[m.id] || '';
 
   /* ---------------- biblioteca: telas ---------------- */
