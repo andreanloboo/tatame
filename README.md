@@ -24,7 +24,7 @@ Este app é a visão do aluno. O aluno envia a confirmação de que vai treinar;
 
 ## Login e cronômetro
 
-- **Login**: tela inicial minimalista, sem imagem de fundo: uma marca circular com uma peça de xadrez em traço que alterna entre as cinco faixas (toque para trocar), o nome do app e o formulário. O acesso é validado no próprio app (usuário `andrean`, senha `12345678`) até o módulo admin passar a controlar as contas. A sessão fica salva no aparelho; "Sair da conta" no perfil volta para o login sem apagar os dados.
+- **Login**: tela inicial minimalista, sem imagem de fundo: uma marca circular com uma peça de xadrez em traço que alterna entre as cinco faixas (toque para trocar), uma linha curta sobre a faixa e o formulário. O acesso é validado no próprio app (usuário `andrean`, senha `12345678`) até o módulo admin passar a controlar as contas. A sessão fica salva no aparelho; "Sair da conta" no perfil volta para o login sem apagar os dados.
 - **Cronômetro** (aba no footer): tempo ajustável por minutos e segundos ou presets (3, 5, 6, 7 e 10 min). Ao iniciar, aparece a contagem 3, 2, 1, "Valendo!" em tela cheia e o relógio começa. Dá para pausar, continuar e resetar. Bipes nos últimos segundos e ao terminar.
 
 ## Como usar
